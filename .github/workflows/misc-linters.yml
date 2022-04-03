@@ -1,0 +1,31 @@
+name: Miscellaneous (docs)
+
+on:
+  pull_request:
+
+  push:
+    branches:
+      - main
+
+jobs:
+  markdownlint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Markdown Linting Action
+        uses: avto-dev/markdown-lint@v1.5.0
+        with:
+          # Disabled in markdownlint.json:
+          #   MD001 - Heading Increment
+          #   MD013 - Line Length
+          #   MD024 - Duplicate Headings
+          #   MD026 - Trailing punctuation in header
+          #   MD033 - No inline HTML
+          #   MD036 - No Emphasis as Heading
+          #   MD041 - No Emphasis as Heading
+          #   MD041 - First line in file should be a H1
+          args: "./README.md ./content/*.md ./docs/*.md"

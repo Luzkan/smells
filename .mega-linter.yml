@@ -1,0 +1,17 @@
+# Mega-Linter (https://nvuillam.github.io/mega-linter/configuration/)
+APPLY_FIXES: none
+DEFAULT_BRANCH: main
+ENABLE_LINTERS:
+  - TYPESCRIPT_PRETTIER
+  - TYPESCRIPT_ES
+  - TSX_ESLINT
+PYTHON_PYLINT_ARGUMENTS:
+  - "--disable=E0611"  # No name 'TypeAlias' in module 'typing' (no-name-in-module)
+  - "--disable=E1101"  # Instance of 'Test*' has no '*' member (no-member)
+  - "--disable=E1131"  # Unsupported operand type(s) for | (unsupported-binary-operation)
+EXCLUDED_DIRECTORIES:
+  - "public"
+  - "node_modules"
+  - "report"
+SHOW_ELAPSED_TIME: true
+FILEIO_REPORTER: false
