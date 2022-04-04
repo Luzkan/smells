@@ -2,7 +2,9 @@ import React, { ReactElement } from "react"
 import { getCapitalizedLabel } from "utils/getCapitalizedLabel"
 import { SMELL_PAGE_FONTS } from "utils/theme"
 
-import { Avatar, createStyles, ListItem, ListItemAvatar, ListItemText, makeStyles } from "@material-ui/core"
+import { Avatar, ListItem, ListItemAvatar, ListItemText } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles(() =>
   createStyles({

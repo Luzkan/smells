@@ -9,8 +9,10 @@ import React from "react"
 import { FilterCodeSmells } from "types/groups"
 import { isMobile } from "utils/isMobile"
 
-import { createStyles, makeStyles, Theme } from "@material-ui/core"
-import { ClassNameMap } from "@material-ui/styles"
+import { Theme } from "@mui/material"
+import { ClassNameMap } from "@mui/styles"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 import SidebarFilterGroup from "./filter-group"
 import CatalogSidebarHeader from "./header"

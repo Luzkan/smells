@@ -1,7 +1,9 @@
 import React from "react"
 import { SMELL_PAGE_FONTS } from "utils/theme"
 
-import { createStyles, Grid, makeStyles } from "@material-ui/core"
+import { Grid } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -9,7 +11,7 @@ const useStyles = makeStyles(() =>
     codeSmellMarkDownContent: {
       fontFamily: SMELL_PAGE_FONTS,
       fontStretch: "normal",
-      
+
       "& h1, h2, h3, h4, h5, p": {
         maxWidth: "fit-content",
       },

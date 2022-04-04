@@ -2,8 +2,9 @@ import Header from "components/header"
 import config from "config"
 import React from "react"
 
-import { IconButton, makeStyles, Theme, Typography } from "@material-ui/core"
-import MenuIcon from "@material-ui/icons/Menu"
+import MenuIcon from "@mui/icons-material/Menu"
+import { IconButton, Theme, Typography } from "@mui/material"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles((theme: Theme) => ({
   mainDesktop: {
@@ -40,6 +41,7 @@ function SmellArticleContentHeader({ sidebar }: Props): JSX.Element {
         aria-label="open drawer"
         onClick={sidebar.handleOpen}
         className={`${classes.menuButton}, ${sidebar.isOpen ? classes.hide : null}`}
+        size="large"
       >
         <MenuIcon />
       </IconButton>

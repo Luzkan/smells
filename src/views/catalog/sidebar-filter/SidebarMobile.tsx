@@ -1,7 +1,7 @@
 import React from "react"
 
-import { Drawer } from "@material-ui/core"
-import { ClassNameMap } from "@material-ui/styles"
+import { Drawer } from "@mui/material"
+import { ClassNameMap } from "@mui/styles"
 
 export interface MobileSidebar {
   handleToggle: () => void

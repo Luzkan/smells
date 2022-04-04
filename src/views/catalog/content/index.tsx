@@ -4,7 +4,7 @@ import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 import { isMobile } from "utils/isMobile"
 
-import { makeStyles } from "@material-ui/core"
+import makeStyles from "@mui/styles/makeStyles"
 
 import SmellCardsContainer from "./cards-container"
 import CatalogFooter from "./footer"

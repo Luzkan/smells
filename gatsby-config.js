@@ -30,7 +30,7 @@ module.exports = {
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-sass",
     "gatsby-plugin-htaccess",
-    "gatsby-plugin-material-ui",
+    // "gatsby-plugin-material-ui",
     {
       resolve: "gatsby-source-filesystem",
       options: {

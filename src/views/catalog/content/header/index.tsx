@@ -4,8 +4,9 @@ import useWindowDimensions from "hooks/UseWindowDimensions"
 import React from "react"
 import { isMobile } from "utils/isMobile"
 
-import { IconButton, makeStyles, Theme } from "@material-ui/core"
-import MenuIcon from "@material-ui/icons/Menu"
+import MenuIcon from "@mui/icons-material/Menu"
+import { IconButton, Theme } from "@mui/material"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles((theme: Theme) => ({
   mainDesktop: {
@@ -34,6 +35,7 @@ function SmellCatalogContentHeader({ handleSidebarToggle }: Props): JSX.Element 
       onClick={handleSidebarToggle}
       edge="start"
       className={`${classes.menuButton}, ${isMobile(useWindowDimensions().width) ? null : classes.hide}`}
+      size="large"
     >
       <MenuIcon />
     </IconButton>

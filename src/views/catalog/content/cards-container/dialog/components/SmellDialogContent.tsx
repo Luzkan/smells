@@ -2,8 +2,10 @@ import SmellArticle from "components/smell-article"
 import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
-import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core"
-import DialogContent from "@material-ui/core/DialogContent"
+import { Grid, Theme } from "@mui/material"
+import DialogContent from "@mui/material/DialogContent"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

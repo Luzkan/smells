@@ -3,10 +3,10 @@ import copySourceHandler from "hooks/CopySource"
 import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
-import { IconButton, Snackbar } from "@material-ui/core"
-import Button from "@material-ui/core/Button"
-import DialogActions from "@material-ui/core/DialogActions"
-import CloseIcon from "@material-ui/icons/Close"
+import CloseIcon from "@mui/icons-material/Close"
+import { IconButton, Snackbar } from "@mui/material"
+import Button from "@mui/material/Button"
+import DialogActions from "@mui/material/DialogActions"
 
 interface Props {
   codeSmell: CodeSmell

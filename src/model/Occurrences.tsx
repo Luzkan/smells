@@ -9,10 +9,9 @@ import {
   FormatListBulletedOutlined,
   HomeWorkOutlined,
   MessageOutlined,
-  PolymerOutlined,
   StraightenOutlined,
   TextFieldsOutlined,
-} from "@material-ui/icons"
+} from "@mui/icons-material"
 
 export const occurrenceFilterItems: FilterItem[] = [
   {
@@ -49,6 +48,6 @@ export const occurrenceFilterItems: FilterItem[] = [
   },
   {
     text: Occurrence.UNNECESSARY_COMPLEXITY,
-    icon: <PolymerOutlined color="primary" />,
+    icon: <HomeWorkOutlined color="primary" />, // TODO: New Icon, Deprecated: PolymerOutlined
   },
 ]

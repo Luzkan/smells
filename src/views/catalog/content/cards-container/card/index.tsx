@@ -2,7 +2,9 @@ import React from "react"
 import { Expanse } from "types/enum/Expanse"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
-import { Card, createStyles, makeStyles } from "@material-ui/core"
+import { Card } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 import SmellCardActions from "./components/SmellCardActions"
 import SmellCardContent from "./components/SmellCardContent"

@@ -2,8 +2,10 @@ import React from "react"
 import { Expanse } from "types/enum/Expanse"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
-import { CardContent, createStyles, makeStyles, Typography } from "@material-ui/core"
-import { CropDin, CropFree, NotListedLocationOutlined } from "@material-ui/icons"
+import { CropDin, CropFree, NotListedLocationOutlined } from "@mui/icons-material"
+import { CardContent, Typography } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles(() =>
   createStyles({

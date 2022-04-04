@@ -12,7 +12,7 @@ import {
   SubjectOutlined,
   SupervisorAccount,
   Texture,
-} from "@material-ui/icons"
+} from "@mui/icons-material"
 
 export const obstructionFilterItems: FilterItem[] = [
   {

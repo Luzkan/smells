@@ -2,7 +2,7 @@ import Layout from "components/layout"
 import SEO from "components/seo"
 import config from "config"
 import React from "react"
-import { Typography } from "@material-ui/core"
+import { Typography } from "@mui/material"
 
 const NotFoundPage = () => (
   <Layout>

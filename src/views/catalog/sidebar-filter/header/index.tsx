@@ -1,11 +1,14 @@
 import React from "react"
 
-import { AppBar, createStyles, makeStyles, Theme, Toolbar, Typography } from "@material-ui/core"
+import { AppBar, Theme, Toolbar, Typography } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      zIndex: 1100,
       backgroundColor: theme.palette.primary.main,
     },
     title: {

@@ -2,20 +2,22 @@ import config from "config"
 import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
-import { Button, CardActions, createStyles, makeStyles } from "@material-ui/core"
-import { InfoOutlined, OpenInNewOutlined } from "@material-ui/icons"
-import FormatQuoteIcon from "@material-ui/icons/FormatQuote"
+import { InfoOutlined, OpenInNewOutlined } from "@mui/icons-material"
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote"
+import { Button, CardActions } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles(() =>
   createStyles({
     cardActions: {
-      marginTop: "auto",
+      marginTop: "auto !important",
     },
     rightAlignItem: {
-      marginLeft: "auto",
+      marginLeft: "0px !important",
     },
     leftAlignItem: {
-      marginRight: "auto",
+      marginRight: "auto !important",
     },
   })
 )

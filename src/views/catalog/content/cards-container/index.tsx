@@ -1,7 +1,9 @@
 import React, { useState } from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
-import { Container, createStyles, Grid, makeStyles, Theme } from "@material-ui/core"
+import { Container, Grid, Theme } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 import SmellCard from "./card"
 import SmellDialog from "./dialog"
@@ -9,14 +11,14 @@ import SmellDialog from "./dialog"
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      margin: theme.spacing(0, 0, 0, 0),
+      margin: `${theme.spacing(0, 0, 0, 0)}`,
       maxWidth: "inherit",
     },
     codeSmellCardsGrid: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(0),
-      paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3),
+      marginTop: `${theme.spacing(0)}`,
+      marginBottom: `${theme.spacing(0)}`,
+      paddingLeft: `${theme.spacing(3)}`,
+      paddingRight: `${theme.spacing(3)}`,
     },
     cardGrid: {
       display: "flex",

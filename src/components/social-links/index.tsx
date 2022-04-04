@@ -17,7 +17,8 @@ import {
 import { CodeSmell } from "types/interfaces/CodeSmell"
 import urljoin from "url-join"
 
-import { createStyles, makeStyles } from "@material-ui/core"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 interface SmellProps {
   codeSmell: CodeSmell

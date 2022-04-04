@@ -1,7 +1,7 @@
 import React from "react"
 import { NavbarItem } from "types/interfaces/queries/QuerySmellPageArticleContext"
 
-import { Divider } from "@material-ui/core"
+import { Divider } from "@mui/material"
 
 import ArticleSidebarFilterDrawerRadios from "./radios"
 import ArticleSidebarFilterDrawerSection from "./section"

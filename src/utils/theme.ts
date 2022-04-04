@@ -1,4 +1,4 @@
-import { createTheme } from "@material-ui/core/styles"
+import { createTheme } from "@mui/material/styles"
 
 export const SMELL_PAGE_FONTS = '"TT Norms Pro", "Poppins", "Roboto", "Helvetica", "Arial", sans-serif'
 
@@ -7,7 +7,7 @@ const scrollBarColorActive = "#474747"
 
 const theme = createTheme({
   palette: {
-    type: "light",
+    mode: "light",
     primary: {
       main: "#000000",
     },
@@ -18,9 +18,18 @@ const theme = createTheme({
       default: "#e2e2e2",
     },
   },
-  overrides: {
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1800,
+    },
+  },
+  components: {
     MuiCssBaseline: {
-      "@global": {
+      styleOverrides: {
         "*": {
           scrollbarColor: scrollBarColorMain + " transparent",
           scrollbarWidth: "thin",

@@ -3,11 +3,13 @@ import useWindowDimensions from "hooks/UseWindowDimensions"
 import React from "react"
 import { isMobile } from "utils/isMobile"
 
-import { AppBar, createStyles, IconButton, makeStyles, Toolbar, Typography } from "@material-ui/core"
-import AlternateEmailIcon from "@material-ui/icons/AlternateEmail"
-import HelpIcon from "@material-ui/icons/Help"
-import HomeIcon from "@material-ui/icons/Home"
-import MenuBookIcon from "@material-ui/icons/MenuBook"
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail"
+import HelpIcon from "@mui/icons-material/Help"
+import HomeIcon from "@mui/icons-material/Home"
+import MenuBookIcon from "@mui/icons-material/MenuBook"
+import { AppBar, IconButton, Toolbar, Typography } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -33,19 +35,19 @@ function Header({ ButtonOpenSidebar }: Props): JSX.Element {
     <AppBar position="static">
       <Toolbar>
         {ButtonOpenSidebar}
-        <IconButton href={config.site.url.prefix} color="inherit" aria-label="home">
+        <IconButton href={config.site.url.prefix} color="inherit" aria-label="home" size="large">
           <HomeIcon />
         </IconButton>
         <Typography className={classes.title} color="inherit" variant="h6">
           {isMobile(currentWidth) ? config.site.title.letterer : config.site.title.full}
         </Typography>
-        <IconButton href="https://github.com/Luzkan/smells/" color="inherit" aria-label="about">
+        <IconButton href="https://github.com/Luzkan/smells/" color="inherit" aria-label="about" size="large">
           <HelpIcon />
         </IconButton>
-        <IconButton href="https://www.linkedin.com/in/luzkan/" color="inherit" aria-label="contact">
+        <IconButton href="https://www.linkedin.com/in/luzkan/" color="inherit" aria-label="contact" size="large">
           <AlternateEmailIcon />
         </IconButton>
-        <IconButton href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf" color="inherit" aria-label="paper">
+        <IconButton href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf" color="inherit" aria-label="paper" size="large">
           <MenuBookIcon />
         </IconButton>
       </Toolbar>

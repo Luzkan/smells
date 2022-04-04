@@ -5,7 +5,12 @@ import configureStore from "store/createStore"
 import { isMobile } from "utils/isMobile"
 import theme from "utils/theme"
 
-import { ThemeProvider } from "@material-ui/core/styles"
+import { StyledEngineProvider, Theme, ThemeProvider } from "@mui/material/styles"
+
+declare module "@mui/styles/defaultTheme" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 interface Props {
   element: JSX.Element
@@ -16,9 +21,11 @@ const App = ({ element }: Props) => {
   const store = configureStore({ window: { isMobile: isMobile(width), width: width || undefined } })
 
   return (
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>{element}</Provider>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>{element}</Provider>
+      </ThemeProvider>
+    </StyledEngineProvider>
   )
 }
 

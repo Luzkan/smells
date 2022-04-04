@@ -1,9 +1,11 @@
 import React from "react"
 import theme from "utils/theme"
 
-import { AppBar, createStyles, IconButton, makeStyles, Theme, Toolbar } from "@material-ui/core"
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
-import ChevronRightIcon from "@material-ui/icons/ChevronRight"
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
+import ChevronRightIcon from "@mui/icons-material/ChevronRight"
+import { AppBar, IconButton, Theme, Toolbar } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(0),
       backgroundColor: theme.palette.primary.main,
       justifyContent: "flex-end",
+      zIndex: 1100,
     },
     iconButton: {
       flexGrow: 1,
@@ -34,7 +37,7 @@ function ArticleSidebarFilterDrawerHeader({ handleDrawerClose }: Props): JSX.Ele
   return (
     <AppBar position="static" className={classes.root}>
       <Toolbar style={{ paddingRight: theme.spacing(0) }}>
-        <IconButton className={classes.iconButton} onClick={handleDrawerClose}>
+        <IconButton className={classes.iconButton} onClick={handleDrawerClose} size="large">
           {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </Toolbar>

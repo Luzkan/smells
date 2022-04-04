@@ -1,7 +1,7 @@
 import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
-import Dialog from "@material-ui/core/Dialog"
+import Dialog from "@mui/material/Dialog"
 
 import SmellCardDialogActions from "./components/SmellDialogActions"
 import SmellCardDialogContent from "./components/SmellDialogContent"

@@ -2,7 +2,7 @@ import React from "react"
 import { Expanse } from "types/enum/Expanse"
 import { FilterItem } from "types/filter-item"
 
-import { CropDin, CropFree } from "@material-ui/icons"
+import { CropDin, CropFree } from "@mui/icons-material"
 
 export const expanseFilterItems: FilterItem[] = [
   {

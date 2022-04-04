@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
+import { handleReloadPageOnFirstVisit } from "utils/reloadPageOnFirstVisit"
 
 import SmellCatalogFilter from "./CatalogFilter"
 import SmellCatalogContent from "./content"
@@ -13,6 +14,8 @@ const SmellCatalogPage = ({ codeSmells }: Props): JSX.Element => {
   const [smellsFiltered, filterSmells] = SmellCatalogFilter(codeSmells)
   const [isOpenMobileSidebar, setIsMobileSidebarOpen] = useState(false)
   const handleToggleMobileSidebar = (): void => setIsMobileSidebarOpen(!isOpenMobileSidebar)
+
+  handleReloadPageOnFirstVisit()
 
   return (
     <>

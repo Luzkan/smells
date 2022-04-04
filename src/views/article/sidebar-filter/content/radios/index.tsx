@@ -1,6 +1,8 @@
 import React from "react"
 
-import { createStyles, FormControl, FormControlLabel, List, ListItem, ListSubheader, makeStyles, Radio, RadioGroup, Theme } from "@material-ui/core"
+import { FormControl, FormControlLabel, List, ListItem, ListSubheader, Radio, RadioGroup, Theme } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

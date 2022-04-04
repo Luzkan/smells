@@ -4,9 +4,11 @@ import config from "config"
 import useWindowDimensions from "hooks/UseWindowDimensions"
 import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
-import { BottomNavigation, NavbarItem, QuerySmellPageArticleContext } from "types/interfaces/queries/QuerySmellPageArticleContext"
+import { NavbarItem, QuerySmellPageArticleContext } from "types/interfaces/queries/QuerySmellPageArticleContext"
 
-import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core"
+import { Grid, Theme } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 import SmellArticleFooter from "./footer"
 import SmellArticleContentHeader from "./header"
@@ -17,14 +19,14 @@ const useStyles = makeStyles((theme: Theme) =>
     centerContent: {
       display: "flex",
       flexDirection: "column",
-      marginTop: theme.spacing(5),
+      marginTop: theme.spacing(6),
       minHeight: "100vh",
     },
     marginCenterContent: {
       display: "block",
       backgroundColor: "#fafafa",
       borderRadius: "5px",
-      padding: theme.spacing(5),
+      padding: theme.spacing(4),
       border: "1px solid #82858a",
       justifyContent: "center",
       alignItems: "center",
@@ -69,7 +71,7 @@ const SmellArticlePage = ({ codeSmell, pageContext, navbarItems }: Props) => {
   }
 
   const SmellArticleMain: JSX.Element = (
-    <Grid container spacing={3} className={classes.centerContent}>
+    <Grid container spacing={3} className={classes.centerContent} sx={{marginTop: "0px", marginLeft: "0px"}}>
       <Grid container spacing={3} className={classes.marginCenterContent} style={{ width: width ? getWidthPercentage(width) : "95%" }}>
         <SmellArticle codeSmell={codeSmell} />
         <SmellArticleFooter bottomNavigation={pageContext.bottomNavigation} />

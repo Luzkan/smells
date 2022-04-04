@@ -2,8 +2,9 @@ import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 import theme from "utils/theme"
 
-import { Link, List, makeStyles } from "@material-ui/core"
-import { BookmarksOutlined, LayersOutlined, MenuBookSharp, MenuOpenOutlined, RecentActorsOutlined, SportsKabaddiOutlined } from "@material-ui/icons"
+import { BookmarksOutlined, LayersOutlined, MenuBookSharp, MenuOpenOutlined, RecentActorsOutlined, SportsKabaddiOutlined } from "@mui/icons-material"
+import { Link, List } from "@mui/material"
+import makeStyles from "@mui/styles/makeStyles"
 
 import SmellInformationBoxListItem from "./info-item"
 
@@ -26,7 +27,7 @@ const SmellInformationBox = ({ codeSmell }: Props) => {
     <span key={index}>
       {`- `}
       {
-        <Link key={related_smell.slug} href={related_smell.slug}>
+        <Link key={related_smell.slug} href={related_smell.slug} underline="hover">
           {related_smell.name}
         </Link>
       }

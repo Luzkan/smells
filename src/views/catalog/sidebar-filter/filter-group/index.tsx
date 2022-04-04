@@ -2,21 +2,20 @@ import React from "react"
 import { FilterCodeSmells, SmellGroups } from "types/groups"
 import { getCapitalizedLabel } from "utils/getCapitalizedLabel"
 
-import { Checkbox, createStyles, List, ListItem, ListItemIcon, ListItemText, ListSubheader, makeStyles, Theme } from "@material-ui/core"
+import { Checkbox, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Theme } from "@mui/material"
+import createStyles from "@mui/styles/createStyles"
+import makeStyles from "@mui/styles/makeStyles"
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       backgroundColor: "#fcfcfc",
-      color: theme.palette.text.primary,
-    },
-    title: {
-      padding: theme.spacing(2),
+      color: `${theme.palette.text.primary}`,
     },
     filterCategoryTitle: {
-      color: theme.palette.primary.main,
+      color: `${theme.palette.primary.main}`,
       textTransform: "capitalize",
-      fontWeight: "bold",
+      fontWeight: "bold ",
     },
   })
 )

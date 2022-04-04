@@ -2,7 +2,7 @@ import React from "react"
 import { Tags } from "types/enum/Tags"
 import { FilterItem } from "types/filter-item"
 
-import { ArrowRightOutlined, LabelImportant } from "@material-ui/icons"
+import { ArrowRightOutlined, LabelImportant } from "@mui/icons-material"
 
 export const tagsFilterItems: FilterItem[] = [
   {

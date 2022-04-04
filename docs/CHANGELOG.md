@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[1.0.1]] - 2022-04-04
+
+**Migrated from [Material v4](https://v4.mui.com/) to [Material v5](https://mui.com/)**
+
+### Fixed
+
+- [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) by [force-reloading](../src/utils/reloadPageOnFirstVisit.ts) page on first visit (only on the Catalog page).
+
 ## [[1.0.0]] - 2022-04-03
 
 **Project Published**
@@ -79,4 +87,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Separate page articles for each smell, so they can be directly linked to by anyone for any reason.
   - Separate page articles navigation bar on the left to browse to other smells. This navigation bar can be turned to list by a different type of categorization types.
 
+[1.0.1]: https://github.com/Luzkan/smells/releases/tag/1.0.1
 [1.0.0]: https://github.com/Luzkan/smells/releases/tag/1.0.0

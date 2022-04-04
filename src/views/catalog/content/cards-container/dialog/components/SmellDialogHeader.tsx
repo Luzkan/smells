@@ -2,9 +2,10 @@ import React from "react"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 import theme from "utils/theme"
 
-import { IconButton, makeStyles } from "@material-ui/core"
-import DialogTitle from "@material-ui/core/DialogTitle"
-import CloseIcon from "@material-ui/icons/Close"
+import CloseIcon from "@mui/icons-material/Close"
+import { IconButton } from "@mui/material"
+import DialogTitle from "@mui/material/DialogTitle"
+import makeStyles from "@mui/styles/makeStyles"
 
 interface Props {
   codeSmell: CodeSmell
@@ -33,7 +34,7 @@ const SmellCardDialog = ({ codeSmell, handleClickClose }: Props) => {
   const dialogTitle: JSX.Element = (
     <DialogTitle id="dialog-title" className={classes.title}>
       {codeSmell.meta.title}
-      <IconButton aria-label="close" className={classes.closeButton} onClick={handleClickClose}>
+      <IconButton aria-label="close" className={classes.closeButton} onClick={handleClickClose} size="large">
         <CloseIcon />
       </IconButton>
     </DialogTitle>
