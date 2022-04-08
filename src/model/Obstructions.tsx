@@ -5,6 +5,7 @@ import { FilterItem } from "types/filter-item"
 import {
   AccountTree,
   AirlineSeatReclineExtra,
+  BookmarkBorder,
   CancelScheduleSend,
   Filter9Plus,
   FunctionsOutlined,
@@ -49,6 +50,6 @@ export const obstructionFilterItems: FilterItem[] = [
   },
   {
     text: Obstruction.OTHER,
-    icon: <SubjectOutlined color="primary" />,
+    icon: <BookmarkBorder color="primary" />,
   },
 ]

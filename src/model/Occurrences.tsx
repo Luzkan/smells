@@ -7,9 +7,10 @@ import {
   FileCopyOutlined,
   FormatAlignLeftOutlined,
   FormatListBulletedOutlined,
-  HomeWorkOutlined,
+  Hail,
   MessageOutlined,
   StraightenOutlined,
+  SwitchAccessShortcutAdd,
   TextFieldsOutlined,
 } from "@mui/icons-material"
 
@@ -44,10 +45,10 @@ export const occurrenceFilterItems: FilterItem[] = [
   },
   {
     text: Occurrence.RESPONSIBILITY,
-    icon: <HomeWorkOutlined color="primary" />,
+    icon: <Hail color="primary" />,
   },
   {
     text: Occurrence.UNNECESSARY_COMPLEXITY,
-    icon: <HomeWorkOutlined color="primary" />, // TODO: New Icon, Deprecated: PolymerOutlined
+    icon: <SwitchAccessShortcutAdd color="primary" />, // TODO: New Icon, Deprecated: PolymerOutlined
   },
 ]

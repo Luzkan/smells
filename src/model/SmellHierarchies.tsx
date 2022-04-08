@@ -2,7 +2,7 @@ import React from "react"
 import { SmellHierarchy } from "types/enum/SmellHierarchy"
 import { FilterItem } from "types/filter-item"
 
-import { AccountBalance, Code, Label, Layers, Palette, SettingsEthernet } from "@mui/icons-material"
+import { AccountBalance, Code, Layers, Palette, SettingsEthernet, TextDecrease } from "@mui/icons-material"
 
 export const smellHierarchiesItems: FilterItem[] = [
   {
@@ -27,6 +27,6 @@ export const smellHierarchiesItems: FilterItem[] = [
   },
   {
     text: SmellHierarchy.LINGUISTIC_SMELL,
-    icon: <Label color="primary" />,
+    icon: <TextDecrease color="primary" />,
   },
 ]
