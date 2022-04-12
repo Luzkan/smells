@@ -59,18 +59,18 @@ history:
 
 ## Refused Bequest
 
-Whenever a subclass inherits from a parent, but actually only uses subset of the implemented parent methods, then that’s called _Refused Bequest_. This can happen both implicitly and explicitly:
+Whenever a subclass inherits from a parent, but actually only uses a subset of the implemented parent methods, that is called _Refused Bequest_. This can happen both implicitly and explicitly:
 
 - Implicitly, when the inherited routine just doesn’t work
 - Explicitly if an error is thrown instead of supporting the method
 
-Whenever a child class is created, it should fully support all the data and/or methods it inherits. [[1](#sources)] Fowler says, that this smell is not that strong though and admits himself, that he himself sometimes reuse only a bit of behavior but nevertheless - it can cause confusion and problems. [[2](#sources)]
+Whenever a child class is created, it should fully support all the data and/or methods that it inherits [[1](#sources)]. Fowler says that this smell is not that strong though and admits that he himself sometimes reuses only a bit of behavior, but nevertheless it can cause confusion and problems [[2](#sources)].
 
-However, there is one important thing. Both Fowler and Mantyla are pointing out that there is a strong case of this Code Smell, whenever a subclass is reusing behavior but does not want to support the interface of the superclass. [[3](#sources)] [[1](#sources)] [[4](#sources)]
+However, there is one important thing. Both Fowler and Mäntylä are pointing out that there is a strong case of this Code Smell, whenever a subclass is reusing behavior but does not want to support the interface of the superclass. [[3](#sources)] [[1](#sources)] [[4](#sources)]
 
 ### Causation
 
-This could happen due to bad developing decisions, when part of the needed functionality is already implemented in another class, but in general, that parent class is about something different than whatever the developer would like to implement in the new class. This most likely indicate that the inheritance does not make sense and the subclass is not an example of its parent. [[5](#sources)]
+This could happen due to bad development decisions when part of the needed functionality is already implemented in another class, but in general, that parent class is about something different from whatever the developer would like to implement in the new class. This most likely indicates that the inheritance does not make sense, and the subclass is not an example of its parent. [[5](#sources)]
 
 ### Problems
 

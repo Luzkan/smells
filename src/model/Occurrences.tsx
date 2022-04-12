@@ -49,6 +49,6 @@ export const occurrenceFilterItems: FilterItem[] = [
   },
   {
     text: Occurrence.UNNECESSARY_COMPLEXITY,
-    icon: <SwitchAccessShortcutAdd color="primary" />, // TODO: New Icon, Deprecated: PolymerOutlined
+    icon: <SwitchAccessShortcutAdd color="primary" />,
   },
 ]

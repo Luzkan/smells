@@ -115,19 +115,19 @@ history:
 
 ## Conditional Complexity
 
-In data-oriented programming, the usage of `switch`-like statements (long, cascading `if` statements, `switch`/`case`, etc.) should be relatively rare. One such switch usually executes code that is scattered around the code base and usually should be replaced with a polymorphism solution.
+In data-oriented programming, the usage of `switch`-like statements (long, cascading `if` statements, `switch`/`case`, etc.) should be relatively rare. One such switch usually executes code that is scattered around the code base and should usually be replaced with a polymorphism solution.
 
-This smell was originally phrased _Switch Statement_ by Fowler and Beck, back in 1999 [[1](#sources)]. One year later Mantyla noted that such a name is misleading as switch statements are not necessarily implying a code smell but rather just in the situation when they are used instead of viable polymorphism solution. [[2](#sources)] Fowler, 14 years later, in his newest book in 2018 changed the name suggesting _Repeated Switching_, agreeing that fortuitously due to the way he initially phrased it, the conditional statements got too much bad reputation, while he was never unconditionally opposed to existence of all `if`-s and `switch`-es. [[3](#sources)] In the "Clean Code" by Robert Martin, the smell was called "Prefer Polymorphism to if/else or switch/case" which is lengthy, but it hits the nail on the head. [[4](#sources)]
+This smell was originally phrased _Switch Statement_ by Fowler and Beck back in 1999 [[1](#sources)]. One year later Mäntylä noted that such a name is misleading, since switch statements do not necessarily imply a code smell, but rather just in the situation when they are used instead of a viable polymorphism solution. [[2](#sources)] Fowler, 14 years later, in his newest book in 2018, changed the name, suggesting _Repeated Switching_, agreeing that, fortuitously due to the way he initially phrased it, conditional statements got a bad reputation, while he never unconditionally opposed the existence of all `if`-s and `switch`-es. [[3](#sources)] In the "Clean Code" by Robert Martin, the smell was called "Prefer Polymorphism to if/else or switch/case" which is lengthy, but it hits the nail on the head. [[4](#sources)]
 
-I’m providing a fairly common example of such issue on a `Exporter` class with different file formats available, where for each new feature new `elif` has been added instead of using an Object Oriented solution like the Factory Method.
+II am providing a fairly common example of this issue on a `Exporter` class with different file formats available, where for each new feature, a new `elif` has been added instead of using an Object-Oriented solution like the Factory Method.
 
-It is important to keep a class focused on a single concern to make it more robust. Martin Fowler defines responsibility as a reason to change, concluding that “A class should have only one reason to change.” [[3](#sources)]. An example that violates it would be a class which prints a table that handles both the contents of the cells as well as the styling of the table.
+It is important to keep a class focused on a single concern to make it more robust. Martin Fowler defines responsibility as a reason to change, concluding that “A class should have only one reason to change.” [[3](#sources)]. An example that violates this would be a class that prints a table that handles both the contents of the cells and the styling of the table.
 
-Another situation, which is not explicitly mentioned in the sources, would be nested `Try` and `Except`/`Catch` "checklist", where numerous error catching blocks are used instead of one generalized for the situation at hand.
+Another situation, which is not explicitly mentioned in the sources, would be a nested `Try` and `Except`/`Catch` "checklist", where numerous error-catching blocks are used instead of one generalized for the situation at hand.
 
 ### Causation
 
-The most common way such smell can be created is when instead of creating new class, a conditional switch behavior is used. The first time it happens is not yet a "scenty" smell, but as soon as this is done second time, then this immediately a saturated red flag. [[5](#sources)] Logic blocks grew over time larger and larger and no one bothered to implement an Object Oriented Programming style alternative like decorator, strategy or state. It was easier to add another `else if`.
+The most common way such a smell can be created is when, instead of creating a new class, a conditional switch behavior is used. The first time it happens is not yet a "scenty" smell, but as soon as it is done the second time, this immediately becomes a saturated red flag [[5](#sources)]. Logic blocks grew over time larger and larger and no one bothered to implement an Object Oriented Programming style alternative like decorator, strategy, or state. It was easier to add another `else if`.
 
 ### Problems
 

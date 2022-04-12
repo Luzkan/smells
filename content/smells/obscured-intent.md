@@ -38,6 +38,10 @@ relations:
       slug: loops
       type:
         - caused
+    - name: Complicated Boolean Expression
+      slug: complicated-boolean-expression
+      type:
+        - caused
     - name: Primitive Obsession
       slug: primitive-obsession
       type:
@@ -80,15 +84,15 @@ history:
 
 ## Obscured Intent
 
-The [Obscured Intent](./obscured-intent.md) Code Smell, proposed initially by Robert Martin in _"Clean Code"_ [[37](#sources)]) is cross-smelly with other smells from the **Obfuscators** category. When [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) are placed within a [Vertically Separated Space](./vertical-separation.md) hiding an [Explicitly Indexed Loop](./imperative-loops.md) with a ["What" Comment](./what-comment.md) explanation on top of that - then the [Obscured Intent](./obscured-intent.md) is going to be catched quite easily by intuition or by metrics of other smells.
+The [Obscured Intent](./obscured-intent.md) Code Smell, initially proposed by Robert Martin in _"Clean Code"_ [[37](#sources)]), is cross-smelly with other smells in the **Obfuscators** category. When [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) are placed within a [Vertically Separated Space](./vertical-separation.md) hiding an [Explicitly Indexed Loop](./imperative-loops.md) with a ["What" Comment](./what-comment.md) explanation on top of that, then the [Obscured Intent](./obscured-intent.md) is going to be catched quite easily by intuition or by metrics of other smells.
 
-The code should be as expressive as possible [[1](#sources)]). Robert Martin gives an example of completely unreadable [overtime function](#Obscured-Intent) noting that even if the code is small and compact, it may still be tragic. In this case, correcting the [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) would probably do the trick to make that snippet of code much more fragrant.
+The code should be as expressive as possible [[1](#sources)]). Robert Martin gives an example of a completely unreadable [overtime function](#Obscured-Intent) noting that even if the code is small and compact, it may still be tragic. In this case, correcting the [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) would probably do the trick to make that snippet of code much more fragrant.
 
-There is a famous real world example of a Obscured Intent. In the _Quake 3: Arena_ [fast inverse square root](#example-1), the problem is with the [Uncommunicative Naming](./uncommunicative-name.md), ["What" Comments](./what-comment.md), [Dead Code](./dead-code.md) and [Magic Numbers](./magic-number.md). I will also point out that games have a slightly different specificity for their industry - usually the code out there is very confusing and priorities are not put on things such as reusability, so there's a lot to explore.
+There is a famous real-world example of an Obscured Intent. In the _Quake 3: Arena_ [fast inverse square root](#example-1), the problem is with the [Uncommunicative Naming](./uncommunicative-name.md), ["What" Comments](./what-comment.md), [Dead Code](./dead-code.md) and [Magic Numbers](./magic-number.md). I will also point out that games have a slightly different specificity for their industry - usually the code out there is very confusing and priorities are not put on things such as reusability, so there is a lot to explore.
 
 ### Causation
 
-There is the natural tendency to show off the new skills or techniques that one learned, which are unnecessary in the current part of code that one is currently working in. In another case, maybe someone implemented own variation of a built-in or popular library instead of just using the tools that are given as built-ins or are a popular solution. Sometimes a developer can forget that something that seems to be obvious for him is not as clear for other developers. There may also be cases when developer intentionally compacts the code to make it seem more smart by making it more mysterious.
+Sometimes, a developer can forget that something that seems to be obvious to him is not as clear to other developers. There may also be cases where the developer intentionally compacts the code to make it appear smarter by making it more mysterious.
 
 ### Problems
 

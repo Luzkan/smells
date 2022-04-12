@@ -81,11 +81,11 @@ history:
 
 ## Large Class
 
-When one would combine the power [Long Method](./long-method.md) and [Long Parameter List](./long-parameter-list.md) but on a higher abstraction level, then it he would get the _Large Class_ code smell. Large number of lengthy size methods, along with abundant number of parameters that can be passed to a class causes Large Class problems. The point is that the class just has too many responsibilities and is doing too much.
+When one combines the smell of [Long Method](./long-method.md) and [Long Parameter List](./long-parameter-list.md) but on a higher abstraction level, then he would get the _Large Class_ code smell. The large number of long-form methods, along with an abundant number of parameters that can be passed to a class, causes Large Class problems. The point is that the class just has too many responsibilities and is doing too much.
 
 ### Causation
 
-The reason this problem occurs is that under time constraints, it is much easier to place a new code in an existing class than to create a whole new class for the feature.
+The reason this problem occurs is that, under time constraints, it is much easier to place a new code in an existing class than to create a whole new class for the feature.
 
 ### Problems
 

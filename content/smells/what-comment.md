@@ -9,7 +9,7 @@ meta:
 categories:
   expanse: "Within"
   obstruction:
-    - Lexical Abusers
+    - Dispensables
   occurrence:
     - Names
   tags:
@@ -106,15 +106,15 @@ history:
 
 ## "What" Comment
 
-Recognizing all comments as a code smell is controversial and raises a number of different opinions. For this reason, I define a concrete subcategory of comments named _"What" Comments_ that clearly define only these comments, which in the vast majority will hint that something smells. The rule is simple - if a comment describes _what_ is going on here, it is most likely trying to mask some other code smell.
+Recognizing all comments as Code Smells is controversial and raises a number of different opinions. For this reason, I define a concrete subcategory of comments named _"What" Comments_ that clearly defines only these comments, which in the vast majority will hint at something smells. The rule is simple: If a comment describes _what_ is happening in a particular section of code, it is probably trying to mask some other Code Smell.
 
-This leaves room to exist for the _"Why" Comments_ which was already defined by Wake in 2004 and regarded as helpful. Wake also notes that comments which cite non-obvious algorithms are also fine. [[1](#sources)] I wanted to note that comments may have their place in a few more cases, like extreme optimizations, note discussion conclusions for future reference after a code review or some additional explanations in heavy domain specific knowledge.
+This leaves room to exist for the _"Why" Comments_ which was already defined by Wake in 2004 and was regarded helpful. Wake also notes that comments that cite non-obvious algorithms are also fine [[1](#sources)]. I wanted to note that comments may have their place in a few more cases, such as extreme optimizations, note discussion conclusions for future reference after a code review, or some additional explanations in domain-specific knowledge.
 
-The issue is that _Comments_ are generally smelly, as I have mentioned. It is because they are a deodorant for other smells [[2](#sources)]. They also might easily degrade over time and turn into yet another category of comments [Fallacious Comments](./fallacious-comment.md), which are basically a rotten, misleading subcategory of [_"What" Comments_].
+The problem is that _Comments_ are generally smelly, as I have mentioned. This is because they are a deodorant for other smells [[2](#sources)]. They may also easily degrade with time and become another category of comments [Fallacious Comments](./fallacious-comment.md), which are basically a rotten, misleading subcategory of [_"What" Comments_].
 
 ### Causation
 
-Author sees that the code is confusing and tries to be helpful by adding explanations.
+The author sees that the code is confusing and tries to be helpful by adding explanations.
 
 ### Problems
 

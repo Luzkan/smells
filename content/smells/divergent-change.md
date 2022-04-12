@@ -59,13 +59,13 @@ history:
 
 ## Divergent Change
 
-If the addition of a simple feature makes the developer change many seemingly unrelated methods inside a class, then that indicates the _Divergent Change_ code smell. Simply puts - the class has irrelevant methods in it [[1](#sources)]. As an example, lets suppose that someone need to modify class `A` because of a change in the database, but then, he has to modify the same class `A` because of a change in calculation formula [[2](#sources)].
+If the addition of a simple feature makes the developer change many seemingly unrelated methods inside a class, then that indicates the _Divergent Change_ code smell. Simply put, the class has irrelevant methods in it [[1](#sources)]. As an example, suppose that someone needs to modify class `A` due to a change in the database, but then has to modify the same class `A` due to a change in the calculation formula [[2](#sources)].
 
-The difference between _Divergent Change_ and [_Shotgun Surgery_](./shotgun-surgery.md) is that _Divergent Change_ addresses issue within a class, while _Shotgun Surgery_ between classes.
+The difference between _Divergent Change_ and [_Shotgun Surgery_](./shotgun-surgery.md) is that the _Divergent Change_ addresses the issue within a class, while the _Shotgun Surgery_ between classes.
 
 ### Causation
 
-Over time a class tries to do more and more things and has growing number of responsibilities. The fact that the class already has two or more different types of decisions implemented (as an example: finding an object and doing something with object [[3](#sources)]) was overlooked and left un-refactored.
+Over time, a class tries to do more and more things and has a growing number of responsibilities. The fact that the class already has two or more different types of decision implemented (for example, finding an object and doing something with object [[3](#sources)]) was overlooked and left unrefactored.
 
 ### Problems
 

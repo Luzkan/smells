@@ -67,7 +67,7 @@ history:
 
 ## Middle Man
 
-Class which performs only delegation work to other classes is called a _Middle Man_. This is the opposite of the [Message Chains](./message-chain.md). Encapsulation (hiding internal details) in the world of Object Oriented Programming is a common pattern [[1](#sources)], although the arises problem when it goes too far - Fowler specified that it can be said that its bad when half of the methods are delegators [[2](#sources)]. Mantyla wrote that this is a problem, when every time that a new method has to be created, it requires the delegators to be modified with them [[1](#sources)].
+The class that only performs delegation work to other classes is called a _Middle Man_. This is the opposite of the [Message Chains](./message-chain.md). Encapsulation (hiding internal details) in the world of Object-Oriented Programming is a common pattern [[1](#sources)], although the problem arises when it goes too far - Fowler specified that it can be said that its bad when half of the methods are delegators [[2](#sources)]. Mäntylä wrote that this is a problem, when every time a new method has to be created, it requires the delegators to be modified with them [[1](#sources)].
 
 ### Causation
 
@@ -139,7 +139,7 @@ class Field:
 
 ### Exceptions
 
-In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominate ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the focus to make the whole codebase as clear as possible.
+In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominates ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the aim of making the entire codebase as clear as possible.
 
 ### Refactoring:
 

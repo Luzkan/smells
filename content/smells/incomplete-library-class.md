@@ -59,11 +59,11 @@ history:
 
 ## Incomplete Library Class
 
-Libraries are the saviour of time and money in the industry of software development. If we would have to reimplement our algorithms and tools every time we want to use them, then the world around us would not look the same as we can see now through the windows. Sometimes, however, a specific package is almost perfect for our needs, but lacks some of the functionalities we want. We can, of course, ask the authors whether they plan or add what is missing, or we will try to implement what is missing, if the community of a given repository allows it. Unfortunately, sometimes it is impossible and such situations should also be dealt with, whether by building an additional layer or introducing foreign method. In the worst case, i.e. re-implementation, we doom the code to [Duplication](./duplicated-code.md).
+Libraries are the savior of time and money in the industry of software development. If we had to reimplement our algorithms and tools every time we want to use them, then the world around us would not look the same as the world that we can now see through the windows. Sometimes, however, a specific package is almost perfect for our needs but lacks some of the functionalities we want. We can, of course, ask the authors whether they plan or add what is missing, or we will try to implement what is missing, if the community of a given repository allows it. Unfortunately, sometimes it is impossible, and such situations should also be dealt with, whether by building an additional layer or introducing a foreign method. In the worst case, i.e., reimplementation, we doom the code to [Duplication](./duplicated-code.md).
 
 ### Causation
 
-Often the makers of open-licensed libraries do this pro bono, so they cannot spend all of their time creating the perfect package for everyone to use.
+Often open-licensed library makers do this pro bono, so they cannot spend all of their time creating the perfect package for everyone to use.
 
 ### Problems
 

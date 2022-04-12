@@ -54,19 +54,19 @@ history:
 
 ## Vertical Separation
 
-There is a tendency to declare variables in one place together before the main "logic" of the method begins. This creates artificial vertical separation between variables and the place where they are used. This is undesirable situation. The same applies to private, utility or helper functions, which should be found preferably directly under their first usage [[1](#sources)].
+There is a tendency to declare variables in one place together before the main "logic" of the method begins. This creates artificial vertical separation between the variables and the place where they are used. This is an undesirable situation. The same applies to private, utility, or helper functions, which should preferably be found directly under their first usage [[1](#sources)].
 
-There are programming languages (like C#) that support _Regions_ which is a code smell that regards the very same issue, but additionally supports it via offered functionality. There are also IDE's and editor add-ons that add this externally as a feature. Regions are markers that allows for code collapsing from a certain place to another certain place. It might seem innocent, although this is just a plaster for unhealed wound of _Vertical Separation_. It is often used to conceal that a method or class is too large, which does not solve the underlying problem.
+There are programming languages (like C#) that support _Regions_ which is a code smell that regards the very same issue, but also supports it through the offered functionality. There are also IDE's and editor add-ons that add this externally as a feature. Regions are markers that allow the code to collapse from one certain place to another. It may seem innocent, although this is just a plaster for the unhealed wound of _Vertical Separation_. It is often used to conceal that a method or class is too large, which does not solve the underlying problem.
 
 Sometimes it is used regardless of the size of the code, just to mark separate "regions" for fields, properties, public methods, private methods - even if there are none implemented, just to have a certain common standard.
 
-If the code is well written, the default collapsible places based on the the code (on methods, classes etc.) should be good enough as a organizing tool.
+If the code is well written, the default collapsible places based on the code (on methods, classes, etc.) should be good enough as an organizing tool.
 
 ### Causation:
 
-The Vertical Separation may result from the past optimization habits, which was long, long time ago but nowadays the code compilers will optimize it anyway (function variables are put on the stack before the first line of code even gets executed). This could also be a matter of personal preference, but the common rule is that things should not be too far away from each other.
+The Vertical Separation may result from the past optimization habits, which was long, long time ago but nowadays the code compilers will optimize it anyway (function variables are put on the stack before the first line of code even gets executed). This could also be a matter of personal preference, but the common rule is that things should not be too far from each other.
 
-Regions could be used to hide the bloat and perfum with a very cheap deodorant other code smells ([Clever Code](./clever-code.md), [Long Method](./long-method.md), [Loops](./imperative-loops.md)), but it just bloats the code even further.
+Regions could be used to hide bloat and be a very inexpensive deodorant for other code smells such as [Clever Code](./clever-code.md), [Long Method](./long-method.md), [Loops](./imperative-loops.md), but it just bloats the code even further.
 
 ### Problems
 

@@ -83,11 +83,11 @@ history:
 
 ## Hidden Dependencies
 
-Hidden Dependency is a situation when, inside a class, methods are silently resolving dependencies, hiding that behaviour from the caller. _Hidden Dependencies_ can cause runtime exception in case when a caller has not set up the appropriate environment beforehand which - by itself - is yet another code smell: [Required Teardown/Setup Code](./required-setup-or-teardown-code.md).
+Hidden Dependency is a situation where, inside a class, methods are silently resolving dependencies, hiding that behavior from the caller. _Hidden Dependencies_ can cause a runtime exception in the case where a caller has not set up the appropriate environment beforehand, which, by itself, is yet another code smell: [Required Teardown/Setup Code](./required-setup-or-teardown-code.md).
 
 ### Causation
 
-Objects (which are not stateless) that require constructor, have an empty constructor - the essence of these objects should be passed on creation and even better if they are made immutable to avoid [Mutable Data](./mutable-data.md) Code Smell.
+Objects (which are not stateless) that require a constructor have an empty constructor - the essence of these objects should be passed on creation, and even better if they are made immutable to avoid [Mutable Data](./mutable-data.md) Code Smell.
 
 ### Problems
 

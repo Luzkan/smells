@@ -85,7 +85,7 @@ history:
 
 ## Duplicated Code
 
-Duplicate Code needs no further explanation. According to Fowler, redundant code is one of the worst smells [[1](#sources)]. One thing is that this make it more difficult to read the program. Checking whether the copies are identical is yet another issue - looking whether they are for sure without any tiny difference ([Oddball Solution](./oddball-solution.md)). Yet another thing is that whenever a change is made, one need to check if this should have happen to just one or to all of the existing copies of code, wherever they are.
+Duplicated Code does not need further explanation. According to Fowler, redundant code is one of the worst smells [[1](#sources)]. One thing is that this makes it more difficult to read the program. Checking whether the copies are identical is yet another issue - looking whether there are for sure no tiny differences between code blocks, in search of [Oddball Solution](./oddball-solution.md) further unnecessarily absorbs developer time. Yet another thing is that whenever a change is made, one needs to check if this should have happened to just one or to all of the existing copies of code, wherever they are.
 
 ### Refactoring:
 

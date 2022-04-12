@@ -75,7 +75,7 @@ history:
 
 ## Global Data
 
-The _Global Data_ is quite similar to the [Middle Man](./middle-man.md) code smell, but here rather than a class, the broker is the _global scope_ in which the data is freely available for everyone. This is undesirable because it directly causes the [Hidden Dependencies](./hidden-dependencies.md) code smell and an extremely nasty [Mutable Data](./mutable-data.md) code smell. Global Data can be read from anywhere and there is no easy way to discover what bit of code touches it. If the variable in in the global scope is additionally mutable then this becomes an extremally bad case of _[Mutable](./mutable-data.md) [Fate over Action](./fate-over-action.md) (data class)_. Fowler in 1999 recalled that in early days of programming, back when there was no objects, even causing the [Long Parameter List](./long-paramter-list.md) code smell was a preferable to the Global Data [[35](#sources)]. For very same reasons, a Singleton Pattern can also be problematic [[17](#sources)].
+The _Global Data_ is quite similar to the [Middle Man](./middle-man.md) code smell, but here rather than a class, the broker is the _global scope_ in which the data is freely available to everyone. This is undesirable because it directly causes the [Hidden Dependencies](./hidden-dependencies.md) code smell and an extremely nasty [Mutable Data](./mutable-data.md) code smell. Global data can be read from anywhere, and there is no easy way to discover which bit of code touches it. If the variable in the global scope is additionally mutable, then this becomes an extremally bad case of _[Mutable](./mutable-data.md) [Fate over Action](./fate-over-action.md) (data class)_. Fowler in 1999 recalled that in the early days of programming, back when there were no objects, even causing the [Long Parameter List](./long-paramter-list.md) code smell was preferable to the Global Data [[35](#sources)]. For the same reasons, a Singleton Pattern can also be problematic [[17](#sources)].
 
 ### Problems
 
@@ -97,7 +97,7 @@ Global Variables exponentially fuzz the clarity of the codebase.
 
 ### Exceptions
 
-In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominate ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the focus to make the whole codebase as clear as possible.
+In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominates ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the aim of making the entire codebase as clear as possible.
 
 ---
 

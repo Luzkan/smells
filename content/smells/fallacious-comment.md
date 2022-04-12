@@ -101,13 +101,13 @@ history:
 
 ## Fallacious Comment
 
-_Comments_ differ from most of the other available syntax in a programming languages - it is not executed. This might cause situations where after code rework, the comments around it were left intact and no longer true to whatever they described. This shouldn't even happen in the first place, as the valid comments from the _**"Why"** Comment_ family are not susceptible to this kind of situations. If the comment explained **"what"** was happening then it will be relevant as long as the code it explains is left intact. Of course, ["What" Comments](./what-comment.md) are a Code Smell themselves and so is [Duplicated Code](./duplicated-code.md).
+_Comments_ differ from most of the other syntaxes available in a programming languages; it is not executed. This might cause situations where, after code rework, the comments around it were left intact and no longer true to what they described. This should not even happen in the first place, as valid comments from the _**"Why"** Comment_ family are not susceptible to this kind of situation. If the comment explained **"what"** was happening, then it will be relevant as long as the code it explains is left intact. Of course, ["What" Comments](./what-comment.md) are a Code Smell themselves, and so is [Duplicated Code](./duplicated-code.md).
 
-In real life scenarios, this might generally happen within docstrings, which can usually be found in methods exposed for other users.
+In real-life scenarios, this might generally happen within docstrings, which can usually be found in methods exposed to other users.
 
 ### Causation
 
-Developer was in hurry and did not double check if everything is up to date after the changes. He could also be reaffirmed by a passing unit test - there is no practical automated way to check for correctness of comments/docstrings.
+The developer was in hurry and did not double check that everything is up to date after the changes. He could also be reaffirmed by a passing unit test - there is no practical automated way to check for correctness of comments/docstrings.
 
 ### Problems
 

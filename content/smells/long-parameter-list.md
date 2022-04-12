@@ -82,11 +82,11 @@ history:
 
 ## Long Parameter List
 
-This is another code smell on the same abstraction level as [Long Method](./long-method.md), which usually occurs when there are three, four, or more parameters given in as an input for a single method. Basically, the longer the parameter list is, the harder it is to understand.
+This is another code smell at the same abstraction level as [Long Method](./long-method.md), which usually occurs when there are three, four, or more parameters given as input for a single method. Basically, the longer the parameter list, the harder it is to understand.
 
 ### Causation
 
-On an attempt to generalize a routine with multiple variations, at one point too much parameters could have been passed in. Another causation could be due unawareness of the object relationship between other objects and thus, instead, calling in all the entities via parameters. [[1](#sources)]
+In an attempt to generalize a routine with multiple variations, at one point too many parameters could have been passed in. Another causation could be due to ignorance of the object relationship between other objects, and thus, instead, calling in all the entities via parameters. [[1](#sources)]
 
 ### Problems:
 

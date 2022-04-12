@@ -68,11 +68,11 @@ history:
 
 ## Primitive Obsession
 
-Whenever a variable that is just a simple `string`, or an `int` simulates being a more abstract concept, which could be an object, then we encounter a _Primitive Obsession_ code smell. This quickly becomes a problem whenever there is the need for any additional logic, and also because these variables easily spread wide and far in the codebase. This is just a 'supposed' object, but should’ve been a real object instead.
+Whenever a variable that is just a simple `string`, or an `int` simulates being a more abstract concept, which could be an object, then we encounter a _Primitive Obsession_ code smell. This quickly becomes a problem whenever there is the need for any additional logic, and also because these variables easily spread wide and far in the codebase. This is just a "supposed" object, but it should have a real object instead.
 
 ### Causation
 
-Possibly, a missing class to represent the concept in the first place. Mantyla gives example of representing money as primitive rather than creating a separate class [[1](#sources)] and so does Fowler who state that he find many programmers reluctant to create their own fundamental types. [[2](#sources)]. Higher-level abstraction knowledge is needed in order to clarify or simplify the code. [[3](#sources)
+Possibly a missing class to represent the concept in the first place. Mäntylä gives an example of representing money as primitive rather than creating a separate class [[1](#sources)] and so does Fowler, who states that many programmers are reluctant to create their own fundamental types. [[2](#sources)]. Higher-level abstraction knowledge is needed to clarify or simplify the code. [[3](#sources)
 
 ### Problems
 

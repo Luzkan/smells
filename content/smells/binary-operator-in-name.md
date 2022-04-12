@@ -60,7 +60,7 @@ history:
 
 ## Binary Operator in Name
 
-This is straightforward - method or function names that have a binary bitwise operators like `AND` and `OR` are obvious candidates of undisguised violators of **Single Responsibility Principle** right out there in the open. If the method name has _`and`_ in its name and then it does two different things, then one might ask why its not split in half to do these two different things separately? Moreover, if the method name has _`or`_ then not only it does two different things, but additionally and most likely it has a stinky [Flag Argument](./flag-argument.md) which is yet another Code Smell.
+This is straightforward: method or function names that have binary bitwise operators like `AND` and `OR` are obvious candidates for undisguised violators of **Single Responsibility Principle** right out there in the open. If the method name has _`and`_ in its name and then it does two different things, then one might ask why it is not split in half to do these two different things separately? Moreover, if the method name has _`or`_ then it not only does two different things, but additionally and most likely it has a stinky [Flag Argument](./flag-argument.md) which is yet another Code Smell.
 
 This might happen not only in the method names, even though it is the place to look for in the vast majority of this kind of smell, but also in variables.
 

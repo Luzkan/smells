@@ -63,9 +63,9 @@ history:
 
 ## Feature Envy
 
-If a method inside a class manipulates more features (be it fields or methods) of another class more than from its own, then this method has a _Feature Envy_. In Object Oriented Programming, the functionality and behaviour should be tied closely to the data it uses. Instance of this smell indicates that the method is in a wrong place and it is more tightly coupled to the other class than to the one where it is currently located. [[1](#sources)]
+If a method inside a class manipulates more features (be it fields or methods) of another class more than from its own, then this method has a _Feature Envy_. In Object-Oriented Programming, the functionality and behavior should be tied closely to the data it uses. The instance of this smell indicates that the method is in a wrong place and is more tightly coupled to the other class than to the one where it is currently located. [[1](#sources)]
 
-This was the explanation based on Fowler's book from 1999. In his recent "book update" he rephrased the _class_ into _module_ generalizing the concept on a _zone_ perspective. Depending on the size of the system, the _Feature Envy_ code smell may apply accordingly.
+This was the explanation based on Fowler's book from 1999. In his recent "book update", he rephrased the _class_ into _module_ generalizing the concept in a _zone_ perspective. Depending on the size of the system, the _Feature Envy_ code smell may apply accordingly.
 
 ### Causation
 

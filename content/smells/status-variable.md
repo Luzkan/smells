@@ -77,21 +77,21 @@ history:
 
 ## Status Variable
 
-Status Variables are mutable primitives that are initialized before an operation to store some information based on the operation, which are later used as a switch for some action.
+Status Variables are mutable primitives that are initialized before an operation to store some information based on the operation, and are later used as a switch for some action.
 
-The _Status Variables_ can be identified as a separate code smell, although they really just are a signal for five other code smells:
+The _Status Variables_ can be identified as a separate code smell, although they are really just a signal for five other code smells:
 
 - [Clever Code](./clever-code.md),
 - [Imperative Loops](./imperative-loops.md),
 - [Afraid To Fail](./afraid-to-fail.md),
 - [Mutable Data](./mutable-data.md),
-- [Special Case](./special-case.md)
+- [Special Case](./special-case.md).
 
-They come in different types and forms, but the common examples of these are the `success: bool = False`-s before performing an operation block or `i: int = 0` before a loop statement. Code that has them increases in its complexity by a lot and usually for no particular reason, because there most likely exist a proper solution using first-class functions. Sometimes they just clutter the code demanding other methods or classes to make [additional checks](./special-case.md) before execution resulting in [Required Setup/Teardown Code](./required-setup-or-teardown-code.md).
+They come in different types and forms, but common examples are the `success: bool = False`-s before performing an operation block or `i: int = 0` before a loop statement. The code that has them increases in complexity by a lot, and usually for no particular reason, because there most likely exists a proper solution using first-class functions. Sometimes, they just clutter the code, demanding other methods or classes to make [additional checks](./special-case.md) before execution resulting in [Required Setup/Teardown Code](./required-setup-or-teardown-code.md).
 
 ### Causation
 
-Developer might had special cases that could be handled only inside a loop, couldn't figure out better solution.
+The developer might have special cases that could be handled only inside a loop, could not figure out a better solution.
 
 ### Problems
 

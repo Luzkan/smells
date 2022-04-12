@@ -61,11 +61,11 @@ history:
 
 ## Special Case
 
-Wake addresses the complex conditional situation as a _Special Case_ code smell with two symptoms - complex `if` statement and/or value checking [before doing the actual work](./required-setup-or-teardown-code.md) [[1](#sources)].
+Wake addresses the complex conditional situation as a _Special Case_ code smell with two symptoms - a complex `if` statement and/or value checking [before doing the actual work](./required-setup-or-teardown-code.md) [[1](#sources)].
 
 ### Causation
 
-There was a need for a special case to handle. This might be an also a hotfix that was never fixed properly.
+There was a need for a special case to handle. This might also be a hotfix that was never properly fixed.
 
 ### Problems:
 

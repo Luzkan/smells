@@ -64,17 +64,17 @@ history:
 
 ## Required Setup or Teardown Code
 
-If after use of a class or a method, several lines of code are required to:
+If, after use of a class or method, several lines of code are required to:
 
 - set it properly up,
 - the environment requires specific actions beforehand and/or after its use,
 - clean up actions are required,
 
-then it is a _Required Setup or Teardown Code_ code smell. This may indicate [improper abstraction level](./dubious-abstraction.md).
+then there is a _Required Setup or Teardown Code_ code smell. This may indicate [improper abstraction level](./dubious-abstraction.md).
 
 ### Causation
 
-Some functionality was taken beyond the class during the development, and the need for their use inside of the class itself was overlooked.
+Some functionality was taken beyond the class during development, and the need for their use within the class itself was overlooked.
 
 ### Problems
 

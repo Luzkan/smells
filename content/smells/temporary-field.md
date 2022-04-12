@@ -68,7 +68,7 @@ history:
 
 ## Temporary Field
 
-Temporary Field is a variable that is created where it is not really needed. It refers to variables which are only used in some situations [[1](#sources)]and/or are used only in certain areas of a program. This can be confusing when the purpose of using the variable cannot be explained or it cannot be found outside of its scope. [[2](#sources)] It might be misplaced on a Class level when the functionality it provides is specific only to a particular method [[2](#sources)]. One should expect an object to need all of its fields.
+Temporary Field is a variable that is created where it is not really needed. It refers to variables which are only used in some situations [[1](#sources)] and/or certain areas of a program. This can be confusing when the purpose of using the variable cannot be explained or cannot be found outside of its scope [[2](#sources)]. It might be misplaced at the class level when the functionality it provides is specific only to a particular method [[2](#sources)]. One should expect an object to need all of its fields.
 
 ### Problems
 

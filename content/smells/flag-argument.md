@@ -97,7 +97,7 @@ history:
 
 Martin Fowler defines Flag Arguments as "kind of function argument that tells the function to carry out a different operation depending on its value." [[1](#sources)] There are two reasons why this is smelly. First of all - it can be a candidate for [Boolean Blindness](./boolean-blindness.md) Code Smell. Fowler gives a great example with _Concert_ class and `book(customer: Customer, is_premium: bool)` method. While reading the code, without knowing much more context, one is going to be stopped by invocation of this method: `book(marcel, false)` - excuse me, but exactly what "`false`"? The situation is clear if instead of using a flag argument, method is divided into two separate parts and then, calling a method that provides more meaning through name like `regularBook(marcel)` is much better in terms of comprehensibility.
 
-The second problem is that it might be a cocoon phase, before it develops into beautiful, full-fledged [Conditional Complexity](./conditional-complexity.md). First what you see is `is_premium: bool`. Second time you come by and it is already transformed to `ticket_type: str`, switching through different options based on the value, additionally with the [Primitive Obsession](./primitive-obsession.md) Code Smell on top.
+The second problem is that it might be a cocoon phase, before it develops into a beautiful full-fledged [Conditional Complexity](./conditional-complexity.md). First, what you see is `is_premium: bool`. The second time you come by and it is already transformed to `ticket_type: str`, switching through different options based on the value, additionally with the smell of the [Primitive Obsession](./primitive-obsession.md) on top.
 
 ### Causation
 

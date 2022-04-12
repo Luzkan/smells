@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[1.0.3]] - 2022-04-12
+
+### Changed
+
+- Language Tweaks in Smells content
+
+### Removed
+
+- Old, leftover _to-do_ in [Occurrences](../src/model/Occurrences.tsx) regarding icon
+
 ## [[1.0.2]] - 2022-04-08
 
 ### Changed
@@ -101,6 +111,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Separate page articles for each smell, so they can be directly linked to by anyone for any reason.
   - Separate page articles navigation bar on the left to browse to other smells. This navigation bar can be turned to list by a different type of categorization types.
 
+[1.0.3]: https://github.com/Luzkan/smells/releases/tag/1.0.3
 [1.0.2]: https://github.com/Luzkan/smells/releases/tag/1.0.2
 [1.0.1]: https://github.com/Luzkan/smells/releases/tag/1.0.1
 [1.0.0]: https://github.com/Luzkan/smells/releases/tag/1.0.0

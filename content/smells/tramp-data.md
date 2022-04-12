@@ -80,7 +80,7 @@ history:
 
 ## Tramp Data
 
-This is very similar to the [Message Chains](./message-chain.md) code smell, but with the difference, that back there, the pizzeria supplier was ordered to get through the long chain of method calls. Here, the pizzeria supplier additionally delivers the _"pizza"_ through that long chain of method calls, with the pizza being present in each of the method parameters. This is an indicator of [Dubious Abstraction](./dubious-abstraction.md) code smell - the data that passes through long chains of calls, most likely at at least one of the levels, is not consistent with the abstraction presented by each of the routine interfaces. [[1](#sources)]
+This is very similar to the [Message Chains](./message-chain.md) code smell, but with the difference that there the pizza supplier was ordered to go through a long chain of method calls. Here, the pizzeria supplier additionally delivers _"pizza"_ through that long chain of method calls, with _"pizza"_ present in each of the method parameters. This is an indicator of [Dubious Abstraction](./dubious-abstraction.md) code smell - the data that pass through long chains of calls, most likely at at least one of the levels, are not consistent with the abstraction presented by each of the routine interfaces. [[1](#sources)]
 
 ### Causation
 
@@ -119,7 +119,7 @@ class Game:
 
 ### Exceptions
 
-In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominate ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the focus to make the whole codebase as clear as possible.
+In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominates ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the aim of making the entire codebase as clear as possible.
 
 ---
 

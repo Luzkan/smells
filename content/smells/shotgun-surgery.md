@@ -72,13 +72,13 @@ history:
 
 ## Shotgun Surgery
 
-Similarly to [Divergent Change](./divergent-change.md), but with a wider spectrum, _Shotgun Surgery_ code smell symptom is detected by the unnecessary requirement of changing multiple different classes just to introduce a single modification. Things like that can happen with the failure to use the correct design pattern for the given system. This can lead to an easy miss (and thus, introducing a bug), if these small changes are all over the place and they are hard to find. Most likely, [too many classes](./oddball-solution.md) are solving a simple problem.
+Similarly to [Divergent Change](./divergent-change.md), but with a wider spectrum, the smell symptom of the _Shotgun Surgery_ code is detected by the unnecessary requirement of changing multiple different classes just to introduce a single modification. Things like that can happen with the failure to use the correct design pattern for the given system. This can lead to an easy miss (and thus introducing a bug) if these small changes are all over the place and they are hard to find. Most likely, [too many classes](./oddball-solution.md) solve a simple problem.
 
-Joshua Kerievsky noted this smell as _Solution Sprawl_ [[1](#sources)]. Monteiro stated that the tiny difference between these two comes from the the way they are sensed. In the [Divergent Change](./divergent-change.md) one becomes aware of the smell while making the changes and in the _Solution Sprawl_ one is aware by observing the issue. [[2](#sources)]
+Joshua Kerievsky noted this smell as _Solution Sprawl_ [[1](#sources)]. Monteiro stated that the tiny difference between these two comes from the way they are sensed. In the [Divergent Change](./divergent-change.md) one becomes aware of the smell while making the changes, and in the _Solution Sprawl_ one is aware by observing the issue. [[2](#sources)]
 
 ### Causation
 
-Wake says that it could have happened due to "over-zealous attempt to eliminate Divergent Change" [[3](#sources)]. There could be a missing class that would understand the whole responsibility and handle the existing cluster of changes by itself. That scenario could also happen with cascading relationship of classes [[4](#sources)].
+Wake says that it could have happened due to an "overzealous attempt to eliminate Divergent Change" [[3](#sources)]. There could be a missing class that would understand the entire responsibility and handle the existing cluster of changes by itself. That scenario could also happen with cascading relationships of classes [[4](#sources)].
 
 ### Problems
 

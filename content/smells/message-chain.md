@@ -78,7 +78,7 @@ history:
 
 ## Message Chain
 
-Suppose that class `A`, requires data from class `D`, but to retrieve that data, it has to, sequentially make unnecessary calls to class `B` and then `C` in order to get it. This is called Message Chain code smell. Long sequences of methods calls indicate hidden dependencies by being intermediaries. The sequence of methods could have also been hidden by sequence of temporary variables. Problem with this smell is that any change to the intermediate relationship causes the client to have to change. [[1](#sources)]
+Suppose that class `A`, requires data from class `D`, but to retrieve those data, it has to sequentially make unnecessary calls to class `B` and then `C` to get it. This is called Message Chain code smell. Long sequences of methods calls indicate hidden dependencies by being intermediaries. The sequence of methods could also have been hidden by a sequence of temporary variables. The problem with this smell is that any change in the intermediate relationship causes the client to have to change. [[1](#sources)]
 
 ### Causation
 
@@ -150,7 +150,7 @@ class Field:
 
 ### Exceptions
 
-In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominate ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the focus to make the whole codebase as clear as possible.
+In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominates ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the aim of making the entire codebase as clear as possible.
 
 ### Refactoring:
 

@@ -66,11 +66,11 @@ history:
 
 ## Mutable Data
 
-Mutable Data is harmful because it can suddenly fail other parts of the code unexpectedly. It is a rich source of bugs, which are hard to spot, because they can happen in rare conditions. Fowler says, that this is a major factor which contributed to the rise of the new programming school - the functional programming, in which one of the principles is that the data should never change. He addresses that while these kind of languages are still relatively small, the advantages of immutable data shall not be ignored [[1](#sources)]. It is hard to reason about these variables, especially when they have several reassignments.
+Mutable data are harmful because they can suddenly fail other parts of the code unexpectedly. It is a rich source of bugs that are hard to spot because they can occur under rare conditions. Fowler says that this is a major factor which contributed to the rise of the new programming school, the functional programming, in which one of the principles is that the data should never change. He addresses that, while these kinds of languages are still relatively small, the advantages of immutable data shall not be ignored [[1](#sources)]. It is hard to reason about these variables, especially when they have several reassignments.
 
 ### Causation
 
-In Object Oriented Programming, the matter of the immutability of objects was not addressed audibly, if at all, in the context of something desirable. This is a relatively fresh concept.
+In Object-Oriented Programming, the matter of the immutability of objects was not addressed audibly, if at all, in the context of something desirable. This is a relatively new concept.
 
 ### Problems
 

@@ -57,11 +57,11 @@ history:
 
 ## Data Clump
 
-Data Clumps refer to a situation when a few variables are passed around together many times around the codebase instead of being packed into a separate object. Think of it as having to hold different groceries in a shopping mall by hand, instead of putting them into a basket or at least a handy cardboard box — this is just not convenient. Any set of data items that are always or almost always used together, but are not organized together, should be packed into a class. An example could be `RGB` values held separately instead of in a `RGB` object.
+Data Clumps refer to a situation in which a few variables are passed around many times in the codebase instead of being packed into a separate object. Think of it as having to hold different groceries in a grocery store by hand, instead of putting them into a basket or at least a handy cardboard box — this is just not convenient. Any set of data items that are always or almost always used together, but are not organized together, should be packed into a class. An example could be the `RGB` values held separately rather than in a `RGB` object.
 
 ### Causation
 
-People just tend to think that keeping things are too small or unimportant to create a separate class for them. [[1](#sources)]
+Developers often believe that a pair of variables is unworthy of creating a separate instance for them that could aggregate them under a common abstraction. [[1](#sources)]
 
 ### Problems
 

@@ -65,7 +65,7 @@ history:
 
 ## Oddball Solution
 
-If similar problem is solved in a different way in different parts of the project, then it is an Oddball Solution. This code smell could also have been classified under the [Duplicated Code](./duplicated-code.md), although it is not exactly a one-to-one copy-paste - it is more subtle [[1](#sources)].
+If a similar problem is solved in a different way in different parts of the project, then it is an Oddball Solution. This code smell could also have been classified under [Duplicated Code](./duplicated-code.md), although it is not exactly a one-to-one copy paste - it is more subtle [[1](#sources)].
 
 ### Causation
 

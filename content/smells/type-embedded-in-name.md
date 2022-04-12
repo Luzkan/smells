@@ -65,15 +65,15 @@ history:
 
 ## Type Embedded in Name
 
-Whenever a variable has explicit type prefix or suffix, it can strongly signal that it really should just be a class of its own. For example, `current_date = "2021-14-11"`, embeds potential `Date` class in the name of a variable, and that could also be classified as [Primitive Obsession](./primitive-obsession.md) code smell.
+Whenever a variable has an explicit type prefix or suffix, it can strongly signal that it should really be just a class of its own. For example, `current_date = "2021-14-11"`, embeds the potential class `Date` in the name of a variable, and that could also be classified as the [Primitive Obsession](./primitive-obsession.md) code smell.
 
-Wake signals that the embedded type could also be in the methods names, giving an example of `schedule.add_course(course)` function contrary to `schedule.add(course)`. He notes that it could have been just a matter of preference, although he insists that this can be a problem, wherever some generalization is going to happen [[1](#sources)]. When a parent class for `Course` is introduced, to cover not only _courses_ but also _series of courses_, then the  `add_course()` have a name that is no longer appropriate, thus suggesting the usage of more neutral names. [[1](#sources)] Parameters of a method are part of the method name, and this kind of naming is also a duplication.
+Wake signals that the embedded type could also be in the method names, giving an example of a `schedule.add_course(course)` function in contrast to `schedule.add(course)`. He notes that it could have been just a matter of preference, although he insists that this can be a problem wherever some generalization will occur [[1](#sources)]. When a parent class for `Course` is introduced, to cover not only _courses_, but also _series of courses_, then `add_course()` has a name that is no longer appropriate, thus suggesting the usage of more neutral names. [[1](#sources)] Parameters of a method are part of the method name, and this kind of naming is also a duplication.
 
-With all the possibilities of annotating variables, its unnecessary to mention it twice through variable name when type annotation or type hinting is present. Names with embedded types in them, for which there is no class yet that could it represent, are good candidates to get refactored into separate classes.
+With all the possibilities of annotating variables, it is unnecessary to mention it twice through variable name when type annotation or type hinting is present. Names with embedded types in them, for which there is no class yet that could represent them, are good candidates to be refactored into separate classes.
 
 ### Causation
 
-This was a standard in pointer-based languages, but it's not useful in modern Object Oriented Programming languages. [[1](#sources)]
+This was a standard in pointer-based languages, but it is not useful in modern Object-Oriented Programming languages. [[1](#sources)]
 
 ### Problems
 

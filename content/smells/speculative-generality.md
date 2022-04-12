@@ -67,7 +67,7 @@ history:
 
 ## Speculative Generality
 
-Developers are humans, and humans are bad guessers [[1](#sources)]. Developers tend to create additional features in preparation for the future, guessing that it will be useful, but that time never came. This problem lies within the psychological human nature and contrary to their best intentions, it just clutters the code.
+Developers are humans, and humans are bad guessers [[1](#sources)]. Developers tend to create additional features in preparation for the future, guessing that it will be useful, but that time never came. This problem lies within the psychological human nature and, contrary to their best intentions, it just clutters the code.
 
 ### Causation
 

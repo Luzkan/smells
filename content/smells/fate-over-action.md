@@ -83,13 +83,13 @@ history:
 
 ## Fate over Action
 
-In Object Oriented Programming, classes and their data go hand in hand with behaviour. If a class has only the first part, then it is an indicator that there could be a functionality tied to these variables, but it is missing or placed somewhere else.
+In Object-Oriented Programming, classes and their data go hand in hand with behavior. If a class has only the first part, then it is an indicator that there could be a functionality tied to these variables, but it is missing or placed somewhere else.
 
-Back in the days _(at time of defining - Fowler 2003)_ _Data Class_ would be enough to be classified as a bad smell, as it the main evil of hidden and hard to debug problems in large scale systems because of the mutability - data was unexpectedly different or it was missing at the point of execution due to some other unexpected reasons. Thus, the data was supposed to be closely tied to the logic so it can go hand in hand together. This is also one of the main reasons why functional programming is rising in popularity - one of its main principles is that the data should be immutable so there would be no more this sort of bugs.
+Back in the days _(at time of defining - Fowler 2003)_ _Data Class_ would be enough to be classified as a bad smell, as it is the main evil of hidden and hard-to-debug problems in large-scale systems because of mutability - data were unexpectedly different or it was missing at the point of execution due to some other unexpected reasons. Thus, the data were supposed to be closely tied to the logic, so they could go hand in hand. This is also one of the main reasons why functional programming is rising in popularity; one of its main principles is that the data should be immutable, so there would be no more this sort of bugs.
 
-_Data Class_ is still a good intuitive motive to follow, although in programming languages we have things like `Interface`-s or `Struct`-s to pack and type together a bunch of variables. This directly addresses and solves [Data Clumps](./data-clump.md) Code Smell. Data Transfer Objects (DTO) are not uncommon with the dominance of web-based application and communications over API's. All that could fall into the _Data Class_ code smell category, but I rather believe we as programming developers are not making intentionally everything stinky.
+_Data Class_ is still a good intuitive motive to follow, although in programming languages we have things like `Interface`-s or `Struct`-s to pack and type together a bunch of variables. This directly addresses and solves the [Data Clumps](./data-clump.md) Code Smell. Data Transfer Objects (DTO) are not uncommon with the dominance of web-based application and communications over API's. All of this could fall into the _Data Class_ code smell category, but I rather believe that as programmers, we are not intentionally making everything stinky.
 
-Data Classes that cannot be changed (thus lacking setters, or with some sort of "frozen" property), are much less error prone and shouldn't be discouraged if they are a good fit to remove other smells or to pass data around, especially if the alternative is to have a long un-verified dictionaries straight out of configuration file or API call. Immutable Data Class can have additional benefit of type checking verification _(depending on a language)_, so if its expected to have `address` given as a `string`, then that is a good fail fast mechanism (check [Afraid to Fail](./afraid-to-fail.md)) if instead a `None` or `undefined` is given instead because of malformed or incomplete input. And after all, when the class is already here, it can be encouraging to fill it with further validation and behaviour.
+Data classes that cannot be changed (thus lacking setters, or with some sort of "frozen" property), are much less error prone and should not be discouraged if they are a good fit to remove other smells or to pass data around, especially if the alternative is to have a long un-verified dictionaries straight out of configuration file or API call. The immutable data class can have the additional benefit of  verifying the types _(depending on a language)_, so if it is expected to have `address` given as a `string`, then that is a good fail fast mechanism (check [Afraid to Fail](./afraid-to-fail.md)) if instead a `None` or `undefined` is given due to a misformed or incomplete input. And after all, when the class is already here, it can be encouraging to fill it with further validation and behavior.
 
 ### Discussion
 
@@ -105,7 +105,7 @@ This generalization of an existing concept by now, is not a novel thing. That is
 
 ### Causation
 
-> It’s common for classes to begin like this: you realize that some data is part of an independent object, so you extract it out. But objects are about the commonality of behavior, and these objects aren’t developed enough to have much behavior yet.
+> It is common for classes to begin like this: you realize that some data are part of an independent object, so you extract it out. But objects are about the commonality of behavior, and these objects are not developed enough to have much behavior yet.
 > ~ Wake 2004 [[1](#sources)]
 
 ### Problems

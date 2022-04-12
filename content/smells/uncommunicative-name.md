@@ -74,7 +74,7 @@ history:
 
 ## Uncommunicative Name
 
-The name should convey meaning and of course meaning which preferably is not misleading ([Fallacious Method Name](./fallacious-method-name.md)). Descriptive names can save countless amount of time if they are good enough, just like a good abstract in a scientific article. Code should be as expressive as possible [[1](#sources)]. In the "Clean Code" by Robert Martin, this smell is "shredded" to five very descriptive smells and recommendations which underline the importance of having "good labels" [[2](#sources)]:
+The name should convey meaning and of course meaning which preferably is not misleading ([Fallacious Method Name](./fallacious-method-name.md)). Descriptive names can save countless hours if they are good enough, just like a good abstract in a scientific article. The code should be as expressive as possible [[1](#sources)]. In the "Clean Code" by Robert Martin, this smell is "shredded" to five very descriptive smells and recommendations which underline the importance of having "good labels" [[2](#sources)]:
 
 - [Obscured Intent](./obscured-intent.md),
 - Function Names Should Say What They Do,
@@ -82,11 +82,11 @@ The name should convey meaning and of course meaning which preferably is not mis
 - Unambiguous Names,
 - Names Should Describe Side-Effects
 
-Martin Fowler added this smell under the name of _"Mysterious Name"_ in his 3rd edition of Refactoring book, saying that good name, with a lot of thought put into its definition, can save hours of incomprehensibility issues later. He says, that names should clearly communicate what they do and how to use them.
+Martin Fowler added this smell under the name _"Mysterious Name"_ in his third edition of the Refactoring book, saying that a good name, with a lot of thought put into its definition, can save hours of incomprehensibility problems later. He says that names should clearly communicate what they do and how to use them.
 
 ### Causation
 
-People tend to not get back to the name of the variables or methods they have already declared. Usually it is the best they can come up with at the declaration moment, but maybe, later on, there could have been a much better name for the thing thought off. The names could also be just too short and the developer could be afraid of making it longer and thus cutting off the meaning potential.
+People tend not to return to the names of the variables or methods that they have already declared. Usually it is the best they can come up with at the declaration moment, but maybe later on there could have been a much better name for the thing thought of. The names could also be just short, and the developer could be afraid of making it longer and thus cutting off the meaning potential.
 
 ### Problems
 
@@ -133,5 +133,5 @@ final_damage_dealt: int = wobble_the_value(calculated_damage, wobble_by=3)
 ##### Sources
 
 - [[1](#sources)] - Robert Martin, _"Clean Code: A Handbook of Agile Software Craftsmanship"_ (2008)
-- [[2](#sources)] - Eessaar, E., Käosaar, E., +"On finding model smells based on code smells"_ (2018)
+- [[2](#sources)] - Eessaar, E., Käosaar, E., +"On finding model smells based on code smells"\_ (2018)
 - [Origin] - William C. Wake, _"Refactoring Workbook"_ (2004)

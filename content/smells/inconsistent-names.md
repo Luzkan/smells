@@ -53,9 +53,9 @@ history:
 
 ## Inconsistent Names
 
-Human brains work in pattern-like fashion. Starting from the first class, the concept of operation and use of each subsequent class should be generalized across the whole project, facilitating and iteratively accelerating the speed of understanding how the code works.
+Human brains work in a pattern-like fashion. Starting from the first class, the concept of operation and use of each subsequent class should be generalized throughout the project, facilitating and iteratively accelerating the speed of understanding how the code works.
 
-For this reason, once we know that one class uses the method, `store()` then it should be expected that another class for the very same mechanic also uses the `store()` name for that, instead of `add()`, `put()` or `place()`.
+For this reason, once we know that one class uses the method, `store()` it should be expected that another class for the very same mechanic also uses the `store()` name for that, instead of `add()`, `put()` or `place()`.
 
 ### Causation
 

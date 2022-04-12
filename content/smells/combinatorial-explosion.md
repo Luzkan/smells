@@ -61,11 +61,11 @@ history:
 
 ## Combinatorial Explosion
 
-The Combinatorial Explosion happens when there is a lot of code that does almost the same, but almost. The number of cases needed to cover every possible path is massive and so is the number of methods. You can grasp a solid intuition of this smell by thinking about code blocks that differ between each other only by the quantities of data or objects used in them. Wake specifies that "(...) this is a relative of [Parallel Inheritance Hierarchies](./parallel-inheritance-hierarchies.md) Code Smell, but everything has been folded into one hierarchy." [[1](#sources)].
+The Combinatorial Explosion occurs when there is a lot of code that does almost the same, but the word "almost" is crucial. The number of cases needed to cover every possible path is massive, as is the number of methods. You can grasp a solid intuition of this smell by thinking about code blocks that differ between each other only by the quantities of data or objects used in them. Wake specifies that "(...) this is a relative of [Parallel Inheritance Hierarchies](./parallel-inheritance-hierarchies.md) Code Smell, but everything has been folded into one hierarchy." [[1](#sources)].
 
 ### Causation
 
-What should be independent decisions instead get implemented via a hierarchy. Lets suppose that someone organised the code that query an API by a specific method with specific set-in conditions and data. Sooner or later, there is just so much of these methods just as the need for different queries rises in demand. This is bad by the initial design solution.
+Instead, what should be an independent decisions, gets implemented via a hierarchy. Lets suppose that someone organized the code so that it queries an API by a specific method with specific set-in conditions and data. Sooner or later, there are just so many of these methods as the need for different queries increases in demand.
 
 ### Problems:
 

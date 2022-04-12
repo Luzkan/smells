@@ -57,13 +57,13 @@ history:
 
 ## Afraid To Fail
 
-The _Afraid To Fail_ is a Code Smell name inspired by the common fear (at least among students [[1](#sources)]) to fail which is professionally called _Atychiphobia_ [[48](#sources)] - being scared of failure.
+The _Afraid To Fail_ is a Code Smell name inspired by the common fear (at least among students [[1](#sources)]) of failure, which is professionally called _Atychiphobia_ [[48](#sources)] - being scared of failure.
 
-I’m referencing it here, as the fear of admitting failure (that something went wrong) is quite common relatable psychological trait and facing that fear would be for everyone's benefit. It's not a good idea to hope that maybe somehow one might get away with it. Surely, maybe even more often than not that would be the case, but the more things stack upon that lack of honesty, the harder will it eventually hit if it ever gets discovered.
+I am referencing it here because the fear of admitting failure (that something went wrong) is a relatable psychological trait, and facing that fear would be for everyone's benefit. It is not a good idea to hope that maybe someone will get away with it. Surely, maybe even more often than not that would be the case, but the more things stack upon that lack of honesty, the harder it will eventually hit if it ever gets discovered.
 
-In programming, that behaviour will clutter the code, because after a method or function call, additional code is required to check whether some kind of status code is valid, a boolean flag is marked or a returned value is not `None`. And all of that outside of the method scope.
+In programming, this behavior will clutter the code because after a method or function call, additional code is required to check whether some kind of status code is valid, a boolean flag is marked, or the returned value is not `None`. And all of that outside of the method scope.
 
-If it is expected that a method might fail, then it should fail, either by throwing an `Exception` or if not - then it should return a special case `None`/`Null` type object of the desired class (following the **Null Object Pattern**), not null itself. For example, if an expected object cannot be received or created, and instead of that, some status indicator is send back (which has to be checked after the method is completed), the smells it generate would be [_Afraid to Fail_](./afraid-to-fail.md) as well as [_Teardown Code_](./required-setup-or-teardown-code.md) Code Smell. Instead, following the **Fail Fast Principle**, code should throw an error instead.
+If it is expected that a method might fail, then it should fail, either by throwing an `Exception` or if not - it should return a special case `None`/`Null` type object of the desired class (following the **Null Object Pattern**), not null itself. For example, if an expected object cannot be received or created, and instead of that some status indicator is sent back (which has to be checked after the method is completed), the smells it generates would be [_Afraid to Fail_](./afraid-to-fail.md) as well as [_Teardown Code_](./required-setup-or-teardown-code.md) Code Smell. Instead, following the **Fail Fast Principle**, the code should throw an error instead.
 
 ### Problems:
 

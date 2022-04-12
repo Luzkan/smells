@@ -86,11 +86,11 @@ history:
 
 ## Long Method
 
-One of the most obvious complications that can be found in the code is the length of a method. The more lines of code a function has, the more the developer has to strain himself mentally to fully comprehend what does the particular block of code do. The longer a procedure is, the more difficult it is to understand it [[1](#sources)]. It is also harder to change or extend [[2](#sources)]. Besides that — reading more lines requires more time and that quickly adds up, based on the fact that the code is read more than it is written [[3](#sources)]. Fowler strongly believes in short methods as a better option.
+One of the most obvious complications that can be found in the code is the length of a method. The more lines of code a function has, the more the developer has to strain himself mentally to fully comprehend what the particular block of code does. The longer a procedure is, the more difficult it is to understand it [[1](#sources)]. It is also harder to change or extend [[2](#sources)]. In addition to that, reading more lines requires more time, which quickly adds up, based on the fact that the code is read more than it is written [[3](#sources)]. Fowler strongly believes in short methods as a better option.
 
 ### Causation
 
-Rather than breaking the flow to identify the helper objects, the author adds another and another code line. [[4](#sources)]
+Rather than breaking the flow to identify the helper objects, the author adds another code line. [[4](#sources)]
 
 ### Problems
 

@@ -69,13 +69,13 @@ history:
 
 ## Null Check
 
-Null check is wide-spread everywhere because the programming languages allow it. It causes multum of `undefined` or `null` checks everywhere - in guard checks, in condition blocks, and in verifications clauses. Instead, special objects could be created that implement the missing-event behavior, errors could be thrown and catched and lots of duplications would be removed. There is this even a fact that sometimes appears here and there on discussion forums, that the inventor of `null` reference, Tony Hoare (also known as the creator of the Quick Sort algorithm), apologizes for its invention and call it a _billion-dollar mistake_.
+Null check is wide spread everywhere because the programming languages allow it. It causes a multitude of `undefined` or `null` checks everywhere: in guard checks, in condition blocks, and in verifications clauses. Instead, special objects could be created that implement the missing-event behavior, errors could be thrown and catched, and lots of duplications would be removed. There is this even a fact that sometimes appears here and there on discussion forums, that the inventor of the `null` reference, Tony Hoare (also known as the creator of the Quick Sort algorithm), apologizes for its invention and calls it a _billion-dollar mistake_.
 
 _Null Check_ is a special case of [Special Case](./special-case.md) code smell.
 
 ### Causation
 
-Direct cause of null checking is the lack of proper Null Object that might implement behaviour of the object in case its null. There are strong views that `null` or `undefined` are detrimentally bad idea in programming languages [[1](#sources)].
+The direct cause of null checking is the lack of proper Null Object that might implement behavior of the object in case its null. There is a strong opinion that `null` or `undefined` are a detrimentally bad idea in programming languages [[1](#sources)].
 
 ### Problems
 

@@ -53,11 +53,11 @@ history:
 
 ## Dead Code
 
-If a part of code is not executed then it is Dead Code. This includes any place that the code executor will never reach - including the code which was commented out. Any if or case condition that can never be reached, any code in methods and functions after final `return` statement or any code inside of a `try` `except`/`catch` block which will never throw an error. [[1](#sources)] This usually is not that easy to detect and requires tool assistance. [[2](#sources)]
+If part of the code is not executed, then it is Dead Code. This includes any place that the code executor will never reach, including the code that was commented out. Any if or case condition that cannot be reached, any code in methods and functions after the final `return` statement, or any code inside a `try` `except`/`catch` block that will never throw an error. [[1](#sources)] This usually is not that easy to detect and requires tool assistance. [[2](#sources)]
 
 ### Causation
 
-Never refactored [long else-if blocks](./conditional-complexity.md) that eventually has so many paths that no one even remembers if they are accessed anymore. Maybe a new way of working was introduced and old code was never tidied up.
+Never refactored [long else-if blocks](./conditional-complexity.md) that eventually have so many paths that no one even remembers if they are accessed anymore. Perhaps a new way of working was introduced and the old code was never cleaned up.
 
 ### Problems
 

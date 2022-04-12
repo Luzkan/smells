@@ -73,11 +73,11 @@ history:
 
 ## Magic Number
 
-The problems with floats and integers is that they convey no meaning - there's only context, which is often not enough and even if one might think it is, then leaving the unexplained number makes the code just less readable. Magic numbers also usually go in little groups which should all the more encourage to collect them under one appropriately named constant.
+The problem with floats and integers is that they convey no meaning - there is only context, which is often not enough, and even if one might think it is, then leaving the unexplained number makes the code just less readable. Magic numbers also usually go in small groups, which should all the more encourage one to collect them under one appropriately named constant.
 
 ### Causation
 
-It may be convenient to write down the implementation idea first with numbers but then after a task is finished, developer did not get back to add meaning to the used abstraction.
+It may be convenient to write the implementation idea first with numbers, but then, after a task is finished, the developer did not get back to add meaning to the used abstraction.
 
 ### Problems
 
@@ -124,7 +124,7 @@ def calculateDamage(...) -> int:
 
 ### Exceptions
 
-The numbers should not always be replaced with intentional names. The best example I can give are math & physics formulas. I would write the formula for kinematic energy as `kinematic_energy = (mass * (velocity**2))/2`, leaving the _two's_ as they are. On the other hand if a formula would have a known constant like `PI`, then I would definitely create a constant expressing that in fact, the `3.14159` is `PI` _(... by the way it could be a [Clever Code](./clever-code.md), it would be best to use `math.pi` built-in instead)_.
+Numbers should not always be replaced with intentional names. The best example that I can give are math & physics formulas. The formula for the kinematic energy would be written as `kinematic_energy = (mass * (velocity**2))/2`, leaving _two's_ as is. On the other hand, if a formula had a known constant like `PI`, then I would definitely create a constant that expresses that, in fact, the `3.14159` is `PI` _(... by the way it could be considered as a [Clever Code](./clever-code.md), it would be best to use `math.pi` built-in instead)_.
 
 ---
 

@@ -69,7 +69,7 @@ This occurs when an inheritance tree depends on another inheritance tree by comp
 
 ### Causation
 
-This can happen naturally, when trying to model a problem in a domain. Problem comes, when these hierarchies are created artificially and unnecessarily (for example by adding a standard prefix throughout the classes).
+This can happen naturally, when trying to model a problem in a domain. Problem arises, when these hierarchies are created artificially and unnecessarily (for example, by adding a standard prefix throughout the classes).
 
 ### Problems
 

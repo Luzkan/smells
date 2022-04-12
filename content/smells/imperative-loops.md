@@ -88,17 +88,17 @@ history:
 
 ## Imperative Loops
 
-Martin Fowler has a feeling that loops are outdated concept. He already mentioned them as an issue in his first edition of "Refactoring: Improving the design of existing code" book, although at that time, there were no better alternatives. [[1](#sources)] Nowadays, languages provide an alternative - pipelines. Fowler, in the edition from 2018 suggests, that anachronistic loops should be replaced with pipelines operations such as filter, map or reduce [[2](#sources)].
+Martin Fowler has a feeling that loops are an outdated concept. He already mentioned them as an issue in his first edition of "Refactoring: Improving the design of existing code" book, although at that time there were no better alternatives. [[1](#sources)] Nowadays, languages provide an alternative - pipelines. Fowler, in his 2018 book (third edition), suggests, that anachronistic loops should be replaced by pipeline operations such as filter, map or reduce [[2](#sources)].
 
-Indeed, loops can be sometimes hard to read and error prone. This might be unconfirmed, but I doubt in the existence of a programmer who has never had an IndexError at least once before. The recommended approach would be to avoid the explicit iterator loops and use the `forEach` or `for-in`/`for-of-like` loop that take care of the indexing, or `Stream` pipes. Still, one should consider whether he is not about to write [Clever Code](./clever-code.md) and check if a built-in function already exists that will take care of the desired operation.
+Indeed, loops can sometimes be hard to read and error prone.This might not be confirmed, but I doubt the existence of a programmer who has never had an IndexError at least once before. The recommended approach would be to avoid explicit iterator loops and use the `forEach` or `for-in`/`for-of-like` loop that takes care of the indexing, or `Stream` pipes. Still, one should consider whether he is not about to write [Clever Code](./clever-code.md) and check if there is already a built-in function that will take care of the desired operation.
 
-I would abstain from specifying all the loops as a code smell. Loops always were and probably are still going to be a fundamental part of programming. Modern languages offer very tidy approaches to loops and even things like a List Comprehension in [Haskell](https://wiki.haskell.org/List_comprehension) or [Python](https://docs.python.org/3/tutorial/datastructures.html). It is the indexation part, that is the main concerning problem. Of course, so are long loops or loops with side effects, but these are just a part of [Long Method](./long-method.md) or [side effects](./side-effects.md) code smells.
+I would abstain from specifying all the loops as code smells. Loops have always been and probably are still going to be a fundamental part of programming. Modern languages offer very tidy approaches to loops and even things like a List Comprehension in [Haskell](https://wiki.haskell.org/List_comprehension) or [Python](https://docs.python.org/3/tutorial/datastructures.html). It is the indexation part might be the main problem. Of course, so are long loops or loops with side effects, but these are just a part of [Long Method](./long-method.md) or [side effects](./side-effects.md) code smells.
 
-Nevertheless, it is worth taking what is good from the functional languages (like the `streams` or immutability of the data) and implement those as wide as it is possible and convenient, to increase the reliability of application.
+However, it is worth taking what is good from functional languages (such as `streams` or the immutability of the data) and implement those as widely as possible and conveniently, to increase the reliability of the application.
 
 ### Causation
 
-It is impossible to easily overwrite the information that was given in the old books or video tutorials, which was fairly common due to the lack of any other alternatives. People have learned that type of looping and may not even suspect that there are alternatives until they find them. Likewise, developers who came from older languages, which still do not offer such facilities, can use explicit iteration habitually.
+It is impossible to easily overwrite the information that was given in the old books or video tutorials, which was fairly common due to the lack of any other alternatives. People have learned that type of looping and may not even suspect that there are alternatives until they find them. Similarly, developers who come from older languages, which do not yet offer such facilities, can use explicit iteration habitually.
 
 ### Problems
 
@@ -115,9 +115,9 @@ In contrast to pipelines, loops don't provide declarative readability of what is
 Explicitly Indexed Loop
 
 ```js
-const examples = ["foo", "bar", "baz"];
+const examples = ["foo", "bar", "baz"]
 for (let idx = 0; idx < examples.length; idx++) {
-  console.log(examples[idx]);
+  console.log(examples[idx])
 }
 ```
 
@@ -126,8 +126,8 @@ for (let idx = 0; idx < examples.length; idx++) {
 Handsome `forEach` Loop ("`For-In Loop`" / "`For-Of Loop`")
 
 ```js
-const examples = ["foo", "bar", "baz"];
-examples.forEach((example) => console.log(example));
+const examples = ["foo", "bar", "baz"]
+examples.forEach((example) => console.log(example))
 ```
 
 </div>
@@ -139,14 +139,14 @@ examples.forEach((example) => console.log(example));
 [Clever Code](./clever-code.md), [Flag](./flag-argument.md) and Explicit Iterator Loop
 
 ```js
-const examples = ["foo", "bar", "baz"];
-let bar_in_examples = false;
+const examples = ["foo", "bar", "baz"]
+let bar_in_examples = false
 for (let idx = 0; idx < examples.length; idx++) {
   if (examples[idx] == "bar") {
-    bar_in_examples = true;
+    bar_in_examples = true
   }
 }
-console.log(bar_in_examples); // true
+console.log(bar_in_examples) // true
 ```
 
 #### Solution
@@ -154,8 +154,8 @@ console.log(bar_in_examples); // true
 Built-In function instead
 
 ```js
-const examples = ["foo", "bar", "baz"];
-console.log(examples.includes("foo")); // true
+const examples = ["foo", "bar", "baz"]
+console.log(examples.includes("foo")) // true
 ```
 
 </div>
