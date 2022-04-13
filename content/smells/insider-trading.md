@@ -16,6 +16,7 @@ categories:
     - ---
   smell_hierarchies:
     - Code Smell
+    - Design Smell
 relations:
   related_smells:
     - name: Fate over Action

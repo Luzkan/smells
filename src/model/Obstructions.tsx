@@ -9,8 +9,8 @@ import {
   CancelScheduleSend,
   Filter9Plus,
   FunctionsOutlined,
+  QuestionAnswer,
   RestoreFromTrash,
-  SubjectOutlined,
   SupervisorAccount,
   Texture,
 } from "@mui/icons-material"
@@ -39,6 +39,10 @@ export const obstructionFilterItems: FilterItem[] = [
   {
     text: Obstruction.FUNCTIONAL_ABUSERS,
     icon: <FunctionsOutlined color="primary" />,
+  },
+  {
+    text: Obstruction.LEXICAL_ABUSERS,
+    icon: <QuestionAnswer color="primary" />,
   },
   {
     text: Obstruction.OBFUSCATORS,

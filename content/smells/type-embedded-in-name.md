@@ -9,7 +9,7 @@ meta:
 categories:
   expanse: "Within"
   obstruction:
-    - Lexical Abusers
+    - Couplers
   occurrence:
     - Names
   tags:

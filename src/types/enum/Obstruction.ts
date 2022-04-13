@@ -5,6 +5,7 @@ export enum Obstruction {
   DATA_DEALERS = "Data Dealers",
   DISPENSABLES = "Dispensables",
   FUNCTIONAL_ABUSERS = "Functional Abusers",
+  LEXICAL_ABUSERS = "Lexical Abusers",
   OBFUSCATORS = "Obfuscators",
   OBJECT_ORIENTED_ABUSERS = "Object Oriented Abusers",
   OTHER = "Other",
