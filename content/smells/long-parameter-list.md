@@ -1,7 +1,7 @@
 ---
 slug: "long-parameter-list"
 meta:
-  last_update_date: 2022-02-25
+  last_update_date: 2022-04-19
   title: "Long Parameter List"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -56,7 +56,7 @@ problems:
       - ---
 refactors:
   - Replace Parameter with Query
-  - Preserve Whole Object
+  - Preserve the Whole Object
   - Introduce Parameter Object
   - Remove Flag Argument
   - Combine Methods into Class
@@ -82,21 +82,21 @@ history:
 
 ## Long Parameter List
 
-This is another code smell at the same abstraction level as [Long Method](./long-method.md), which usually occurs when there are three, four, or more parameters given as input for a single method. Basically, the longer the parameter list, the harder it is to understand.
+This is another code smell at the same abstraction level as [Long Method](./long-method.md) which usually occurs when three, four, or more parameters are given as input for a single method. Basically, the longer the parameter list, the harder it is to understand.
 
 ### Causation
 
-In an attempt to generalize a routine with multiple variations, at one point too many parameters could have been passed in. Another causation could be due to ignorance of the object relationship between other objects, and thus, instead, calling in all the entities via parameters. [[1](#sources)]
+In an attempt to generalize a routine with multiple variations, a developer could have passed too many parameters at one point. Another causation could be due to ignorance of the object relationship between other objects, and thus, instead, calling in all the entities via parameters [[1](#sources)].
 
 ### Problems:
 
 #### **Hard to Use**
 
-Usage of a method with lots of parameters requires proportionally more knowledge to use it.
+Usage of a method with many parameters requires more knowledge to use it.
 
 #### **Increased Complexity**
 
-Input value is highly inconsistent which creates too much variety in what might happen throughout the execution.
+The input value is highly inconsistent, which creates too much variety in what might happen throughout the execution.
 
 #### **Single Responsibility Principle Violation**
 
@@ -139,7 +139,7 @@ commit.foo()
 ### Refactoring:
 
 - Replace Parameter with Query
-- Preserve Whole Object
+- Preserve the Whole Object
 - Introduce Parameter Object
 - Remove Flag Argument
 - Combine Methods into Class

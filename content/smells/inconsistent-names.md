@@ -1,7 +1,7 @@
 ---
 slug: "inconsistent-names"
 meta:
-  last_update_date: 2022-02-24
+  last_update_date: 2022-04-19
   title: "Inconsistent Names"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -55,21 +55,21 @@ history:
 
 Human brains work in a pattern-like fashion. Starting from the first class, the concept of operation and use of each subsequent class should be generalized throughout the project, facilitating and iteratively accelerating the speed of understanding how the code works.
 
-For this reason, once we know that one class uses the method, `store()` it should be expected that another class for the very same mechanic also uses the `store()` name for that, instead of `add()`, `put()` or `place()`.
+For this reason, once we know that one class uses the method, `store()`, we should expect that another class for the very same mechanic also uses the `store()` name for that, instead of `add()`, `put()` or `place()`.
 
 ### Causation
 
-In a team project, members could have omitted checking the existing naming in other classes, or even did that intentionally to distinguish the names [[1](#sources)].
+In a team project, members could have omitted checking the existing naming in other classes [[1](#sources)]. They could also intentionally choose different naming methods to distinguish classes according to the naming convention of functions.
 
 ### Problems
 
 #### **Comprehensibility**
 
-Standardized communication through names is very important for mental shortcuts.
+Standardized communication through names is vital for mental shortcuts.
 
 #### **Flow State Disruption**
 
-Developer expects a method inside of a sibling class, but can't find it and has to look up synonymous variation of the method he wants.
+The developer expects a method inside a sibling class but can't find it and has to look up synonymous variations of the method he wants.
 
 ### Example
 

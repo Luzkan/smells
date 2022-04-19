@@ -1,7 +1,7 @@
 ---
 slug: "magic-number"
 meta:
-  last_update_date: 2022-02-26
+  last_update_date: 2022-04-19
   title: "Magic Number"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -73,7 +73,7 @@ history:
 
 ## Magic Number
 
-The problem with floats and integers is that they convey no meaning - there is only context, which is often not enough, and even if one might think it is, then leaving the unexplained number makes the code just less readable. Magic numbers also usually go in small groups, which should all the more encourage one to collect them under one appropriately named constant.
+The problem with floats and integers is that they convey no meaning - there is only context, which is often not enough, and even if one might think it is, leaving the unexplained number makes the code just less readable. Magic numbers also usually go in small groups, which should encourage one to collect them under one appropriately named constant.
 
 ### Causation
 
@@ -83,15 +83,15 @@ It may be convenient to write the implementation idea first with numbers, but th
 
 #### **Low Readability**
 
-Only funny numbers convey universally understood meaning, in all other cases - they are just digits without explanation.
+Only _"funny numbers"_ convey universally understood meaning; in all other cases - they are just digits without explanation.
 
 #### **Duplication**
 
-If the place where the magic number is placed is not a Query to some sort of database, then more likely than not, this number will be repeated somewhere later in the logic.
+If the place where the magic number is placed is not a Query to some database, then more likely than not, programmers will repeat this number somewhere later in the logic.
 
 #### **Bijection Violation**
 
-A number as a model is not in one to one relationship with domain (`5` can mean _5 years_, _5 apples_, _grade type_, _5 Bitcoins_).
+A number as a model is not in one to one relationship with the domain (`5` can mean _5 years_, _5 apples_, _grade type_, _5 Bitcoins_).
 
 ### Examples
 
@@ -124,7 +124,7 @@ def calculateDamage(...) -> int:
 
 ### Exceptions
 
-Numbers should not always be replaced with intentional names. The best example that I can give are math & physics formulas. The formula for the kinematic energy would be written as `kinematic_energy = (mass * (velocity**2))/2`, leaving _two's_ as is. On the other hand, if a formula had a known constant like `PI`, then I would definitely create a constant that expresses that, in fact, the `3.14159` is `PI` _(... by the way it could be considered as a [Clever Code](./clever-code.md), it would be best to use `math.pi` built-in instead)_.
+Developers should not always replace numbers with intentional names. The best example that I can give is math & physics formulas. The formula for the kinematic energy would be written as `kinematic_energy = (mass * (velocity**2))/2`, leaving _two's_ as is. On the other hand, if a formula had a known constant like `PI`, then I would create a constant that expresses that, in fact, the `3.14159` is `PI` _(... by the way, it could be considered as a [Clever Code](./clever-code.md), it would be best to use `math.pi` built-in instead)_.
 
 ---
 

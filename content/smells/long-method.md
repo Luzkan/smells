@@ -1,7 +1,7 @@
 ---
 slug: "long-method"
 meta:
-  last_update_date: 2022-02-25
+  last_update_date: 2022-04-19
   title: "Long Method"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -62,7 +62,7 @@ refactors:
   - Replace Conditional with Polymorphism
   - Replace Method with Command
   - Introduce Parameter Object
-  - Preserve Whole Object
+  - Preserve the Whole Object
   - Split Loop
 history:
   - author: "Martin Fowler"
@@ -86,11 +86,11 @@ history:
 
 ## Long Method
 
-One of the most obvious complications that can be found in the code is the length of a method. The more lines of code a function has, the more the developer has to strain himself mentally to fully comprehend what the particular block of code does. The longer a procedure is, the more difficult it is to understand it [[1](#sources)]. It is also harder to change or extend [[2](#sources)]. In addition to that, reading more lines requires more time, which quickly adds up, based on the fact that the code is read more than it is written [[3](#sources)]. Fowler strongly believes in short methods as a better option.
+One of the most apparent complications developers can encounter in the code is the length of a method. The more lines of code a function has, the more the developer has to strain himself mentally to comprehend what the particular block of code does thoroughly. The longer a procedure is, the more difficult it is to understand it [[1](#sources)]. It is also harder to change or extend [[2](#sources)]. In addition, reading more lines requires more time, which quickly adds up because the code is read more than it is written [[3](#sources)]. Fowler strongly believes in short methods as a better option.
 
 ### Causation
 
-Rather than breaking the flow to identify the helper objects, the author adds another code line. [[4](#sources)]
+The author adds another code line rather than breaking the flow to identify the helper objects [[4](#sources)].
 
 ### Problems
 
@@ -100,11 +100,11 @@ Rather than breaking the flow to identify the helper objects, the author adds an
 
 #### **Low Reuse**
 
-- Longer methods most likely have more functionalities, so they cannot be reused as easily as methods which are short and specific
+- Longer methods most likely have more functionalities, so developers cannot reuse them as easily as methods that are short and specific
 
 #### **[Side Effects](./side-effects.md)**
 
-- If a method is long, it’s highly unlikely that it does only what the name of the method could indicate.
+- If a method is long, it is not very likely that it does only what the name of the method could indicate.
 
 ### Refactoring:
 
@@ -112,7 +112,7 @@ Rather than breaking the flow to identify the helper objects, the author adds an
 - Replace Conditional with Polymorphism
 - Replace Method with Command
 - Introduce Parameter Object
-- Preserve Whole Object
+- Preserve the Whole Object
 - Split Loop
 
 ---

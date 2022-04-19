@@ -1,7 +1,7 @@
 ---
 slug: "boolean-blindness"
 meta:
-  last_update_date: 2022-02-16
+  last_update_date: 2022-04-19
   title: "Boolean Blindness"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -59,7 +59,7 @@ history:
 
 ## Boolean Blindness
 
-In the Haskell community, there is a well-(un)known question about the filter function - does the filter predicate means to `TAKE` or to `DROP` (check [example](#example))? Boolean Blindness smell occurs in a situation in which a function or method that operates on `bool`-s destroys the information about what _boolean_ represents. In those situations, it would be much better to have an expressive  equivalent of type _boolean_ } with appropriate names. For the filter function, it could be of type `Keep` defined as data `Keep = Drop | Take`.
+In the Haskell community, there is a well-(un)known question about the filter function - does the filter predicate means to `TAKE` or to `DROP` (check [example](#example))? Boolean Blindness smell occurs in a situation in which a function or method that operates on `bool`-s destroys the information about what _boolean_ represents. It would be much better to have an expressive equivalent of type _boolean_ with appropriate names in these situations. For the filter function, it could be of type `Keep` defined as `Keep = Drop | Take`.
 
 This smell is in the same family as [Uncommunicative Names](./uncommunicative-name.md) and [Magic Numbers](./magic-number.md).
 

@@ -1,7 +1,7 @@
 ---
 slug: "temporary-field"
 meta:
-  last_update_date: 2022-02-27
+  last_update_date: 2022-04-19
   title: "Temporary Field"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -68,19 +68,19 @@ history:
 
 ## Temporary Field
 
-Temporary Field is a variable that is created where it is not really needed. It refers to variables which are only used in some situations [[1](#sources)] and/or certain areas of a program. This can be confusing when the purpose of using the variable cannot be explained or cannot be found outside of its scope [[2](#sources)]. It might be misplaced at the class level when the functionality it provides is specific only to a particular method [[2](#sources)]. One should expect an object to need all of its fields.
+Temporary Field is a variable created where it is not needed. It refers to variables only used in some situations [[1](#sources)] or specific areas of a program. This uniqueness can be confusing when the purpose of using the variable cannot be explained or cannot be found outside of its scope [[2](#sources)]. It might be misplaced at the class level when the functionality it provides is specific only to a particular method [[2](#sources)]. One should expect an object to need all of its fields.
 
 ### Problems
 
 #### **Hard to Understand**
 
-Additional fields clutters the code and strains the cognitive load, by keeping in mind attributes that are useless.
+Additional fields clutter the code and strain the cognitive load by keeping in mind useless attributes.
 
 ### Examples
 
 <div class="example-block">
 
-Consider the following example, when `full_date` is used only for object to string conversion.
+Consider the following example, when `full_date` is used only for an object to string conversion.
 
 #### Smelly
 

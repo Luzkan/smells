@@ -1,7 +1,7 @@
 ---
 slug: "required-setup-or-teardown-code"
 meta:
-  last_update_date: 2022-02-27
+  last_update_date: 2022-04-19
   title: "Required Setup or Teardown Code"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -64,13 +64,13 @@ history:
 
 ## Required Setup or Teardown Code
 
-If, after use of a class or method, several lines of code are required to:
+If, after the use of a class or method, several lines of code are required to:
 
 - set it properly up,
-- the environment requires specific actions beforehand and/or after its use,
+- the environment requires specific actions beforehand or after its use,
 - clean up actions are required,
 
-then there is a _Required Setup or Teardown Code_ code smell. This may indicate [improper abstraction level](./dubious-abstraction.md).
+then there is a _Required Setup or Teardown Code_ code smell. Furthermore, this may indicate [improper abstraction level](./dubious-abstraction.md).
 
 ### Causation
 
@@ -80,7 +80,7 @@ Some functionality was taken beyond the class during development, and the need f
 
 #### **Lack of Cohesion**
 
-Class can't be reused by itself - it requires extra lines of code outside of its scope to make use of it.
+Class can't be reused by itself - it requires extra lines of code outside of its scope to use it.
 
 ### Examples
 

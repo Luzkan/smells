@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [[1.0.5]] - 2022-04-19
+
+### Changed
+
+- Language tweaks in all of the Code Smells contents.
+- [Reload on First Visit](../src/utils/reloadPageOnFirstVisit.ts) now will reload the page on first visit each day.
+
 ## [[1.0.4]] - 2022-04-13
 
 ### Added
@@ -125,6 +132,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Separate page articles for each smell, so they can be directly linked to by anyone for any reason.
   - Separate page articles navigation bar on the left to browse to other smells. This navigation bar can be turned to list by a different type of categorization types.
 
+[1.0.5]: https://github.com/Luzkan/smells/releases/tag/1.0.5
 [1.0.4]: https://github.com/Luzkan/smells/releases/tag/1.0.4
 [1.0.3]: https://github.com/Luzkan/smells/releases/tag/1.0.3
 [1.0.2]: https://github.com/Luzkan/smells/releases/tag/1.0.2

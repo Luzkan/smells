@@ -1,7 +1,7 @@
 ---
 slug: "fallacious-method-name"
 meta:
-  last_update_date: 2022-02-22
+  last_update_date: 2022-04-19
   title: "Fallacious Method Name"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -108,23 +108,23 @@ history:
 
 ## Fallacious Method Name
 
-WWhen I started to think of Code Smells from the comprehensibility perspective (of its lack of) as one of the key factors, I was quite intrigued that it was not yet thoroughly researched, or at least not when researching with focus on _"Code Smell"_ as a keyword. There is a grounded idea about code that is obfuscated from the point of [Obscured Intentions](./obscured-intent.md) or no explanation at all ([Magic Number](./magic-number.md), [Uncommunicative Name](./uncommunicative-name.md)). I felt like there was a missing hole in the code that is intentionally too clever ([Clever Code](./clever-code.md)) or the code that contradicts itself. Fortunately, I have found an amazing article that supports my thoughts and addresses some of the things that I had in mind under the name _Linguistic Antipatterns_ [[1](#sources)]. I have included their subset of antipatterns under one code smell because listing them one by one would be too granular from a code perspective. The idea behind them can be summarized by one name: _Fallacious Method Name_.
+When I started to think of Code Smells from the comprehensibility perspective (of its lack of) as one of the critical factors, I was pretty intrigued that it was not yet thoroughly researched, or at least not when researching with a focus on _"Code Smell"_ as a keyword. There is a grounded idea about code that is obfuscated from the point of [Obscured Intentions](./obscured-intent.md) or code without any explanation ([Magic Number](./magic-number.md), [Uncommunicative Name](./uncommunicative-name.md)). I felt like there was a missing hole in the code that was intentionally too clever ([Clever Code](./clever-code.md)) or the code that contradicts itself. Fortunately, I have found a fantastic article that supports my thoughts and addresses some of what I had in mind under the name _Linguistic Antipatterns_ [[1](#sources)]. I have included their subset of antipatterns under one code smell because listing them one by one would be too granular from a code perspective. The idea behind them can be summarized by one name: _Fallacious Method Name_.
 
-This smell is caused by creating conflicting methods or functions with respect to their functionality and naming. Over the years, programmers have developed connections between certain words and functionality that should be tied to them together. Going against logical expectations by, for example, creating a `getSomething` function that does not return is confusing and wrong.
+This smell is caused by creating conflicting methods or functions regarding  their functionality and naming. Over the years, programmers have developed connections between certain words and functionality that programmers should tie together. Going against logical expectations by, for example, creating a `getSomething` function that does not return is confusing and wrong.
 
 ### Causation
 
-When we create methods, their name may not be entirely representative of what it will be doing after we finish working on them. Except that one should then go back and correct its name accordingly, to what has been done.
+When we create methods, their name may not entirely represent what they will be doing after we finish working on them. Except that one should then go back and correct its name accordingly to what has been done.
 
 ### Problems
 
 #### **Decreased Readability**
 
-Developers need to inspect the function or methods in order to find out they do.
+Developers need to inspect the function or methods to determine what they do.
 
 #### **Reduced Reliability**
 
-If someone would like to use a method with a given name, that someone should also get the effect that the name implies.
+If someone would like to use a method with a given name, he should also expect the name's effect.
 
 ### Example
 

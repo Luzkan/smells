@@ -1,7 +1,7 @@
 ---
 slug: "fallacious-comment"
 meta:
-  last_update_date: 2022-02-21
+  last_update_date: 2022-04-19
   title: "Fallacious Comment"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -101,19 +101,19 @@ history:
 
 ## Fallacious Comment
 
-_Comments_ differ from most of the other syntaxes available in a programming languages; it is not executed. This might cause situations where, after code rework, the comments around it were left intact and no longer true to what they described. This should not even happen in the first place, as valid comments from the _**"Why"** Comment_ family are not susceptible to this kind of situation. If the comment explained **"what"** was happening, then it will be relevant as long as the code it explains is left intact. Of course, ["What" Comments](./what-comment.md) are a Code Smell themselves, and so is [Duplicated Code](./duplicated-code.md).
+_Comments_ differ from most other syntaxes available in programming languages; it is not executed. This might lead to situations where, after code rework, the comments around it were left intact and no longer true to what they described. First and foremost, this situation should not even happen, as good comments from the _**"Why"** Comment_ family are not susceptible to this situation. If the comment explained **"what"** was happening, then it will be relevant as long as the code it explains is intact. Of course, ["What" Comments](./what-comment.md) are a Code Smell themselves, and so is [Duplicated Code](./duplicated-code.md).
 
-In real-life scenarios, this might generally happen within docstrings, which can usually be found in methods exposed to other users.
+This might generally happen within docstrings in real-life scenarios, which developers usually find in methods exposed to other users.
 
 ### Causation
 
-The developer was in hurry and did not double check that everything is up to date after the changes. He could also be reaffirmed by a passing unit test - there is no practical automated way to check for correctness of comments/docstrings.
+The developer was in a hurry and did not double-check that everything was up-to-date after the changes. A passing unit test could also reaffirm him - there is no practical automated way to check for the correctness of comments/docstrings.
 
 ### Problems
 
 #### Decreased Readability
 
-Developer does not know whether he should trust the methods signature or comment.
+The developer does not know whether he should trust the method's signature or comment.
 
 ### Example
 

@@ -1,7 +1,7 @@
 ---
 slug: "insider-trading"
 meta:
-  last_update_date: 2022-02-24
+  last_update_date: 2022-04-19
   title: "Insider Trading"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -80,9 +80,9 @@ history:
 
 ## Insider Trading
 
-The classes should know as little as possible about each other. As Fowler put it, "classes spend too much time delving in each other’s private parts" [[1](#sources)]. This code smell was listed in 1999 as _Inappropriate Intimacy_ and is no longer listed in the 2018 version of the book under the same name. It was replaced by the name [Insider Trading](./insider-trading.md) code smell, possibly to make the change - that now the `classes` were generalized to modules - more noticeable (similarly to the wording change in [Feature Envy](./feature-envy.md)).
+The classes should know as little as possible about each other. As Fowler put it, "classes spend too much time delving in each other's private parts" [[1](#sources)]. This code smell was listed in 1999 as _Inappropriate Intimacy_ and is no longer listed in the 2018 version of the book under the same name. It was replaced by the term [Insider Trading](./insider-trading.md) code smell, possibly to make the change - that now the `classes` were generalized to modules - more noticeable (similarly to the wording change in [Feature Envy](./feature-envy.md)).
 
-The concept stays the same - instead of reaching for each others secrets, modules/classes interchange too much information and implementation details. In other words, this occurs whenever a module/class has too much knowledge about the inner workings or data of another module/class.
+The concept stays the same - instead of reaching for each other's secrets, modules/classes interchange too much information and implementation details. In other words, this occurs whenever a module/class has too much knowledge about the inner workings or data of another module/class.
 
 ### Causation
 
@@ -96,7 +96,7 @@ The modules between themselves should know as little as possible.
 
 #### **Reduced Reusability**
 
-Intertwined classes cannot be reused in isolation.
+Developers cannot reuse intertwined classes in isolation.
 
 #### **Hard to Test**
 

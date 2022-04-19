@@ -1,7 +1,7 @@
 ---
 slug: "inappropriate-static"
 meta:
-  last_update_date: 2022-02-24
+  last_update_date: 2022-04-19
   title: "Inappropriate Static"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -54,11 +54,11 @@ history:
 
 ## Inappropriate Static
 
-The rule of thumb given by uncle Robert is that when in doubt one should prefer non-static methods to static methods. The best way to check whether a method should be static would be to think if the method should behave polymorphically. A good example of a static method given by Martin is `math.max(double a, double b)` - it is hard to think of polymorphic behavior for a `max` function. On the other hand, `HourlyPayCalculator.calculate_pay(employee, overtime_rate)` is dubious, as there could be different algorithms to calculate the payment, and thus it should be a nonstatic method of class `Employee`. However, one should be aware and take caution of the [Speculative Generality](./speculative-generality.md) code smell. At the very present moment, when there are no different algorithms yet requested or planned, this is a stateless operation, which is fine for static methods. Steve Smiths addresses that statics should be reserved for behavior that will never change, besides the previously mentioned stateless operations, giving global constants as one of the examples [[1](#sources)].
+The rule of thumb given by uncle Robert is that when in doubt, one should prefer non-static methods to static methods. The best way to check whether a method should be static would be to think if the method should behave polymorphically. An excellent example of a static method given by Martin is `math.max(double a, double b)` - it is hard to think of polymorphic behavior for a `max` function. On the other hand, `HourlyPayCalculator.calculate_pay(employee, overtime_rate)` is dubious, as there could be different algorithms to calculate the payment, and thus it should be a nonstatic method of class `Employee`. However, one should be aware and take caution of the [Speculative Generality](./speculative-generality.md) code smell. At the very present moment, when there are no different algorithms yet requested or planned, this is a stateless operation, which is acceptable for static methods. Steve Smiths addresses that statics should be reserved for behavior that will never change, besides the previously mentioned stateless operations, giving global constants as examples [[1](#sources)].
 
-[Static Cling](./inappropriate-static.md) is a code smell, that is based on the border of the test code and the source code, although, following the Fail-Fast principle, the issue starts in the development parts of the codebase.
+[Static Cling](./inappropriate-static.md) is a code smell based on the border of the test code and the source code, although, following the Fail-Fast principle, the issue starts in the developing parts of the codebase.
 
-Whenever a static function is called, in most languages, it is, to say the least, not trivial to test and/or mock the method in which it occurs. There are 3rd party mocking frameworks, but that is more of a workaround for bad design. This should be looked out for, because such dependency is easily introduced into the code in styles other than Test-Driven Development.
+Whenever a static function is called, in most languages, it is, to say the least, not trivial to test or mock the method in which it occurs. There are 3rd party mocking frameworks, but that is more of a workaround for bad design. Developers should look out for these dependencies because they are effortlessly introduced into the code in styles other than Test-Driven Development.
 
 ### Problems
 

@@ -1,7 +1,7 @@
 ---
 slug: "alternative-classes-with-different-interfaces"
 meta:
-  last_update_date: 2022-02-17
+  last_update_date: 2022-04-19
   title: "Alternative Classes with Different Interfaces"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -59,11 +59,11 @@ history:
 
 ## Alternative Classes with Different Interfaces
 
-If two classes have the same functionality but different implementations, they should be merged or a superclass should be extracted to limit [Code Duplication](./duplicated-code.md). This smell occurs whenever a class can operate on two alternative classes (for example, take `Zombie` and `Snowman`), but the interface to these alternative classes are different - when it operates with `Zombie` it calls `hug_zombie()` and with `Snowman`, it has to call `hug_snowman()`.
+If two classes have the same functionality but different implementations, developers should merge them, or developers should extract a superclass to limit [Code Duplication](./duplicated-code.md). This smell occurs whenever a class can operate on two alternative classes (for example, take `Zombie` and `Snowman`). However, the interface to these alternative classes is different - when it operates with `Zombie`, it calls `hug_zombie()`, and with `Snowman`, it has to call `hug_snowman()`.
 
 ### Causation
 
-This may happen due to the oversight that a functionally equivalent class already exists or when two or more developers are working on code to handle a similar situation, but each of them did not know about each others work. Lack of abstract methods that enforce the expected implementation method names.
+This may happen due to the oversight that a functionally equivalent class already exists or when two or more developers are working on code to handle a similar situation. However, they did not know about the other's work — lack of abstract methods that enforce the common implementation method names.
 
 ### Problems
 

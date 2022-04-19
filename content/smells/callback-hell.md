@@ -1,7 +1,7 @@
 ---
 slug: "callback-hell"
 meta:
-  last_update_date: 2022-02-16
+  last_update_date: 2022-04-19
   title: "Callback Hell"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -54,21 +54,21 @@ history:
 
 ## Callback Hell
 
-Smell with scent similar to the [Conditional Complexity](./conditional-complexity.md) where tabs are intended deep and the curly closing brackets can cascade like a Niagara waterfall.
+Smell with a scent similar to the [Conditional Complexity](./conditional-complexity.md), where tabs are intended deep, and the curly closing brackets can cascade like a Niagara waterfall.
 
-Callback is a function that is passed into another function as an argument that is meant to be executed later on. One of the most popular callbacks could be the `addEventListener` in JavaScript.
+The callback is a function that is passed into another function as an argument that is meant to be executed later. One of the most popular callbacks could be the `addEventListener` in JavaScript.
 
-Alone in separation, they are not causing or indicating any problems. Rather, the long list of callbacks that are chained together is something to watch out for. This could be called more professionally as a _Hierarchy of Callbacks_ but _(fortunately)_, it already received a more interesting and recognizable name. There are plenty of solutions to this problem, namely: `Promises`, `async` functions, or splitting the big function into separate methods.
+Alone in separation, they are not causing or indicating any problems. Instead, the long list of chained callbacks is something to watch out for. More professionally, this could be called a _Hierarchy of Callbacks_ but _(fortunately)_, it has already received a more exciting and recognizable name. There are many solutions to this problem: `Promises`, `async` functions, or splitting the significant function into separate methods.
 
 ### Problems:
 
 #### Comprehensibility
 
-Long and deep nested methods are difficult to read and maintain.
+Long and deep nested methods are challenging to read and maintain.
 
 #### Inversion of Control Violation
 
-One shouldn't give up the control of how things are used.
+One shouldn't give up control of how things are used.
 
 ### Example
 

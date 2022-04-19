@@ -1,7 +1,7 @@
 ---
 slug: "speculative-generality"
 meta:
-  last_update_date: 2022-02-27
+  last_update_date: 2022-04-19
   title: "Speculative Generality"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -67,7 +67,7 @@ history:
 
 ## Speculative Generality
 
-Developers are humans, and humans are bad guessers [[1](#sources)]. Developers tend to create additional features in preparation for the future, guessing that it will be useful, but that time never came. This problem lies within the psychological human nature and, contrary to their best intentions, it just clutters the code.
+Developers are humans, and humans are bad guessers [[1](#sources)]. Developers tend to create additional features in preparation for the future, guessing they will be useful, but that time never came. This problem lies within the human psychological nature and, contrary to their best intentions, it just clutters the code.
 
 ### Causation
 
@@ -81,7 +81,7 @@ The whole system is trying or expecting to do more than it is supposed to.
 
 #### **Increased Complexity**
 
-Each additional method, class or module increases the required time and effort to understand it as a whole.
+Each additional method, class, or module increases the required time and effort to understand it as a whole.
 
 ### Examples
 

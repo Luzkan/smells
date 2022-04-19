@@ -6,8 +6,20 @@ export const handleReloadPageOnFirstVisit = () => {
   // ref.:
   //  - https://en.wikipedia.org/wiki/Flash_of_unstyled_content
   //  - https://www.gatsbyjs.com/plugins/gatsby-plugin-material-ui/
-  if (typeof window !== "undefined" && !localStorage.getItem("firstVisit")) {
-    localStorage.setItem("firstVisit", Date())
-    location.reload()
+  if (typeof window === "undefined") return
+
+  const handleNewVisit = () => {
+    localStorage.setItem("lastVisit", Date())
+    window.setTimeout(() => {
+      window.location.reload()
+    }, 2000)
   }
+
+  const neverVisted = (): boolean => !localStorage.getItem("lastVisit")
+  if (neverVisted()) handleNewVisit()
+
+  const lastVisitDateTime = new Date(localStorage.getItem("lastVisit") as string)
+  const currentDateTime = new Date()
+  const lastVisitMoreThanDayAgo = (): boolean => currentDateTime.getTime() - lastVisitDateTime.getTime() > 86400000
+  if (lastVisitMoreThanDayAgo()) handleNewVisit()
 }

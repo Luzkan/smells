@@ -1,7 +1,7 @@
 ---
 slug: "parallel-inheritance-hierarchies"
 meta:
-  last_update_date: 2022-02-26
+  last_update_date: 2022-04-19
   title: "Parallel Inheritance Hierarchies"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -65,11 +65,11 @@ history:
 
 ## Parallel Inheritance Hierarchies
 
-This occurs when an inheritance tree depends on another inheritance tree by composition and to create a subclass for a class, one finds that he has to create a subclass for another class. Fowler specified that this is a special case of [Shotgun Surgery](./shotgun-surgery.md) code smell.
+This occurs when an inheritance tree depends on another inheritance tree by composition, and to create a subclass for a class, one finds that he has to make a subclass for another class. Fowler specified that this is a special case of [Shotgun Surgery](./shotgun-surgery.md) code smell.
 
 ### Causation
 
-This can happen naturally, when trying to model a problem in a domain. Problem arises, when these hierarchies are created artificially and unnecessarily (for example, by adding a standard prefix throughout the classes).
+This smell can happen naturally when trying to model a problem in a domain. The problem arises when these hierarchies are created artificially and unnecessarily (for example, by adding a standard prefix throughout the classes).
 
 ### Problems
 
@@ -108,7 +108,7 @@ class PremiumUser(User):
 class PremiumFunctions(Functions):
     ...
 
-# each time, new user is added, so is new function subclass with the same prefix
+# each time a new user is added, so is a new function subclass with the same prefix
 
 ```
 
@@ -143,7 +143,7 @@ class Lion(Animal):
 class Carnivore(Food):
     ...
 
-# domain-like mapping, might eventually be reused
+# domain-like mapping might eventually be reused
 ```
 
 </div>

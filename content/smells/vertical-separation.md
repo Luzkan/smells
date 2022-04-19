@@ -1,7 +1,7 @@
 ---
 slug: "vertical-separation"
 meta:
-  last_update_date: 2022-02-26
+  last_update_date: 2022-04-19
   title: "Vertical Separation"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -54,17 +54,17 @@ history:
 
 ## Vertical Separation
 
-There is a tendency to declare variables in one place together before the main "logic" of the method begins. This creates artificial vertical separation between the variables and the place where they are used. This is an undesirable situation. The same applies to private, utility, or helper functions, which should preferably be found directly under their first usage [[1](#sources)].
+There is a tendency to declare variables in one place together before the main "logic" of the method begins. This detachment creates an artificial vertical separation between the variables and the place where they are used. This distancing is an undesirable situation. The same applies to private, utility, or helper functions, which developers should preferably find directly under their first usage [[1](#sources)].
 
-There are programming languages (like C#) that support _Regions_ which is a code smell that regards the very same issue, but also supports it through the offered functionality. There are also IDE's and editor add-ons that add this externally as a feature. Regions are markers that allow the code to collapse from one certain place to another. It may seem innocent, although this is just a plaster for the unhealed wound of _Vertical Separation_. It is often used to conceal that a method or class is too large, which does not solve the underlying problem.
+There are programming languages (like C#) that support _Regions_, a code smell that regards the same issue but also supports it through the offered functionality. There are also IDE and editor add-ons that add this externally as a feature. Regions are markers that allow the code to collapse from one particular place to another. It may seem innocent, although this is just a plaster for _Vertical Separation's_ unhealed wound. It is often used to conceal that a method or class is too large, which does not solve the underlying problem.
 
-Sometimes it is used regardless of the size of the code, just to mark separate "regions" for fields, properties, public methods, private methods - even if there are none implemented, just to have a certain common standard.
+Sometimes it is used, regardless of the size of the code, to mark separate "regions" for fields, properties, public methods, private methods - even if there are none implemented, to have a certain common standard.
 
-If the code is well written, the default collapsible places based on the code (on methods, classes, etc.) should be good enough as an organizing tool.
+If the code is well written, the default collapsible places based on the code (on methods or classes) should be good enough as an organizing tool.
 
 ### Causation:
 
-The Vertical Separation may result from the past optimization habits, which was long, long time ago but nowadays the code compilers will optimize it anyway (function variables are put on the stack before the first line of code even gets executed). This could also be a matter of personal preference, but the common rule is that things should not be too far from each other.
+The Vertical Separation may result from the past optimization habits, which were required a long time ago. However, nowadays, the code compilers will optimize it (function variables are put on the stack before the first line of code even gets executed). This could also be a matter of personal preference, but the standard rule is that things should not be too far from each other.
 
 Regions could be used to hide bloat and be a very inexpensive deodorant for other code smells such as [Clever Code](./clever-code.md), [Long Method](./long-method.md), [Loops](./imperative-loops.md), but it just bloats the code even further.
 
@@ -80,7 +80,7 @@ In order to see the code in which the regions are used, more clicks are required
 
 #### **Law of Demeter Principle Violation**
 
-Things that are related with each other, should be as close to each other as possible.
+Things related to each other should be as close to each other as possible.
 
 #### **No Additional Value**
 

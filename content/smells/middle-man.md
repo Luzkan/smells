@@ -1,7 +1,7 @@
 ---
 slug: "middle-man"
 meta:
-  last_update_date: 2022-02-26
+  last_update_date: 2022-04-19
   title: "Middle Man"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -67,7 +67,7 @@ history:
 
 ## Middle Man
 
-The class that only performs delegation work to other classes is called a _Middle Man_. This is the opposite of the [Message Chains](./message-chain.md). Encapsulation (hiding internal details) in the world of Object-Oriented Programming is a common pattern [[1](#sources)], although the problem arises when it goes too far - Fowler specified that it can be said that its bad when half of the methods are delegators [[2](#sources)]. Mäntylä wrote that this is a problem, when every time a new method has to be created, it requires the delegators to be modified with them [[1](#sources)].
+The class that only performs delegation work to other classes is called a _Middle Man_. This is the opposite of the [Message Chains](./message-chain.md). Encapsulation (hiding internal details) in the world of Object-Oriented Programming is a typical pattern [[1](#sources)]. However, the problem arises when it goes too far - Fowler specified that it could be said that it's terrible when half of the methods are delegators [[2](#sources)]. Mäntylä wrote that this is a problem when every time a new method has to be created, it requires the delegators to be modified with them [[1](#sources)].
 
 ### Causation
 
@@ -77,7 +77,7 @@ This can happen due to over-zealous refactorization of Message Chains.
 
 #### **Readability**
 
-Without proper, meaningful, clear and unambiguous naming for the delegation method, developer might need to check what is exactly being called just to be sure.
+Without proper, meaningful, unambiguous naming for the delegation method, the developer might need to check what is precisely being called to be sure.
 
 #### **Unnecessary Indirection**
 
@@ -87,7 +87,7 @@ Holding references instead of actual values might slightly increase project comp
 
 <div class="example-block">
 
-Note: Yes, what is smelly from the perspective of _Middle Man_, might be a solution to [Message Chain](./message-chain.md).
+Note: Yes, what is smelly from _Middle Man_'s perspective might be a solution to [Message Chain](./message-chain.md).
 
 #### Smelly
 
@@ -139,7 +139,7 @@ class Field:
 
 ### Exceptions
 
-In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominates ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) with the aim of making the entire codebase as clear as possible.
+In the context of the system as a whole, some communication between modules must take place. All possibilities should be properly balanced so that none of the smells dominate ([Global Data](./global-data.md), [Tramp Data](./tramp-data.md), [Message Chain](./message-chain.md), [Middle Man](./middle-man.md)) to make the entire codebase as straightforward as possible.
 
 ### Refactoring:
 

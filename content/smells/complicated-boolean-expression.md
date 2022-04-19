@@ -1,7 +1,7 @@
 ---
 slug: "complicated-boolean-expression"
 meta:
-  last_update_date: 2022-02-20
+  last_update_date: 2022-04-19
   title: "Complicated Boolean Expression"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -66,15 +66,15 @@ history:
 
 ## Complicated Boolean Expression
 
-One should have to keep in mind that _Boolean Expressions_ can be troublesome to understand for some people (by troublesome I mean, not as quick to comprehend as if it were a properly named method instead). Wake reminds the reader of _De Morgan Laws_ that could be applied to simplify the expression.
+One should keep in mind that _Boolean Expressions_ can be troublesome for some people (in other words, not as quick to comprehend as if it were an adequately named method instead). Wake reminds the reader of _De Morgan Laws_ that could be applied to simplify the expression.
 
-Wake also reminds about guard checks, which could "peel off" complexity layers from the expression. [[1](#sources)] Interestingly, Robert Martin gives a minimum [example](#robert-martin-example) in his _Encapsulate Conditionals_ refactoring explanation [[2](#sources)], which could be a bit controversial but is yet another valid perspective to look at the problem. Instead of simplifying the expression, he paid attention to the readable intention. The exact example provided might be, as I have just mentioned, a little bit controversial, because it contains just one `AND` operation, which is not a _Discrete Mathematics 2_ type problem. Nevertheless, the point is valid: A properly named function or method is definitely more comprehensible at glance than whatever the `boolean` expression it is.
+Wake also reminds us about guard checks, which could "peel off" complexity layers from the expression. [[1](#sources)] Interestingly, Robert Martin gives a minimum [example](#robert-martin-example) in his _Encapsulate Conditionals_ refactoring explanation [[2](#sources)], which could be a bit controversial but is yet another good perspective to look at the problem. Instead of simplifying the expression, he paid attention to the readable intention. As I have just mentioned, the example provided might be a bit controversial because it contains just one `AND` operation, which is not a _Discrete Mathematics 2_ type problem. Nevertheless, the point is valid: An appropriately named function or method is more comprehensible at a glance than whatever the `boolean` expression it is.
 
-I have linked the smell to [Obscured Intent](./obscured-intent.md) as _causes_, just because of all the cases of any `if not thing.notDone()` double negated by token and name expressions, wherever they are. Unnecessary [Flag Argument](./flag-argument.md) Code Smell might imperceptibly impact the complexity of an expression.
+I have linked the smell to [Obscured Intent](./obscured-intent.md) as _causes_ just because of all the cases of any `if not thing.notDone()` double negated by token and name expressions, wherever they are. An unnecessary [Flag Argument](./flag-argument.md) Code Smell might imperceptibly impact the complexity of an expression.
 
 ### Causation
 
-Similarly to [Conditional Complexity](./conditional-complexity.md) - new features were introduced, and instead of doing it cleanly, a dirty method conditional method was used instead.
+Similar to [Conditional Complexity](./conditional-complexity.md) - developers introduced new features, and instead of doing it cleanly, developers used a dirty method conditional method instead.
 
 ### Problems:
 

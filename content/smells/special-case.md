@@ -1,7 +1,7 @@
 ---
 slug: "special-case"
 meta:
-  last_update_date: 2022-02-27
+  last_update_date: 2022-04-19
   title: "Special Case"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -65,17 +65,17 @@ Wake addresses the complex conditional situation as a _Special Case_ code smell 
 
 ### Causation
 
-There was a need for a special case to handle. This might also be a hotfix that was never properly fixed.
+There was a need for a special case to handle. A hotfix that was never adequately fixed could also be the reason for the smell.
 
 ### Problems:
 
 #### **Comprehensibility**
 
-Method is doing a specific task but there is "one special case" to consider.
+The method is doing a specific task, but there is "one special case" to consider.
 
 #### **Increased Test Complexity**
 
-Special case has to have extra special test.
+Special case has to have an extra special test.
 
 ### Example
 

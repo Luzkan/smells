@@ -1,7 +1,7 @@
 ---
 slug: "obscured-intent"
 meta:
-  last_update_date: 2022-02-26
+  last_update_date: 2022-04-19
   title: "Obscured Intent"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -84,21 +84,21 @@ history:
 
 ## Obscured Intent
 
-The [Obscured Intent](./obscured-intent.md) Code Smell, initially proposed by Robert Martin in _"Clean Code"_ [[37](#sources)]), is cross-smelly with other smells in the **Obfuscators** category. When [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) are placed within a [Vertically Separated Space](./vertical-separation.md) hiding an [Explicitly Indexed Loop](./imperative-loops.md) with a ["What" Comment](./what-comment.md) explanation on top of that, then the [Obscured Intent](./obscured-intent.md) is going to be catched quite easily by intuition or by metrics of other smells.
+The [Obscured Intent](./obscured-intent.md) Code Smell, initially proposed by Robert Martin in _"Clean Code"_ [[37](#sources)]), is cross-smelly with other smells in the **Obfuscators** category. When [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) are placed within a [Vertically Separated Space](./vertical-separation.md) hiding an [Imperative Loop](./imperative-loops.md) with a ["What" Comment](./what-comment.md) explanation on top of that, then the [Obscured Intent](./obscured-intent.md) is going to be caught quite easily by intuition or by metrics of other smells.
 
-The code should be as expressive as possible [[1](#sources)]). Robert Martin gives an example of a completely unreadable [overtime function](#Obscured-Intent) noting that even if the code is small and compact, it may still be tragic. In this case, correcting the [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) would probably do the trick to make that snippet of code much more fragrant.
+The code should be as expressive as possible [[1](#sources)]). Robert Martin gives an example of an utterly unreadable [overtime function](#Obscured-Intent) noting that even if the code is small and compact, it may still be tragic. In this case, correcting the [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) would probably do the trick to make that snippet of code much more fragrant.
 
-There is a famous real-world example of an Obscured Intent. In the _Quake 3: Arena_ [fast inverse square root](#example-1), the problem is with the [Uncommunicative Naming](./uncommunicative-name.md), ["What" Comments](./what-comment.md), [Dead Code](./dead-code.md) and [Magic Numbers](./magic-number.md). I will also point out that games have a slightly different specificity for their industry - usually the code out there is very confusing and priorities are not put on things such as reusability, so there is a lot to explore.
+There is a famous real-world example of an Obscured Intent. In the _Quake 3: Arena_ [fast inverse square root](#example-1), the problem is with the [Uncommunicative Naming](./uncommunicative-name.md), ["What" Comments](./what-comment.md), [Dead Code](./dead-code.md), and [Magic Numbers](./magic-number.md). I will also point out that games have a slightly different specificity for their industry. Usually, the code out there is very confusing, and priorities are not put on things such as reusability, so there is a lot to explore.
 
 ### Causation
 
-Sometimes, a developer can forget that something that seems to be obvious to him is not as clear to other developers. There may also be cases where the developer intentionally compacts the code to make it appear smarter by making it more mysterious.
+Sometimes, a developer can forget that something that seems evident to him is not as clear to other developers. There may also be cases where the developer intentionally compacts the code to appear brighter by making it more mysterious.
 
 ### Problems
 
 #### **Comprehensibility Issues**
 
-Code does not convey meaning, thus is not understandable. It may be a huge time waste if someone ever has to touch parts of the code that interact with _obscure intent_ piece of code.
+Code does not convey meaning and thus is not understandable. It may be a considerable time waste if someone ever has to touch parts of the code that interact with an _obscure intent_ piece of code.
 
 ### Example
 
@@ -106,7 +106,7 @@ Code does not convey meaning, thus is not understandable. It may be a huge time 
 
 #### Smelly
 
-Example given by Robert Martin.
+An example given by Robert Martin.
 
 ```py
 def m_ot_calc() -> int:

@@ -1,7 +1,7 @@
 ---
 slug: "indecent-exposure"
 meta:
-  last_update_date: 2022-02-24
+  last_update_date: 2022-04-19
   title: "Indecent Exposure"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -69,19 +69,19 @@ history:
 
 ## Indecent Exposure
 
-Unnecessarily exposing internal details is a _Indecent Exposure_ code smell. The methods and variables of a class that work only with other methods of the same class should be kept private.
+Unnecessarily exposing internal details is an _Indecent Exposure_ code smell. The methods and variables of a class that works only with other same class methods should be kept private.
 
 Otherwise, it might lead to [Insider Trading](./insider-trading.md) or [Feature Envy](./feature-envy.md) code smells. One should always strive to hide as many variables and methods from other classes as possible. Exposing irrelevant code contributes to the complexity of a design.
 
 ### Causation
 
-The developer could have a habit of creating all the methods public at first, but then, forgets to change the access levels to appropriate ones.
+The developer could have a habit of creating all the methods public at first but then forgets to change the access levels to appropriate ones.
 
 ### Problems
 
-#### **Error Prone**
+#### **Error-Prone**
 
-Fields accessible from outside the class are a bait for unnecessary coupling issues.
+Fields accessible from outside the class baits for unnecessary coupling issues.
 
 #### **Information Overload**
 

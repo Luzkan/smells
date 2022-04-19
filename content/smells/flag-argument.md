@@ -1,7 +1,7 @@
 ---
 slug: "flag-argument"
 meta:
-  last_update_date: 2022-02-16
+  last_update_date: 2022-04-19
   title: "Flag Argument"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -95,19 +95,19 @@ history:
 
 ## Flag Argument
 
-Martin Fowler defines Flag Arguments as "kind of function argument that tells the function to carry out a different operation depending on its value." [[1](#sources)] There are two reasons why this is smelly. First of all - it can be a candidate for [Boolean Blindness](./boolean-blindness.md) Code Smell. Fowler gives a great example with _Concert_ class and `book(customer: Customer, is_premium: bool)` method. While reading the code, without knowing much more context, one is going to be stopped by invocation of this method: `book(marcel, false)` - excuse me, but exactly what "`false`"? The situation is clear if instead of using a flag argument, method is divided into two separate parts and then, calling a method that provides more meaning through name like `regularBook(marcel)` is much better in terms of comprehensibility.
+Martin Fowler defines Flag Arguments as a "kind of function argument that tells the function to carry out a different operation depending on its value." [[1](#sources)] There are two reasons why this is smelly. First of all - it can be a candidate for [Boolean Blindness](./boolean-blindness.md) Code Smell. Fowler gives a great example with _Concert_ class and the` book(customer: Customer, is_premium: bool)` method. While reading the code, without knowing much more context, one will be stopped by invocation of this method: `book(marcel, false)` - excuse me, but precisely what "`false`"? The situation is clear if the method is divided into two separate parts instead of using a flag argument. Then, calling a method that provides more meaning through a name like `regularBook(marcel)` is much better in terms of comprehensibility.
 
-The second problem is that it might be a cocoon phase, before it develops into a beautiful full-fledged [Conditional Complexity](./conditional-complexity.md). First, what you see is `is_premium: bool`. The second time you come by and it is already transformed to `ticket_type: str`, switching through different options based on the value, additionally with the smell of the [Primitive Obsession](./primitive-obsession.md) on top.
+The second problem is that it might be a cocoon phase before it develops into a beautiful full-fledged [Conditional Complexity](./conditional-complexity.md). First, what you see is `is_premium: bool`. The second time you come by, it is already transformed to `ticket_type: str,` switching through different options based on the value and the smell of the [Primitive Obsession](./primitive-obsession.md) on top.
 
 ### Causation
 
-They can be caused by a quick dirty tweaking for new feature because it might be just as easy and tempting as adding additional `else if` clause to conditional-checking block. Developer felt that it was just a tiny difference and didn't bother to create a separate method for its implementation.
+Quick dirty tweaking can cause them for new features because it might be as easy and tempting as adding `else if` clause to the conditional-checking block. The developer felt that it was just a tiny difference and didn't bother to create a separate method for its implementation.
 
 ### Problems
 
 #### **Hard to Read**
 
-In the vast majority of cases you will not know what `false` or what `true` is going on until you hover over the method.
+In most cases, you will not know what `false` or what `true` is going on until you hover over the method.
 
 #### **Hard to Change**
 

@@ -1,7 +1,7 @@
 ---
 slug: "feature-envy"
 meta:
-  last_update_date: 2022-02-23
+  last_update_date: 2022-04-19
   title: "Feature Envy"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -63,9 +63,9 @@ history:
 
 ## Feature Envy
 
-If a method inside a class manipulates more features (be it fields or methods) of another class more than from its own, then this method has a _Feature Envy_. In Object-Oriented Programming, the functionality and behavior should be tied closely to the data it uses. The instance of this smell indicates that the method is in a wrong place and is more tightly coupled to the other class than to the one where it is currently located. [[1](#sources)]
+If a method inside a class manipulates more features (be it fields or methods) of another class more than from its own, then this method has a _Feature Envy_. In Object-Oriented Programming, developers should tie the functionality and behavior close to the data it uses. The instance of this smell indicates that the method is in the wrong place and is more tightly coupled to the other class than to the one where it is currently located. [[1](#sources)]
 
-This was the explanation based on Fowler's book from 1999. In his recent "book update", he rephrased the _class_ into _module_ generalizing the concept in a _zone_ perspective. Depending on the size of the system, the _Feature Envy_ code smell may apply accordingly.
+This was the explanation based on Fowler's book from 1999. In his recent "book update", he rephrased the _class_ into _module_, generalizing the concept from a _zone_ perspective. Depending on the size of the system, the _Feature Envy_ code smell may apply accordingly.
 
 ### Causation
 
@@ -79,7 +79,7 @@ Difficult to create proper test or tests in separation. Mocking is required.
 
 #### **Inability to Reuse**
 
-Coupled objects has to be used together. This can cause bad duplication issues if one tries to reuse useful code by extracting and cut off what he does not need.
+Coupled objects have to be used together. This can cause lousy duplication issues if one tries to reuse applicable code by extracting and cutting off what he does not need.
 
 #### **Bijection Problems**
 

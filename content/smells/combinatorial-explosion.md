@@ -1,7 +1,7 @@
 ---
 slug: "combinatorial-explosion"
 meta:
-  last_update_date: 2022-02-20
+  last_update_date: 2022-04-19
   title: "Combinatorial Explosion"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -61,11 +61,11 @@ history:
 
 ## Combinatorial Explosion
 
-The Combinatorial Explosion occurs when there is a lot of code that does almost the same, but the word "almost" is crucial. The number of cases needed to cover every possible path is massive, as is the number of methods. You can grasp a solid intuition of this smell by thinking about code blocks that differ between each other only by the quantities of data or objects used in them. Wake specifies that "(...) this is a relative of [Parallel Inheritance Hierarchies](./parallel-inheritance-hierarchies.md) Code Smell, but everything has been folded into one hierarchy." [[1](#sources)].
+The Combinatorial Explosion occurs when a lot of code does almost the same thing - here, the word "almost" is crucial. The number of cases needed to cover every possible path is massive, as is the number of methods. You can grasp a solid intuition of this smell by thinking about code blocks that differ from each other only by the quantities of data or objects used in them. Wake specifies that "(...) this is a relative of [Parallel Inheritance Hierarchies](./parallel-inheritance-hierarchies.md) Code Smell, but everything has been folded into one hierarchy." [[1](#sources)].
 
 ### Causation
 
-Instead, what should be an independent decisions, gets implemented via a hierarchy. Lets suppose that someone organized the code so that it queries an API by a specific method with specific set-in conditions and data. Sooner or later, there are just so many of these methods as the need for different queries increases in demand.
+Instead, what should be an independent decision, gets implemented via a hierarchy. Let us suppose that someone organized the code so that it queries an API by a specific method with specific set-in conditions and data. Sooner or later, there are just so many of these methods as the need for different queries increases in demand.
 
 ### Problems:
 
@@ -75,7 +75,7 @@ Introducing new functionality requires multiple versions to be introduced in var
 
 #### **Open-Closed Principle Violation**
 
-Class is not closed for modification, if it "prompts" the developer to add another `elif`.
+Class is not closed for modification if it "prompts" the developer to add another `elif`.
 
 ### Example
 
@@ -167,7 +167,7 @@ class Minion:
 
 - Replace Inheritance with Delegation
 - Tease Apart Inheritance
-- It's quite hard fix, as the existence of this Code Smell (Design Smell) occurs as soon as the design of the system is decided.
+- It's pretty hard to fix, as the existence of this Code Smell (Design Smell) occurs as soon as the system's design is decided.
 
 ##### Sources
 

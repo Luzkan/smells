@@ -1,7 +1,7 @@
 ---
 slug: "null-check"
 meta:
-  last_update_date: 2022-02-26
+  last_update_date: 2022-04-19
   title: "Null Check"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -69,27 +69,27 @@ history:
 
 ## Null Check
 
-Null check is wide spread everywhere because the programming languages allow it. It causes a multitude of `undefined` or `null` checks everywhere: in guard checks, in condition blocks, and in verifications clauses. Instead, special objects could be created that implement the missing-event behavior, errors could be thrown and catched, and lots of duplications would be removed. There is this even a fact that sometimes appears here and there on discussion forums, that the inventor of the `null` reference, Tony Hoare (also known as the creator of the Quick Sort algorithm), apologizes for its invention and calls it a _billion-dollar mistake_.
+Null check is widespread everywhere because the programming languages allow it. It causes a multitude of `undefined` or `null` checks everywhere: in guard checks, in condition blocks, and verifications clauses. Instead, special objects could be created that implement the missing-event behavior, errors could be thrown and catched, and many duplications would be removed. Even an anecdote sometimes appears here and there on discussion forums that the inventor of the `null` reference, Tony Hoare (also known as the creator of the QuickSort algorithm), apologizes for its invention and calls it a _billion-dollar mistake_.
 
 _Null Check_ is a special case of [Special Case](./special-case.md) code smell.
 
 ### Causation
 
-The direct cause of null checking is the lack of proper Null Object that might implement behavior of the object in case its null. There is a strong opinion that `null` or `undefined` are a detrimentally bad idea in programming languages [[1](#sources)].
+The direct cause of null checking is the lack of a proper Null Object that might implement the object's behavior in case it's null. There is a strong opinion that `null` or `undefined` is a detrimentally bad idea in programming languages [[1](#sources)].
 
 ### Problems
 
 #### **Duplication**
 
-Usually the null check is reoccurring.
+Usually, the null check reoccurs.
 
 #### **Increased Complexity**
 
-Special case must be made for an object that might be undefined.
+Special cases must be made for an object that might be undefined.
 
 #### **Bijection Violation**
 
-A `null`/`undefined` as a model is not in one to one relationship with domain. Moreover, actually there is no representation.
+A `null`/`undefined` as a model is not in a one-to-one relationship with the domain. Moreover, there is no representation.
 
 ### Examples
 
@@ -175,7 +175,7 @@ def example_of_doing_something_with_bonus_damage(bonus_damage: BonusDamage) -> .
 
 ### Exceptions
 
-Similarly to the `if` statements - one usually is not problematic and creating a separate Null Object just to handle this one case (for example, when its only in the Factory method [WAKE]) might be not worth the hassle.
+Similar to the `if` statements, one usually is not problematic. Creating a separate Null Object to handle this case (for example, when it is only in the Factory method [WAKE]) might not be worth the hassle.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 slug: "lazy-element"
 meta:
-  last_update_date: 2022-02-25
+  last_update_date: 2022-04-19
   title: "Lazy Element"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -81,11 +81,11 @@ history:
 
 ## Lazy Element
 
-Lazy Element is an element that does not do enough. If a method, variable, or a class does not do enough to pay for itself (for increased complexity of the project), then perhaps maybe it should be combined into another entity.
+A Lazy Element is an element that does not do enough. If a method, variable, or class does not do enough to pay for itself (for increased complexity of the project), it should be combined into another entity.
 
 ### Causation
 
-This can happen due to the aggressive refactorization process in which the functionality of a class was truncated. It can also happen due to the unnecessary pre-planning - [Speculative Generality](./speculative-generality.md) - developer made it in an anticipation of a future need that never eventuates.
+This smell can happen due to the aggressive refactorization process in which the functionality of a class was truncated. It can also occur due to the unnecessary pre-planning - [Speculative Generality](./speculative-generality.md) - developer made it in anticipation of a future need that never eventuates.
 
 ### Problems
 

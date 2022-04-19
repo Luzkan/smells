@@ -1,7 +1,7 @@
 ---
 slug: "refused-bequest"
 meta:
-  last_update_date: 2022-02-26
+  last_update_date: 2022-04-19
   title: "Refused Bequest"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -59,18 +59,18 @@ history:
 
 ## Refused Bequest
 
-Whenever a subclass inherits from a parent, but actually only uses a subset of the implemented parent methods, that is called _Refused Bequest_. This can happen both implicitly and explicitly:
+Whenever a subclass inherits from a parent but only uses a subset of the implemented parent methods, that is called _Refused Bequest_. This behavior can happen both implicitly and explicitly:
 
-- Implicitly, when the inherited routine just doesn’t work
-- Explicitly if an error is thrown instead of supporting the method
+- Implicitly, when the inherited routine doesn not work
+- Explicitly, if an error is thrown instead of supporting the method
 
-Whenever a child class is created, it should fully support all the data and/or methods that it inherits [[1](#sources)]. Fowler says that this smell is not that strong though and admits that he himself sometimes reuses only a bit of behavior, but nevertheless it can cause confusion and problems [[2](#sources)].
+Whenever a child class is created, it should fully support all the data and methods that it inherits [[1](#sources)]. Fowler says that this smell is not that strong, though, and admits that he sometimes reuses only a bit of behavior, but it can cause confusion and problems [[2](#sources)].
 
-However, there is one important thing. Both Fowler and Mäntylä are pointing out that there is a strong case of this Code Smell, whenever a subclass is reusing behavior but does not want to support the interface of the superclass. [[3](#sources)] [[1](#sources)] [[4](#sources)]
+However, there is one crucial thing. Both Fowler and Mäntylä are pointing out a strong case of this Code Smell whenever a subclass is reusing behavior but does not want to support the superclass interface [[3](#sources)] [[1](#sources)] [[4](#sources)].
 
 ### Causation
 
-This could happen due to bad development decisions when part of the needed functionality is already implemented in another class, but in general, that parent class is about something different from whatever the developer would like to implement in the new class. This most likely indicates that the inheritance does not make sense, and the subclass is not an example of its parent. [[5](#sources)]
+This could happen due to bad development decisions when part of the needed functionality is already implemented in another class, but in general, the parent class is about something different from whatever the developer would like to implement in the new class. This inconsistency most likely indicates that the inheritance does not make sense, and the subclass is not an example of its parent. [[5](#sources)]
 
 ### Problems
 
@@ -80,7 +80,7 @@ The _Liskov Substitution Principle_ describes that the relationship of subtypes 
 
 #### **Hard to Test**
 
-Each subclass might have different capabilities up an down the class hierarchies.
+Each subclass might have different capabilities up and down the class hierarchies.
 
 ### Example
 

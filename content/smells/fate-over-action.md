@@ -1,7 +1,7 @@
 ---
 slug: "fate-over-action"
 meta:
-  last_update_date: 2022-02-23
+  last_update_date: 2022-04-19
   title: "Fate over Action"
   cover: "/logos/logo-text-2560x1280.png"
   known_as:
@@ -83,40 +83,40 @@ history:
 
 ## Fate over Action
 
-In Object-Oriented Programming, classes and their data go hand in hand with behavior. If a class has only the first part, then it is an indicator that there could be a functionality tied to these variables, but it is missing or placed somewhere else.
+In Object-Oriented Programming, classes and their data go hand in hand with behavior. If a class has only the first part, it is an indicator that there could be a functionality tied to these variables, but it is missing or placed somewhere else.
 
-Back in the days _(at time of defining - Fowler 2003)_ _Data Class_ would be enough to be classified as a bad smell, as it is the main evil of hidden and hard-to-debug problems in large-scale systems because of mutability - data were unexpectedly different or it was missing at the point of execution due to some other unexpected reasons. Thus, the data were supposed to be closely tied to the logic, so they could go hand in hand. This is also one of the main reasons why functional programming is rising in popularity; one of its main principles is that the data should be immutable, so there would be no more this sort of bugs.
+Back in the days _(at the time of defining - Fowler 2003)_ _Data Class_ would be enough to be classified as a bad smell, as it is the main evil of hidden and hard-to-debug problems in large-scale systems because of mutability - data were unexpectedly different, or it was missing at the point of execution due to some other unexpected reasons. Thus, the data were supposed to be closely tied to the logic to go hand in hand. This is also one of the main reasons functional programming is rising in popularity; one of its main principles is that the data should be immutable, so there would be no more of these sorts of bugs.
 
-_Data Class_ is still a good intuitive motive to follow, although in programming languages we have things like `Interface`-s or `Struct`-s to pack and type together a bunch of variables. This directly addresses and solves the [Data Clumps](./data-clump.md) Code Smell. Data Transfer Objects (DTO) are not uncommon with the dominance of web-based application and communications over API's. All of this could fall into the _Data Class_ code smell category, but I rather believe that as programmers, we are not intentionally making everything stinky.
+_Data Class_ is still a sufficiently intuitive motive to follow. However, in programming languages, we have things like `Interface`-s or `Struct`-s to pack and type together a bunch of variables. This directly addresses and solves the [Data Clumps](./data-clump.md) Code Smell. Data Transfer Objects (DTO) are not uncommon with the dominance of web-based applications and communications over API. All of this could fall into the "Data Class" code smell category, but I rather believe we are not intentionally making everything stinky as programmers.
 
-Data classes that cannot be changed (thus lacking setters, or with some sort of "frozen" property), are much less error prone and should not be discouraged if they are a good fit to remove other smells or to pass data around, especially if the alternative is to have a long un-verified dictionaries straight out of configuration file or API call. The immutable data class can have the additional benefit of  verifying the types _(depending on a language)_, so if it is expected to have `address` given as a `string`, then that is a good fail fast mechanism (check [Afraid to Fail](./afraid-to-fail.md)) if instead a `None` or `undefined` is given due to a misformed or incomplete input. And after all, when the class is already here, it can be encouraging to fill it with further validation and behavior.
+Data classes that cannot be changed (thus lacking setters or with some sort of "frozen" property) are much less error-prone and should not be discouraged if they are a suitable fit to remove other smells or to pass data around, especially if the alternative is to have long un-verified dictionaries straight out of configuration file or API call. The immutable data class can have the additional benefit of verifying the types _(depending on a language)_, so if it is expected to have `address` given as a `string,` then that is a good Fail Fast mechanism (check [Afraid to Fail](./afraid-to-fail.md)) if instead a `None` or `undefined` is given due to a misformed or incomplete input. And after all, when the class is already here, it can be encouraging to fill it with further validation and behavior.
 
 ### Discussion
 
-To preserve the current idea behind the _Data Class_ code smell, I propose a new one that could take it’s place: _Fate over Action_ - it would be a problem not with the data class itself, but rather with any case whenever the external function works only on the internal parameters of an object.
+To preserve the current idea behind the _Data Class_ code smell, I propose a new one that could take its place: _Fate over Action_ - it would be a problem not with the data class itself but rather with any case whenever the external function works only on the internal parameters of an object.
 
-The term Fate over Action is inspired by the personality psychology, precisely from the _Locus of Control_ subject. Locus of Control is the degree to which a man believes that he has control over the outcome of events in his life, as opposed to belief that things are beyond his influence. It could be either internal (a belief that one can control owns life) or external (a belief that life is controlled by the outside, by things which one can not influence; be that chance or fate).
+The term Fate over Action is inspired by personality psychology, precisely from the _Locus of Control_ subject. Locus of Control is the degree to which a man believes that he has control over the outcome of events in his life, as opposed to the belief that things are beyond his influence. It could be internal (a belief that one can control own life) or external (a belief that life is governed by the outside, by things one can not influence; be that chance or fate).
 
-People with strong internal locus of control believe that events in their life are the result of their own actions, and that’s exactly what Object Oriented Programming principles suggest as good programming practice. It would take the stigma off the _Data Class_ and pass it to the term _Fate over Action_ which captures the essence of the problem much better.
+People with a strong internal locus of control believe that events in their lives result from their actions. That is precisely what Object Oriented Programming principles suggest as good programming practice. It would take the stigma off the _Data Class_ and pass it to the term _Fate over Action_ which captures the essence of the problem much better.
 
-The term is a loose proposition, some other candidates could be Fate over Internal Locus, or just the Locus of Control but I think that the proposed one is "catchy" and conveys the meaning of the smell in it’s name much less controversial than Data Class.
+The term is a loose proposition. Some other candidates could be _Fate over Internal Locus_, or just the _Locus of Control_, but I think the proposed one is "catchy" and conveys the meaning of the smell in its name - making it much less controversial than _Data Class_.
 
-This generalization of an existing concept by now, is not a novel thing. That is what Fowler did with the Switch Statement and Lazy Class, renaming them to [Repeated Switching](./conditional-complexity.md) and [Lazy Element](./lazy-element.md) respectively. One of the reasons for, why he did that, is that after the publication of his book, which turned out to be (unexpectedly) quite-revolutionary and so, the `if`/`else` and `switch`/`case` statements gained too much bad PR exchanging the reputation points in favor of polymorphism.
+This generalization of an existing concept is not a novel thing. That is what Fowler did with the Switch Statement and Lazy Class, renaming them to [Repeated Switching](./conditional-complexity.md) and [Lazy Element](./lazy-element.md), respectively. One of the reasons he did that is that after the publication of his book, which turned out to be quite revolutionary, the `if`/`else` and `switch`/`case` statements gained too much lousy PR exchanging the reputation points in favor of polymorphism.
 
 ### Causation
 
-> It is common for classes to begin like this: you realize that some data are part of an independent object, so you extract it out. But objects are about the commonality of behavior, and these objects are not developed enough to have much behavior yet.
+> It is common for classes to begin like this: you realize that some data are part of an independent object, so you extract it. But objects are about the commonality of behavior, and these objects are not developed enough to have much behavior yet.
 > ~ Wake 2004 [[1](#sources)]
 
 ### Problems
 
 #### **Tell, Don’t Ask Principle Violation**
 
-The principle tells that one should not ask about the object state to make a decision before an action, but rather, straightforwardly send a command.
+The principle says that one should not ask about the object state to decide on an action but rather straightforwardly send a command.
 
 #### **Coupling**
 
-Objects are unnecessary coupled with each other, when a particular class could actually take care of itself.
+Objects are unnecessarily coupled with each other when a particular class could take care of itself.
 
 ### Example
 
