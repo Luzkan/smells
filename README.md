@@ -3,7 +3,7 @@
     <h2 align="center">Bad Code Smells</h2>
     <div>
         <p style="font-style: italic;">A Comprehensive Online Catalog</p>
-        <strong><a href="https://luzkan.github.io/smells/">Visit the Website</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf">Checkout the Paper</a></strong>
+        <strong><a href="https://luzkan.github.io/smells/">Visit the Website</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf">Checkout the Paper</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/thesis.pdf">Checkout the Thesis</a></strong>
     </div>
 </div>
 
