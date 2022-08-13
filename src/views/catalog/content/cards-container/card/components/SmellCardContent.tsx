@@ -1,9 +1,10 @@
+import config from "config"
 import React from "react"
 import { Expanse } from "types/enum/Expanse"
 import { CodeSmell } from "types/interfaces/CodeSmell"
 
 import { CropDin, CropFree, NotListedLocationOutlined } from "@mui/icons-material"
-import { CardContent, Typography } from "@mui/material"
+import { CardContent, Link, Typography } from "@mui/material"
 import createStyles from "@mui/styles/createStyles"
 import makeStyles from "@mui/styles/makeStyles"
 
@@ -58,7 +59,9 @@ const SmellCardContent = ({ codeSmell }: Props) => {
       </div>
 
       <Typography variant="h4" color="textPrimary" gutterBottom>
-        {codeSmell.meta.title}
+        <Link href={`${config.site.url.prefix}${codeSmell.content.slug}`} underline="hover">
+          {codeSmell.meta.title}
+        </Link>
       </Typography>
       <Typography variant="body1">
         {/* Display codeSmell.content.excerpt but replace codesmell.title from excerpt */}

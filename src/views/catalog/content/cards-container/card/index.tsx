@@ -34,9 +34,9 @@ const SmellCard = ({ codeSmell, handleClickOpen }: Props) => {
   const getBorderColorBasedOnExpanse = (expanse: Expanse): "red" | "green" | "black" => {
     switch (expanse) {
       case Expanse.WITHIN:
-        return "red"
+        return "black" // "red"
       case Expanse.BETWEEN:
-        return "green"
+        return "black" // "green"
       default:
         return "black"
     }
