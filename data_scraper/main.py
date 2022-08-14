@@ -12,12 +12,12 @@ Make sure you are in the root of the project.
 There are flags available, which you can inspect by adding `-h` flag.
 
 ::
-    python ./data/main.py
+    python ./data_scraper/main.py
     
 """
-from data.src.arguments import Arguments
-from data.src.smell_data.smell_data import SmellData
-from data.src.smell_files_loader import SmellFilesLoader
+from data_scraper.src.arguments import Arguments
+from data_scraper.src.smell_data.smell_data import SmellData
+from data_scraper.src.smell_files_loader import SmellFilesLoader
 
 
 def main(args: Arguments):

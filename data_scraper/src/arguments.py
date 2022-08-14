@@ -20,7 +20,7 @@ class Arguments:
         parser.add_argument(
             '--save_path', '-sp',
             help='The path to the folder where the data should be saved.',
-            default='./data/smells')
+            default='./data_scraper/smells')
         args = parser.parse_args()
         return Arguments(
             content_path=Path(args.content_path),

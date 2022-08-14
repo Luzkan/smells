@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from data.src.smell_data.related_smells import RelatedSmells
+from data_scraper.src.smell_data.related_smells import RelatedSmells
 
 
 @dataclass(frozen=True)

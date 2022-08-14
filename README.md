@@ -44,7 +44,7 @@ Feel free to visit the [website](https://luzkan.github.io/smells/) and browse ar
 
 ### Data
 
-If you would like to scrape the data, clone the repository and run [`python data/data_scraper.py`](./data/data_scraper.py).
+If you would like to scrape the data, clone the repository and run [`python /data_scraper/main.py`](./data_scraper/main.py).
 
 ---
 

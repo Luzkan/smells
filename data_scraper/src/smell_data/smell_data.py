@@ -2,7 +2,7 @@ from __future__ import annotations
 import json
 import frontmatter
 from dataclasses import dataclass, asdict
-from data.src.smell_data import Categories, Meta, Relations
+from data_scraper.src.smell_data import Categories, Meta, Relations
 
 
 @dataclass(frozen=True)

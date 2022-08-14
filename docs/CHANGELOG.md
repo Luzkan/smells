@@ -6,35 +6,25 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.10`]] - 2022-08-15
+
+### Architecture
+
+- Data Scraper directory is now named [`data_scraper`](../data_scraper/) instead of `data`.
+
+### Documentation
+
+- Updated [`README.md`](../README.md) with new directory. #patch
+
+
+
 ## [[`1.0.9`]] - 2022-08-14
-
-### Other
-
-- [`1.0.1`] Migrated: Material v4 -> v5
-
-
-### Changed
-
-- Icons & Site Description
-- Language Tweaks in Smells Content
-- Language Tweaks in Code Smells
-- Clickable Card Headings
-
-### Fixed
-
-- Lexical Abusers in Navbar
-
-### Added
-
-- Thesis and Paper
 
 ### Continuous Integration
 
 - Added [GitVersioniser](../.github/workflows/GitVersioniser.yml).
 - Renamed linter files
 - Grouped the `misc-linters` and `frontend-linters` into [`Linters.yml`](../.github/workflows/Linters.yml)
-
-
 
 ## [[1.0.7]] - 2022-08-13
 
@@ -172,19 +162,20 @@ All notable changes to this project will be documented in this file.
 - **Documentation**:
   - [`README.md`](../README.md)
   - [`CHANGELOG.md`](CHANGELOG.md)
-- **Data Scraping Scripts** (Python) to parse contents of [`/content/smells/`](../content/smells/) into `.json` files. They main method is located in [`/data/main.py`](../data/main.py) and can be run via `python main.py`. The only package requirement can be installed via `python -m pip install` [`python-frontmatter`](https://pypi.org/project/python-frontmatter/).
+- **Data Scraping Scripts** (Python) to parse contents of [`/content/smells/`](../content/smells/) into `.json` files. They main method is located in [`/data_scraper/main.py`](../data_scraper/main.py) and can be run via `python main.py`. The only package requirement can be installed via `python -m pip install` [`python-frontmatter`](https://pypi.org/project/python-frontmatter/).
 - **Website**:
   - Homepage with catalog for all the smells from [`/content/smells/`](../content/smells/) displayed as cards. They can be clicked on to show up a modal dialog with all the available information.
   - The homepage has a filter sidebar for easier browsing. Smells can be filtered by the categorization types (_occurrence_, _expanse_, _obstruction_, _type_of_smell_, _tags_)
   - Separate page articles for each smell, so they can be directly linked to by anyone for any reason.
   - Separate page articles navigation bar on the left to browse to other smells. This navigation bar can be turned to list by a different type of categorization types.
 
-[1.0.7]: https://github.com/Luzkan/smells/releases/tag/1.0.7
-[1.0.6]: https://github.com/Luzkan/smells/releases/tag/1.0.6
-[1.0.5]: https://github.com/Luzkan/smells/releases/tag/1.0.5
-[1.0.4]: https://github.com/Luzkan/smells/releases/tag/1.0.4
-[1.0.3]: https://github.com/Luzkan/smells/releases/tag/1.0.3
-[1.0.2]: https://github.com/Luzkan/smells/releases/tag/1.0.2
-[1.0.1]: https://github.com/Luzkan/smells/releases/tag/1.0.1
 [1.0.0]: https://github.com/Luzkan/smells/releases/tag/1.0.0
+[1.0.1]: https://github.com/Luzkan/smells/releases/tag/1.0.1
+[1.0.2]: https://github.com/Luzkan/smells/releases/tag/1.0.2
+[1.0.3]: https://github.com/Luzkan/smells/releases/tag/1.0.3
+[1.0.4]: https://github.com/Luzkan/smells/releases/tag/1.0.4
+[1.0.5]: https://github.com/Luzkan/smells/releases/tag/1.0.5
+[1.0.6]: https://github.com/Luzkan/smells/releases/tag/1.0.6
+[1.0.7]: https://github.com/Luzkan/smells/releases/tag/1.0.7
 [`1.0.9`]: https://github.com/Luzkan/smells/releases/tag/1.0.9
+[`1.0.10`]: https://github.com/Luzkan/smells/releases/tag/1.0.10
