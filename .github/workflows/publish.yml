@@ -1,8 +1,10 @@
 name: Publish Code Smell Catalog
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Linters"]
+    branches: [main]
+    types:
+      - completed
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -1,22 +1,20 @@
 ---
 # Mega-Linter GitHub Action configuration file
 # More info at https://nvuillam.github.io/mega-linter
-name: Frontend Linters
+name: Linters
 
 on:
-  # Trigger mega-linter at every push. Action will also be visible from Pull Requests to master
-  push: # Comment this line to trigger action only on pull-requests (not recommended if you don't pay for GH Actions)
+  push:
   pull_request:
     branches: [master, main]
 
 env: # Comment env block if you do not want to apply fixes
-  # Apply linter fixes configuration
   APPLY_FIXES: none # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
   APPLY_FIXES_EVENT: pull_request # Decide which event triggers application of fixes in a commit or a PR (pull_request, push, all)
   APPLY_FIXES_MODE: commit # If APPLY_FIXES is used, defines if the fixes are directly committed (commit) or posted in a PR (pull_request)
 
 jobs:
-  # Cancel duplicate jobs: https://github.com/fkirc/skip-duplicate-actions#option-3-cancellation-only
+  # https://github.com/fkirc/skip-duplicate-actions#option-3-cancellation-only
   cancel_duplicates:
     name: Cancel duplicate jobs
     runs-on: ubuntu-latest
@@ -25,18 +23,16 @@ jobs:
         with:
           github_token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
 
-  build:
+  frontend_linter:
     name: ESlint, Prettier (Mega-Linter)
     runs-on: ubuntu-latest
     steps:
-      # Git Checkout
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      # Mega-Linter
       - name: Mega-Linter
         id: ml
         # You can override Mega-Linter flavor used to have faster performances
@@ -69,6 +65,7 @@ jobs:
           commit-message: "[Mega-Linter] Apply linters automatic fixes"
           title: "[Mega-Linter] Apply linters automatic fixes"
           labels: bot
+
       - name: Create PR output
         if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && !contains(github.event.head_commit.message, 'skip fix')
         run: |
@@ -79,9 +76,32 @@ jobs:
       - name: Prepare commit
         if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'commit' && github.ref != 'refs/heads/master' && github.event.pull_request.head.repo.full_name == github.repository && !contains(github.event.head_commit.message, 'skip fix')
         run: sudo chown -Rc $UID .git/
+        
       - name: Commit and push applied linter fixes
         if: steps.ml.outputs.has_updated_sources == 1 && (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && env.APPLY_FIXES_MODE == 'commit' && github.ref != 'refs/heads/master' && github.event.pull_request.head.repo.full_name == github.repository && !contains(github.event.head_commit.message, 'skip fix')
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.pull_request.head.ref || github.head_ref || github.ref }}
           commit_message: "[Mega-Linter] Apply linters fixes"
+
+  markdown_lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Markdown Linting Action
+        uses: avto-dev/markdown-lint@v1.5.0
+        with:
+          # Disabled in markdownlint.json:
+          #   MD001 - Heading Increment
+          #   MD013 - Line Length
+          #   MD024 - Duplicate Headings
+          #   MD026 - Trailing punctuation in header
+          #   MD033 - No inline HTML
+          #   MD036 - No Emphasis as Heading
+          #   MD041 - No Emphasis as Heading
+          #   MD041 - First line in file should be a H1
+          args: "./README.md ./content/*.md ./docs/*.md"

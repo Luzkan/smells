@@ -2,9 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+[Git Versioniser](https://github.com/Luzkan/GitVersioniser) automatically versions this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
+
+## [[`1.0.9`]] - 2022-08-14
+
+### Other
+
+- [`1.0.1`] Migrated: Material v4 -> v5
+
+
+### Changed
+
+- Icons & Site Description
+- Language Tweaks in Smells Content
+- Language Tweaks in Code Smells
+- Clickable Card Headings
+
+### Fixed
+
+- Lexical Abusers in Navbar
+
+### Added
+
+- Thesis and Paper
+
+### Continuous Integration
+
+- Added [GitVersioniser](../.github/workflows/GitVersioniser.yml).
+- Renamed linter files
+- Grouped the `misc-linters` and `frontend-linters` into [`Linters.yml`](../.github/workflows/Linters.yml)
+
+
 
 ## [[1.0.7]] - 2022-08-13
 
@@ -157,3 +187,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [1.0.2]: https://github.com/Luzkan/smells/releases/tag/1.0.2
 [1.0.1]: https://github.com/Luzkan/smells/releases/tag/1.0.1
 [1.0.0]: https://github.com/Luzkan/smells/releases/tag/1.0.0
+[`1.0.9`]: https://github.com/Luzkan/smells/releases/tag/1.0.9
