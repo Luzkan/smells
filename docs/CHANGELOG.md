@@ -6,6 +6,22 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.12`]] - 2022-08-21
+
+### Other
+
+- Update binary-operator-in-name.md
+
+### Merge Branches
+
+- request #3 from calypsow777/patch-1
+
+### Typo
+
+- fix(binary-operator-in-name.md): correct typo #patch
+
+
+
 ## [[`1.0.10`]] - 2022-08-15
 
 ### Architecture
@@ -15,8 +31,6 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Updated [`README.md`](../README.md) with new directory. #patch
-
-
 
 ## [[`1.0.9`]] - 2022-08-14
 
@@ -179,3 +193,4 @@ All notable changes to this project will be documented in this file.
 [1.0.7]: https://github.com/Luzkan/smells/releases/tag/1.0.7
 [`1.0.9`]: https://github.com/Luzkan/smells/releases/tag/1.0.9
 [`1.0.10`]: https://github.com/Luzkan/smells/releases/tag/1.0.10
+[`1.0.12`]: https://github.com/Luzkan/smells/releases/tag/1.0.12
