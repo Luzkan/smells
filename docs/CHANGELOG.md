@@ -6,6 +6,22 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.14`]] - 2022-08-22
+
+### Other
+
+- fix spelling
+
+### Merge Branches
+
+- request #4 from rruiter87/patch-1
+
+### Typo
+
+- Fowler name in Alternative Classes with Different Interfaces #patch
+
+
+
 ## [[`1.0.12`]] - 2022-08-21
 
 ### Other
@@ -194,3 +210,4 @@ All notable changes to this project will be documented in this file.
 [`1.0.9`]: https://github.com/Luzkan/smells/releases/tag/1.0.9
 [`1.0.10`]: https://github.com/Luzkan/smells/releases/tag/1.0.10
 [`1.0.12`]: https://github.com/Luzkan/smells/releases/tag/1.0.12
+[`1.0.14`]: https://github.com/Luzkan/smells/releases/tag/1.0.14

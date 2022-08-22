@@ -115,4 +115,4 @@ class Zombie(Humanoid):
 
 ##### Sources
 
-- [Origin] - Marin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)
+- [Origin] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)
