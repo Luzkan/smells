@@ -5,8 +5,6 @@ name: Linters
 
 on:
   push:
-  pull_request:
-    branches: [master, main]
 
 env: # Comment env block if you do not want to apply fixes
   APPLY_FIXES: none # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)

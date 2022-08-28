@@ -20,8 +20,6 @@ All notable changes to this project will be documented in this file.
 
 - Fowler name in Alternative Classes with Different Interfaces #patch
 
-
-
 ## [[`1.0.12`]] - 2022-08-21
 
 ### Other
@@ -35,8 +33,6 @@ All notable changes to this project will be documented in this file.
 ### Typo
 
 - fix(binary-operator-in-name.md): correct typo #patch
-
-
 
 ## [[`1.0.10`]] - 2022-08-15
 
