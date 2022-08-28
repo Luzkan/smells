@@ -6,6 +6,19 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.16-alpha.1`]] - 2022-08-28
+
+### Continuous Integration
+
+- Created a GitVersioniser Preview Action
+- Removed duplicate linter jobs ran on Merge Requests #patch
+
+### Merge Branches
+
+- request #7 from Luzkan/ci/gitversioniser-preview-changes
+
+
+
 ## [[`1.0.14`]] - 2022-08-22
 
 ### Other
@@ -20,8 +33,6 @@ All notable changes to this project will be documented in this file.
 
 - Fowler name in Alternative Classes with Different Interfaces #patch
 
-
-
 ## [[`1.0.12`]] - 2022-08-21
 
 ### Other
@@ -35,8 +46,6 @@ All notable changes to this project will be documented in this file.
 ### Typo
 
 - fix(binary-operator-in-name.md): correct typo #patch
-
-
 
 ## [[`1.0.10`]] - 2022-08-15
 
@@ -211,3 +220,4 @@ All notable changes to this project will be documented in this file.
 [`1.0.10`]: https://github.com/Luzkan/smells/releases/tag/1.0.10
 [`1.0.12`]: https://github.com/Luzkan/smells/releases/tag/1.0.12
 [`1.0.14`]: https://github.com/Luzkan/smells/releases/tag/1.0.14
+[`1.0.16-alpha.1`]: https://github.com/Luzkan/smells/releases/tag/1.0.16-alpha.1

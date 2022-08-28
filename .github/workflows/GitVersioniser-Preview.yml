@@ -1,0 +1,69 @@
+name: GitVersioniser (Preview Only)
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  Preview_Next_Version:
+    runs-on: ubuntu-latest
+    name: Repository Versioning via GitVersioniser
+    steps:
+      - name: Repository Checkout
+        uses: actions/checkout@v3
+        with:
+          path: target_repository
+          fetch-depth: 0
+      - name: Running GitVersioniser
+        id: gitversioniser
+        uses: luzkan/GitVersioniser@main
+        with:
+          # ===========================
+          #        Credentials
+          # ---------------------------
+          # Versioniser Git Credentials
+          # ----
+          versioniser_username: "GitVersioniser"
+          versioniser_email: "luzkan.gitversioniser@github.com"
+
+          # ===========================
+          #          Patterns
+          # ---------------------------
+          # Increment Tags
+          # ----
+          commit_pattern_increment_tags: "HashtagExplicit"
+          # ---------------------------
+          # Change Tags
+          # ----
+          commit_pattern_change_tags: "All"
+  
+          # ===========================
+          #          Routines
+          # ---------------------------
+          # Versioning
+          # ----
+          routine_version: "VersionTagInCommitsTillLastGitVersioniserCommit"
+          # ---------------------------
+          # Contributing
+          # ----
+          routine_should_contribute: "Never"  # this disables the GitVersioniser, but allows to check the result before merging
+          routine_commiting: "Null"
+          routine_tagging: "Never"
+          # ---------------------------
+          # Commit Message
+          # ----
+          routine_commit_message_describe_changes: "WithEmoji"
+          routine_commit_message_format_version_tag: "FullButOnlyDigits"
+          routine_commit_message_place_version_tag: "Prefix"
+          routine_commit_message_summarize_changes: "WithEmojiCounted"
+          # ---------------------------
+          # Tagging
+          # ----
+          routine_prefix_tag_with_v: "Never"
+          # ---------------------------
+          # Changelog Handling
+          # -----
+          routine_changelog: "CommitChangeTags"
+          # ---------------------------
+          # File Versioning
+          # ----
+          routine_file_updater: "VersioniseFiles"
+          versioned_files: "package.json"
