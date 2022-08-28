@@ -150,6 +150,6 @@ book_regular(marcel)
 
 ##### Sources
 
-- [[1](#sources)] - Martin Fowler ["FlarArgument"](https://martinfowler.com/bliki/FlagArgument.html) (2011)
+- [[1](#sources)] - Martin Fowler ["FlagArgument"](https://martinfowler.com/bliki/FlagArgument.html) (2011)
 - [Origin] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (2018)
 - [Parentage] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)

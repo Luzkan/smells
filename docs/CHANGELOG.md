@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.17`]] - 2022-08-28
+
+### Documentation
+
+- Correct spelling of link to Martin Fowler's article. #patch
+
+
+
 ## [[`1.0.16-alpha.1`]] - 2022-08-28
 
 ### Continuous Integration
@@ -221,3 +229,4 @@ All notable changes to this project will be documented in this file.
 [`1.0.12`]: https://github.com/Luzkan/smells/releases/tag/1.0.12
 [`1.0.14`]: https://github.com/Luzkan/smells/releases/tag/1.0.14
 [`1.0.16-alpha.1`]: https://github.com/Luzkan/smells/releases/tag/1.0.16-alpha.1
+[`1.0.17`]: https://github.com/Luzkan/smells/releases/tag/1.0.17

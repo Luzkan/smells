@@ -1,7 +1,7 @@
 {
   "name": "smells",
   "description": "Code Smells Catalog",
-  "version": "1.0.16-alpha.1",
+  "version": "1.0.17",
   "author": "Marcel Jerzyk",
   "dependencies": {
     "@emotion/react": "^11.8.2",
