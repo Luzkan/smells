@@ -153,4 +153,4 @@ def add_manufacturer_footer_to_product_description(product, manufacturer):
 
 - [Origin] - Marcel Jerzyk, _"Code Smells: A Comprehensive Online Catalog and Taxonomy"_ (2022)
 - [Parentage1] - Venera Arnaoudova, Massimiliano Di Penta, Giuliano Antoniol _"Linguistic Antipatterns: What they are and how developers perceive them"_ (2015)
-- [Parentage2] - Marin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)
+- [Parentage2] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)

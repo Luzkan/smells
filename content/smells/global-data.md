@@ -103,5 +103,5 @@ In the context of the system as a whole, some communication between modules must
 
 ##### Sources
 
-- [[17](#sources)] - Marin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
+- [[17](#sources)] - Martin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
 - [[35](#sources)] -

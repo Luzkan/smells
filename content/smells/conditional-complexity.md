@@ -200,7 +200,7 @@ class Exporter:
 
 - [[1](#sources)], [Parentage] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)
 - [[2](#sources)] - Mika Mäntylä, _"Bad Smells in Software - a Taxonomy and an Empirical Study"_ (2003)
-- [[3](#sources)] - Marin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (2018)
+- [[3](#sources)] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (2018)
 - [[4](#sources)] - Robert Martin, _"Clean Code: A Handbook of Agile Software Craftsmanship"_ (2008)
 - [[5](#sources)] - William C. Wake, _"Refactoring Workbook"_ (2004)
 - [Origin] - Steve Smith, _"Refactoring Fundamentals"_ (2013)

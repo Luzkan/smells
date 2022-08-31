@@ -130,6 +130,6 @@ _Note:_ the above solution is a technical solution example. Practically it is a 
 ##### Sources
 
 - [[1](#sources)] - Mika Mäntylä, _"Bad Smells in Software - a Taxonomy and an Empirical Study"_ (2003)
-- [[2](#sources)] - Marin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
+- [[2](#sources)] - Martin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
 - [[3](#sources)] - Joshua Kerievsky, _"Refactoring to Patterns"_ (2005)
 - [Origin] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)
