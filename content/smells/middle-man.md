@@ -153,5 +153,5 @@ In the context of the system as a whole, some communication between modules must
 ##### Sources
 
 - [[1](#sources)] - Mika Mäntylä, _"Bad Smells in Software - a Taxonomy and an Empirical Study"_ (2003)
-- [[2](#sources)] - Marin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
+- [[2](#sources)] - Martin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
 - [Origin] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code"_ (1999)

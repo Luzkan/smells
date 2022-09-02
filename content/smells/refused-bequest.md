@@ -121,7 +121,7 @@ class Tower(Minion):
 ##### Sources
 
 - [[1](#sources)] - Mika Mäntylä, _"Bad Smells in Software - a Taxonomy and an Empirical Study"_ (2003)
-- [[2](#sources)], [Origin] - Marin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (1999)
-- [[3](#sources)] - Marin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (2018)
+- [[2](#sources)], [Origin] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (1999)
+- [[3](#sources)] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (2018)
 - [[4](#sources)] - MS Haque, J Carver, T Atkison, _"Causes, impacts, and detection approaches of code smell: A survey"_ (2018)
 - [[5](#sources)] - William C. Wake, _"Refactoring Workbook"_ (2004)

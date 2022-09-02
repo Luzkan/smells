@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.18`]] - 2022-09-02
+
+### Typo
+
+- Martin Fowler's name (Marin - Martin) #patch
+
+
+
 ## [[`1.0.17`]] - 2022-08-28
 
 ### Documentation
@@ -230,3 +238,4 @@ All notable changes to this project will be documented in this file.
 [`1.0.14`]: https://github.com/Luzkan/smells/releases/tag/1.0.14
 [`1.0.16-alpha.1`]: https://github.com/Luzkan/smells/releases/tag/1.0.16-alpha.1
 [`1.0.17`]: https://github.com/Luzkan/smells/releases/tag/1.0.17
+[`1.0.18`]: https://github.com/Luzkan/smells/releases/tag/1.0.18

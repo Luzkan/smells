@@ -143,4 +143,4 @@ class MyDateTime:
 
 - [[1](#sources)] - Mika Mäntylä, _"Bad Smells in Software - a Taxonomy and an Empirical Study"_ (2003)
 - [[2](#sources)] - MS Haque, J Carver, T Atkison, _"Causes, impacts, and detection approaches of code smell: A survey"_ (2018)
-- [Origin] - Marin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (1999)
+- [Origin] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (1999)

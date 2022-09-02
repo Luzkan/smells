@@ -128,4 +128,4 @@ class Foo:
 
 ##### Sources
 
-- [[1](#sources)], [Origin] - Marin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
+- [[1](#sources)], [Origin] - Martin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)

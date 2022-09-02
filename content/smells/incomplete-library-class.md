@@ -80,4 +80,4 @@ If it's not possible to reuse code that has been already written, then reimpleme
 
 ##### Sources
 
-- [Origin] - Marin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (1999)
+- [Origin] - Martin Fowler, _"Refactoring: Improving the Design of Existing Code (3rd Edition)"_ (1999)

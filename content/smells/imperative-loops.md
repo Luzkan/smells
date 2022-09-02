@@ -169,6 +169,6 @@ console.log(examples.includes("foo")) // true
 
 ##### Sources
 
-- [[1](#sources)], [Parentage] - Marin Fowler, "Refactoring: Improving the Design of Existing Code" (1999)
-- [[2](#sources)] - Marin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
+- [[1](#sources)], [Parentage] - Martin Fowler, "Refactoring: Improving the Design of Existing Code" (1999)
+- [[2](#sources)] - Martin Fowler, "Refactoring: Improving the Design of Existing Code (3rd Edition)" (2018)
 - [Origin] - Marcel Jerzyk, _"Code Smells: A Comprehensive Online Catalog and Taxonomy"_ (2022)
