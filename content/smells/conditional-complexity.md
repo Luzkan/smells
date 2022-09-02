@@ -36,7 +36,7 @@ relations:
       type:
         - caused
     - name: Loops
-      slug: loops
+      slug: imperative-loops
       type:
         - caused
     - name: Null Check

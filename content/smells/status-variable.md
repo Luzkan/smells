@@ -26,10 +26,6 @@ relations:
       slug: clever-code
       type:
         - co-exist
-    - name: Loops
-      slug: loops
-      type:
-        - co-exist
     - name: Afraid to Fail
       slug: afraid-to-fail
       type:
@@ -43,7 +39,7 @@ relations:
       type:
         - co-exist
     - name: Loops
-      slug: loops
+      slug: imperative-loops
       type:
         - caused
 problems:
