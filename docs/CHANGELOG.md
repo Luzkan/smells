@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.20`]] - 2022-09-02
+
+### Typo
+
+- Added missing source to MF1999 for Global Data (#13) #patch
+
+
+
 ## [[`1.0.19`]] - 2022-09-02
 
 ### Typo
@@ -252,3 +260,4 @@ All notable changes to this project will be documented in this file.
 [`1.0.17`]: https://github.com/Luzkan/smells/releases/tag/1.0.17
 [`1.0.18`]: https://github.com/Luzkan/smells/releases/tag/1.0.18
 [`1.0.19`]: https://github.com/Luzkan/smells/releases/tag/1.0.19
+[`1.0.20`]: https://github.com/Luzkan/smells/releases/tag/1.0.20
