@@ -117,7 +117,7 @@ def get_length_of_string(message: str) -> int:
 
 message = 'Hello World!'
 message_length = get_length_of_string(message)
-print(message_length) # 12
+print(message_length)  # 12
 ```
 
 #### Solution
@@ -125,7 +125,7 @@ print(message_length) # 12
 ```py
 message = 'Hello World!'
 message_length = len(message)
-print(message_length) # 12
+print(message_length)  # 12
 ```
 
 </div>
@@ -144,7 +144,7 @@ class DefaultDict(dict):
         self.__setitem__(key, self.default_value())
         return super().__getitem__(key)
 
-    def __setitem(self, key, value):
+    def __setitem__(self, key, value):
         super().__setitem__(key, value)
 ```
 

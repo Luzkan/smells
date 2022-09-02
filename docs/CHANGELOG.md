@@ -6,6 +6,18 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.21`]] - 2022-09-02
+
+### Typo
+
+- Added missing double underscore in `__getitem__` in Clever Code
+
+### Fixed
+
+- Links to "Imperative Loops" article were adjusted
+
+
+
 ## [[`1.0.20`]] - 2022-09-02
 
 ### Typo
@@ -261,3 +273,4 @@ All notable changes to this project will be documented in this file.
 [`1.0.18`]: https://github.com/Luzkan/smells/releases/tag/1.0.18
 [`1.0.19`]: https://github.com/Luzkan/smells/releases/tag/1.0.19
 [`1.0.20`]: https://github.com/Luzkan/smells/releases/tag/1.0.20
+[`1.0.21`]: https://github.com/Luzkan/smells/releases/tag/1.0.21

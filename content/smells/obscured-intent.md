@@ -35,7 +35,7 @@ relations:
       type:
         - caused
     - name: Loops
-      slug: loops
+      slug: imperative-loops
       type:
         - caused
     - name: Complicated Boolean Expression
