@@ -135,7 +135,8 @@ If someone would like to use a method with a given name, he should also expect t
 ```py
 def getFoos() -> Foo:
     ...
-    return Foo
+    foo: Foo = ...
+    return foo
 
 def isGoo() -> str:
     ...
