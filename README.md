@@ -3,7 +3,7 @@
     <h2 align="center">Bad Code Smells</h2>
     <div>
         <p style="font-style: italic;">A Comprehensive Online Catalog</p>
-        <strong><a href="https://luzkan.github.io/smells/">Visit the Website</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf">Checkout the Paper</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/thesis.pdf">Checkout the Thesis</a></strong>
+        <strong><a href="https://luzkan.github.io/smells/">Visit the Website</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf">Preprint</a></strong> · <strong><a href="https://link.springer.com/chapter/10.1007/978-3-031-25695-0_24">Springer Paper</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/thesis.pdf">The Thesis</a></strong>
     </div>
 </div>
 
@@ -11,8 +11,8 @@
 
 1. [What's this?](#whats-this)
 2. [How can I use this?](#how-can-i-use-this)
-   - Knowledge Browsing
-   - Data Extraction
+   - [Knowledge Browsing](#website)
+   - [Data Extraction](#data)
 3. [Who is the beneficent?](#who-is-the-beneficent)
    - [New Programmers](#new-programmers)
    - [Developers](#developers)

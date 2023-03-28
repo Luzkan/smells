@@ -7,6 +7,7 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail"
 import HelpIcon from "@mui/icons-material/Help"
 import HomeIcon from "@mui/icons-material/Home"
 import MenuBookIcon from "@mui/icons-material/MenuBook"
+import ArticleIcon from "@mui/icons-material/Article"
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material"
 import createStyles from "@mui/styles/createStyles"
 import makeStyles from "@mui/styles/makeStyles"
@@ -46,6 +47,9 @@ function Header({ ButtonOpenSidebar }: Props): JSX.Element {
         </IconButton>
         <IconButton href="https://www.linkedin.com/in/luzkan/" color="inherit" aria-label="contact" size="large">
           <AlternateEmailIcon />
+        </IconButton>
+        <IconButton href="https://link.springer.com/chapter/10.1007/978-3-031-25695-0_24" color="inherit" aria-label="paper" size="large">
+          <ArticleIcon />
         </IconButton>
         <IconButton href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf" color="inherit" aria-label="paper" size="large">
           <MenuBookIcon />
