@@ -31,7 +31,10 @@ function CatalogFooter() {
           {" On GitHub "}
         </Button>
         <Button className={classes.link} variant="contained" href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf">
-          {" Paper "}
+          {" Preprint "}
+        </Button>
+        <Button className={classes.link} variant="contained" href="https://link.springer.com/chapter/10.1007/978-3-031-25695-0_24">
+          {" Springer Paper "}
         </Button>
         <Button className={classes.link} variant="contained" href="https://www.linkedin.com/in/luzkan/">
           {" Author "}
