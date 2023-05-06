@@ -8,7 +8,7 @@ const config = {
       letterer: 'CSC',
     },
     logo: '/logos/logo-1024.png',
-    description: 'A collection of Bad Code Smells in a Catalog form for Developers & Researchers. Code Smell is a typical bad code implementation, and learning these concepts immiedietly makes you a better developer!',
+    description: 'A collection of Bad Code Smells in a Catalog form for Developers & Researchers. Code Smell is a typical bad code implementation, and learning these concepts immediately makes you a better developer!',
     url: {
       path: 'http://luzkan.github.io',
       prefix: '/smells',
