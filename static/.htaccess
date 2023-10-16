@@ -1,0 +1,10 @@
+# ----------------------------------------------------------------------
+# | Expires headers                                                    |
+# ----------------------------------------------------------------------
+
+# This matches the settings descriped at: 
+# https://www.gatsbyjs.org/docs/caching/
+
+<IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable"
+</IfModule>
