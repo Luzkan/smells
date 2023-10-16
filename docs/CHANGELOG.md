@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [[`1.0.23-alpha.1`]] - 2023-10-16
+
+### Documentation
+
+- Create LICENSE (#19)
+
+
+
 ## [[`1.0.22`]] - 2023-03-28
 
 ### Documentation
@@ -288,3 +296,4 @@ All notable changes to this project will be documented in this file.
 [`1.0.20`]: https://github.com/Luzkan/smells/releases/tag/1.0.20
 [`1.0.21`]: https://github.com/Luzkan/smells/releases/tag/1.0.21
 [`1.0.22`]: https://github.com/Luzkan/smells/releases/tag/1.0.22
+[`1.0.23-alpha.1`]: https://github.com/Luzkan/smells/releases/tag/1.0.23-alpha.1
