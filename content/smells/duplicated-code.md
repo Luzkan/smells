@@ -89,11 +89,11 @@ Duplicated Code does not need further explanation. According to Fowler, redundan
 
 ### Refactoring:
 
-- Extract Class
-- Extract Function
-- Pull Up Method
+- [Extract Class](https://refactoring.guru/extract-class)
+- [Extract Function](https://refactoring.guru/extract-method)
+- [Pull Up Method](https://refactoring.guru/pull-up-method)
 - Slide Statement
-- Form Template Method
+- [Form Template Method](https://refactoring.guru/form-template-method)
 
 ---
 
