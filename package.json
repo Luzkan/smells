@@ -30,7 +30,7 @@
     "@types/mdast": "^4.0.4",
     "@vercel/analytics": "^2.0.1",
     "astro": "^5.18.0",
-    "nanostores": "^1.1.1",
+    "nanostores": "^1.2.0",
     "preact": "^10.28.4",
     "shiki": "^4.0.1",
     "tailwindcss": "^4.2.1",
