@@ -93,7 +93,8 @@ test.describe('Catalog Filter', () => {
     await page.waitForURL(new RegExp(`/smells/${slug}$`));
   });
 
-  test('share button copies without navigating away from the catalog', async ({ page }) => {
+  test('share button copies without navigating away from the catalog', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'webkit', 'WebKit does not support clipboard-write permission');
     await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], {
       origin: new URL(page.url()).origin,
     });
