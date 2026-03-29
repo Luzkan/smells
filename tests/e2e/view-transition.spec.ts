@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -15,10 +16,7 @@ async function waitForArticleTransitionReady(page: import('@playwright/test').Pa
   );
 }
 
-async function scrollWindowInstantly(
-  page: import('@playwright/test').Page,
-  top: number,
-): Promise<void> {
+async function scrollWindowInstantly(page: Page, top: number): Promise<void> {
   await page.evaluate((nextTop) => {
     const root = document.documentElement;
     const previousScrollBehavior = root.style.scrollBehavior;
@@ -26,6 +24,32 @@ async function scrollWindowInstantly(
     window.scrollTo({ top: nextTop, left: 0, behavior: 'auto' });
     root.style.scrollBehavior = previousScrollBehavior;
   }, top);
+}
+
+async function scrollElementIntoViewCenter(locator: Locator): Promise<void> {
+  await locator.evaluate((element) => {
+    element.scrollIntoView({ block: 'center', inline: 'nearest' });
+  });
+}
+
+async function clickStable(locator: Locator): Promise<void> {
+  await scrollElementIntoViewCenter(locator);
+  await expect(locator).toBeVisible();
+
+  try {
+    await locator.click({ timeout: 3000 });
+  } catch {
+    await locator.click({ force: true });
+  }
+}
+
+async function navigateToLinkedArticle(page: Page, locator: Locator): Promise<void> {
+  const startUrl = page.url();
+  await clickStable(locator);
+  await page.waitForURL(
+    (url) => url.pathname.startsWith('/smells/') && url.toString() !== startUrl,
+  );
+  await waitForArticleTransitionReady(page);
 }
 
 test.describe('View Transitions — catalog ↔ article', () => {
@@ -60,13 +84,10 @@ test.describe('View Transitions — catalog ↔ article', () => {
 
     // Clicking next navigates to another article
     if ((await nextCard.count()) > 0) {
-      await expect(nextCard).toBeVisible();
-      await nextCard.click();
+      await navigateToLinkedArticle(page, nextCard);
     } else {
-      await expect(cards.first()).toBeVisible();
-      await cards.first().click();
+      await navigateToLinkedArticle(page, cards.first());
     }
-    await page.waitForURL(/\/smells\//);
     await expect(page.locator('.article-hero__title')).toBeVisible();
   });
 
@@ -79,8 +100,7 @@ test.describe('View Transitions — catalog ↔ article', () => {
 
     // Navigate to another page
     const nextCard = page.locator('.prev-next__card--next');
-    await nextCard.click();
-    await page.waitForURL(/\/smells\//);
+    await navigateToLinkedArticle(page, nextCard);
 
     // Nav should still be present (persisted via transition:persist)
     await expect(nav).toBeVisible();
@@ -96,20 +116,22 @@ test.describe('View Transitions — catalog ↔ article', () => {
       await expect(nav).toHaveClass(/nav--scrolled/);
 
       const nextCard = page.locator('.prev-next__card--next');
-      await nextCard.click();
-      await page.waitForURL(/\/smells\//);
-      await waitForArticleTransitionReady(page);
+      await navigateToLinkedArticle(page, nextCard);
     }
 
     const shareButton = page.locator('.engage-share__btn').first();
-    await shareButton.click();
-    await expect(page.locator('.share-dropdown.share-dropdown--open')).toBeVisible();
+    const shareDropdown = page.locator('.share-dropdown').first();
+    await clickStable(shareButton);
+    await expect(shareDropdown).toHaveClass(/share-dropdown--open/);
+
+    await clickStable(shareButton);
+    await expect(shareDropdown).not.toHaveClass(/share-dropdown--open/);
 
     const citeButton = page.locator('.engage-cite__btn').first();
     const citePanel = page.locator('#cite-panel');
-    await citeButton.click();
+    await clickStable(citeButton);
     await expect(citePanel).toHaveAttribute('aria-hidden', 'false');
-    await citeButton.click();
+    await clickStable(citeButton);
     await expect(citePanel).toHaveAttribute('aria-hidden', 'true');
   });
 

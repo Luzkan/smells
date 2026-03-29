@@ -1,19 +1,63 @@
 import { test, expect } from '@playwright/test';
+import type { Locator, Page, TestInfo } from '@playwright/test';
+
+function isMobileProject(testInfo: TestInfo): boolean {
+  return testInfo.project.name.includes('mobile');
+}
+
+async function dismissAnalyticsConsentIfVisible(page: Page, testInfo: TestInfo): Promise<void> {
+  const consentHeading = page.getByRole('heading', { name: 'Analytics preference' });
+  if (!(await consentHeading.isVisible())) return;
+
+  const declineButton = page.getByRole('button', { name: 'No thanks' });
+  await expect(declineButton).toBeVisible();
+
+  if (isMobileProject(testInfo)) {
+    await declineButton.evaluate((element: HTMLButtonElement) => {
+      element.click();
+    });
+  } else {
+    await declineButton.click();
+  }
+
+  await expect(consentHeading).toBeHidden();
+}
+
+async function getFilterScope(page: Page, testInfo: TestInfo): Promise<Locator> {
+  if (!isMobileProject(testInfo)) {
+    return page.locator('.filter-sidebar__desktop');
+  }
+
+  const filterFab = page.locator('.filter-sidebar__mobile-fab');
+  await expect(filterFab).toBeVisible();
+  await filterFab.click({ force: true });
+
+  const mobileSheet = page.locator('.filter-sidebar__sheet.filter-sidebar__sheet--open');
+  await expect(mobileSheet).toBeVisible();
+  return mobileSheet;
+}
+
+async function scrollIntoViewCenter(locator: Locator): Promise<void> {
+  await locator.evaluate((element) => {
+    element.scrollIntoView({ block: 'center', inline: 'nearest' });
+  });
+}
 
 test.describe('Catalog Filter', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
     await page.goto('/');
+    await dismissAnalyticsConsentIfVisible(page, testInfo);
     // Wait for cards to be rendered
     await page.waitForSelector('.smell-card');
   });
 
-  test('clicking a chip filters cards', async ({ page }) => {
+  test('clicking a chip filters cards', async ({ page }, testInfo) => {
     const totalCards = await page.locator('.smell-card').count();
     const initialCards = await page.locator('.smell-card:not(.hidden)').count();
     expect(initialCards).toBe(totalCards);
 
-    // Click the first chip in the sidebar (desktop only)
-    const firstChip = page.locator('.filter-sidebar__chip').first();
+    const filterScope = await getFilterScope(page, testInfo);
+    const firstChip = filterScope.locator('.filter-sidebar__chip').first();
     await firstChip.click();
 
     // Wait for filtering to take effect
@@ -24,20 +68,18 @@ test.describe('Catalog Filter', () => {
     expect(filteredCards).toBeGreaterThan(0);
   });
 
-  test('multi-dimension AND: combining filters narrows results', async ({ page }) => {
-    // Click a chip in the first dimension
-    const obstructionChip = page
-      .locator('.filter-sidebar__dimension')
-      .first()
-      .locator('.filter-sidebar__chip')
-      .first();
+  test('multi-dimension AND: combining filters narrows results', async ({ page }, testInfo) => {
+    const filterScope = await getFilterScope(page, testInfo);
+
+    const filterDimensions = filterScope.locator('.filter-sidebar__dimension');
+    const obstructionChip = filterDimensions.first().locator('.filter-sidebar__chip').first();
     await obstructionChip.click();
     await page.waitForTimeout(300);
 
     const afterFirstFilter = await page.locator('.smell-card:not(.hidden)').count();
 
     // Click a chip in a different dimension
-    const secondDimension = page.locator('.filter-sidebar__dimension').nth(1);
+    const secondDimension = filterDimensions.nth(1);
     const occurrenceChip = secondDimension.locator('.filter-sidebar__chip').first();
     await occurrenceChip.click();
     await page.waitForTimeout(300);
@@ -46,16 +88,15 @@ test.describe('Catalog Filter', () => {
     expect(afterSecondFilter).toBeLessThanOrEqual(afterFirstFilter);
   });
 
-  test('clear all resets filters', async ({ page }) => {
+  test('clear all resets filters', async ({ page }, testInfo) => {
     const totalCards = await page.locator('.smell-card').count();
 
-    // Click a chip
-    const firstChip = page.locator('.filter-sidebar__chip').first();
+    const filterScope = await getFilterScope(page, testInfo);
+    const firstChip = filterScope.locator('.filter-sidebar__chip').first();
     await firstChip.click();
     await page.waitForTimeout(300);
 
-    // Click "Clear all" button
-    const clearBtn = page.locator('.filter-sidebar__clear-btn').first();
+    const clearBtn = filterScope.locator('.filter-sidebar__clear-btn').first();
     await clearBtn.click();
     await page.waitForTimeout(300);
 
@@ -63,12 +104,12 @@ test.describe('Catalog Filter', () => {
     expect(cards).toBe(totalCards);
   });
 
-  test('URL hash updates on filter change', async ({ page }) => {
+  test('URL hash updates on filter change', async ({ page }, testInfo) => {
     // Initially no hash
     expect(new URL(page.url()).hash).toBe('');
 
-    // Click a chip
-    const firstChip = page.locator('.filter-sidebar__chip').first();
+    const filterScope = await getFilterScope(page, testInfo);
+    const firstChip = filterScope.locator('.filter-sidebar__chip').first();
     await firstChip.click();
     await page.waitForTimeout(300);
 
@@ -79,7 +120,7 @@ test.describe('Catalog Filter', () => {
 
   test('clicking a non-interactive card area still navigates via the stretched link', async ({
     page,
-  }) => {
+  }, testInfo) => {
     const firstCard = page.locator('.smell-card').first();
     const slug = await firstCard.getAttribute('data-slug');
     if (!slug) throw new Error('Missing card slug');
@@ -88,20 +129,34 @@ test.describe('Catalog Filter', () => {
     const box = await firstCard.boundingBox();
     if (!box) throw new Error('Missing card bounds');
 
-    await page.mouse.click(box.x + 40, box.y + box.height - 40);
+    if (testInfo.project.name === 'mobile-safari') {
+      await page.touchscreen.tap(box.x + 40, box.y + box.height - 40);
+    } else {
+      await page.mouse.click(box.x + 40, box.y + box.height - 40);
+    }
 
     await page.waitForURL(new RegExp(`/smells/${slug}$`));
   });
 
-  test('share button copies without navigating away from the catalog', async ({ page }) => {
+  test('share button copies without navigating away from the catalog', async ({
+    page,
+    browserName,
+  }, testInfo) => {
+    test.skip(browserName !== 'chromium', 'Clipboard permissions are supported only in Chromium.');
+
     await page.context().grantPermissions(['clipboard-read', 'clipboard-write'], {
       origin: new URL(page.url()).origin,
     });
 
-    const shareBtn = page.locator('.smell-card__share').first();
+    const shareBtn = page.locator('.smell-card__share').nth(isMobileProject(testInfo) ? 1 : 0);
     const startUrl = page.url();
 
-    await shareBtn.click();
+    await scrollIntoViewCenter(shareBtn);
+    if (isMobileProject(testInfo)) {
+      await shareBtn.click({ force: true });
+    } else {
+      await shareBtn.click();
+    }
 
     await expect(page).toHaveURL(startUrl);
     await expect(shareBtn).toHaveAttribute('aria-label', /copied/i);

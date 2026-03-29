@@ -639,38 +639,36 @@ const notFoundSeo: SeoMeta = {
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .num-404 {
-      opacity: 0.08;
-      transform: translate(-50%, -60%);
-      animation: none;
-    }
-    :global([data-theme='dark']) .num-404 {
-      opacity: 0.06;
-    }
-    .dead-prefix::after {
-      opacity: 0.45;
-      transform: scaleX(1);
-      animation: none;
-    }
-    .error-code-404,
-    .smell-badge,
-    .headline-404,
-    .subtitle-404,
-    .code-block-404,
-    .actions-404,
-    .diagnosis-404,
-    .diagnosis-counter,
-    .suggestion-404,
-    .trust-line-404 {
-      animation: none;
-      opacity: 1;
-      transform: none;
-    }
-    .code-cursor {
-      animation: none;
-      opacity: 0.7;
-    }
+  :global(html[data-motion='reduced']) .num-404 {
+    opacity: 0.08;
+    transform: translate(-50%, -60%);
+    animation: none;
+  }
+  :global(html[data-motion='reduced']) :global([data-theme='dark']) .num-404 {
+    opacity: 0.06;
+  }
+  :global(html[data-motion='reduced']) .dead-prefix::after {
+    opacity: 0.45;
+    transform: scaleX(1);
+    animation: none;
+  }
+  :global(html[data-motion='reduced']) .error-code-404,
+  :global(html[data-motion='reduced']) .smell-badge,
+  :global(html[data-motion='reduced']) .headline-404,
+  :global(html[data-motion='reduced']) .subtitle-404,
+  :global(html[data-motion='reduced']) .code-block-404,
+  :global(html[data-motion='reduced']) .actions-404,
+  :global(html[data-motion='reduced']) .diagnosis-404,
+  :global(html[data-motion='reduced']) .diagnosis-counter,
+  :global(html[data-motion='reduced']) .suggestion-404,
+  :global(html[data-motion='reduced']) .trust-line-404 {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  :global(html[data-motion='reduced']) .code-cursor {
+    animation: none;
+    opacity: 0.7;
   }
 
   @media print {

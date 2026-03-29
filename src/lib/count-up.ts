@@ -16,7 +16,7 @@ export function animateCountUp(container: Element, options: CountUpOptions = {})
   const frameIds = new Set<number>();
   let cancelled = false;
 
-  if (globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (document.documentElement.dataset.motion === 'reduced') {
     els.forEach((el) => {
       const prefix = el.dataset.prefix ?? '';
       const suffix = el.dataset.suffix ?? '';

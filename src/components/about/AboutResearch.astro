@@ -1335,30 +1335,28 @@ const academicCitations =
   }
 
   /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .paper-card,
-    .paper-card::before,
-    .paper-visual::before,
-    .research-stats,
-    .curator-bridge,
-    .curator-bridge-line,
-    .curator-bridge-text,
-    .curator-voice,
-    .curator-identity,
-    .curator-photo-wrap,
-    .curator-thesis,
-    .curator-links,
-    .curator-link,
-    .curator-signoff {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
+  :global(html[data-motion='reduced']) .paper-card,
+  :global(html[data-motion='reduced']) .paper-card::before,
+  :global(html[data-motion='reduced']) .paper-visual::before,
+  :global(html[data-motion='reduced']) .research-stats,
+  :global(html[data-motion='reduced']) .curator-bridge,
+  :global(html[data-motion='reduced']) .curator-bridge-line,
+  :global(html[data-motion='reduced']) .curator-bridge-text,
+  :global(html[data-motion='reduced']) .curator-voice,
+  :global(html[data-motion='reduced']) .curator-identity,
+  :global(html[data-motion='reduced']) .curator-photo-wrap,
+  :global(html[data-motion='reduced']) .curator-thesis,
+  :global(html[data-motion='reduced']) .curator-links,
+  :global(html[data-motion='reduced']) .curator-link,
+  :global(html[data-motion='reduced']) .curator-signoff {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 
-    .cite-sweep.sweeping,
-    .curator-bridge.revealed .curator-bridge-monogram,
-    .curator-signoff.revealed .curator-signoff-arrow {
-      animation: none;
-    }
+  :global(html[data-motion='reduced']) .cite-sweep.sweeping,
+  :global(html[data-motion='reduced']) .curator-bridge.revealed .curator-bridge-monogram,
+  :global(html[data-motion='reduced']) .curator-signoff.revealed .curator-signoff-arrow {
+    animation: none;
   }
 </style>

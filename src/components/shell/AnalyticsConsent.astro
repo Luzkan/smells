@@ -165,20 +165,18 @@
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .analytics-consent {
-      transition: none;
-    }
+  :global(html[data-motion='reduced']) .analytics-consent {
+    transition: none;
+  }
 
-    .analytics-consent__button {
-      transition:
-        border-color var(--duration-fast) var(--ease-smooth),
-        background var(--duration-fast) var(--ease-smooth),
-        color var(--duration-fast) var(--ease-smooth);
-    }
+  :global(html[data-motion='reduced']) .analytics-consent__button {
+    transition:
+      border-color var(--duration-fast) var(--ease-smooth),
+      background var(--duration-fast) var(--ease-smooth),
+      color var(--duration-fast) var(--ease-smooth);
+  }
 
-    .analytics-consent__button:hover {
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .analytics-consent__button:hover {
+    transform: none;
   }
 </style>

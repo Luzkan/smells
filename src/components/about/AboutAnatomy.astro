@@ -1308,41 +1308,39 @@ const smellsJson = JSON.stringify(smells);
 
   /* ─── Reduced motion ─── */
 
-  @media (prefers-reduced-motion: reduce) {
-    .anatomy-card {
-      opacity: 1;
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .anatomy-card {
+    opacity: 1;
+    transform: none;
+  }
 
-    .anatomy-card-bar {
-      transform: scaleX(1);
-    }
+  :global(html[data-motion='reduced']) .anatomy-card-bar {
+    transform: scaleX(1);
+  }
 
-    .anatomy-annotation {
-      opacity: 1;
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .anatomy-annotation {
+    opacity: 1;
+    transform: none;
+  }
 
-    .anatomy-annotation::after {
-      transform: scaleX(1);
-    }
+  :global(html[data-motion='reduced']) .anatomy-annotation::after {
+    transform: scaleX(1);
+  }
 
-    .anatomy-annotation::before {
-      transform: translateY(-50%) scale(1);
-    }
+  :global(html[data-motion='reduced']) .anatomy-annotation::before {
+    transform: translateY(-50%) scale(1);
+  }
 
-    :global(.anatomy-tag) {
-      opacity: 1;
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) :global(.anatomy-tag) {
+    opacity: 1;
+    transform: none;
+  }
 
-    .anatomy-depth {
-      opacity: 1;
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .anatomy-depth {
+    opacity: 1;
+    transform: none;
+  }
 
-    .anatomy-cta {
-      opacity: 1;
-    }
+  :global(html[data-motion='reduced']) .anatomy-cta {
+    opacity: 1;
   }
 </style>

@@ -719,50 +719,48 @@
    Reduced motion
    ============================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  .code-panel--slide-right,
-  .code-panel--slide-left {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
+html[data-motion='reduced'] .code-panel--slide-right,
+html[data-motion='reduced'] .code-panel--slide-left {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
 
-  .code-toggle__indicator {
-    transition: none;
-  }
+html[data-motion='reduced'] .code-toggle__indicator {
+  transition: none;
+}
 
-  .code-example__caption {
-    transition: none;
-  }
+html[data-motion='reduced'] .code-example__caption {
+  transition: none;
+}
 
-  .code-example__caption--fading {
-    opacity: 0;
-    transform: none;
-    filter: none;
-  }
+html[data-motion='reduced'] .code-example__caption--fading {
+  opacity: 0;
+  transform: none;
+  filter: none;
+}
 
-  .code-panel .smell-mark,
-  .code-panel .fix-mark {
-    animation: none !important;
-    opacity: 1;
-  }
+html[data-motion='reduced'] .code-panel .smell-mark,
+html[data-motion='reduced'] .code-panel .fix-mark {
+  animation: none !important;
+  opacity: 1;
+}
 
-  .code-panel .smell-mark {
-    text-decoration-color: var(--red);
-  }
+html[data-motion='reduced'] .code-panel .smell-mark {
+  text-decoration-color: var(--red);
+}
 
-  .code-panel .fix-mark {
-    background: color-mix(in srgb, var(--green) 14%, transparent);
-  }
+html[data-motion='reduced'] .code-panel .fix-mark {
+  background: color-mix(in srgb, var(--green) 14%, transparent);
+}
 
-  .code-example__solution-wrapper {
-    transition: none;
-  }
+html[data-motion='reduced'] .code-example__solution-wrapper {
+  transition: none;
+}
 
-  .code-example__compare-divider {
-    animation: none;
-    opacity: 1;
-  }
+html[data-motion='reduced'] .code-example__compare-divider {
+  animation: none;
+  opacity: 1;
 }
 
 /* ============================================

@@ -26,6 +26,12 @@ import {
   THEME_COLOR_LIGHT,
   THEME_STORAGE_KEY,
 } from '../lib/theme-contract';
+import {
+  MOTION_ATTRIBUTE,
+  MOTION_FULL,
+  MOTION_REDUCED,
+  MOTION_STORAGE_KEY,
+} from '../lib/motion-contract';
 
 interface Props {
   seo: SeoMeta;
@@ -180,6 +186,54 @@ const analyticsConsentStorageKey = 'analytics-consent';
         document.addEventListener('astro:page-load', applyTheme);
       })();
     </script>
+
+    {/* Motion preference init — blocking to prevent animation flash */}
+    <script
+      is:inline
+      define:vars={{
+        MOTION_ATTRIBUTE,
+        MOTION_FULL,
+        MOTION_REDUCED,
+        MOTION_STORAGE_KEY,
+      }}
+    >
+      (function () {
+        function readStoredMotion() {
+          try {
+            var saved = localStorage.getItem(MOTION_STORAGE_KEY);
+            return saved === MOTION_FULL || saved === MOTION_REDUCED ? saved : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function resolveMotion() {
+          var stored = readStoredMotion();
+          if (stored) return stored;
+          return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            ? MOTION_REDUCED
+            : MOTION_FULL;
+        }
+
+        function applyMotion(root) {
+          root.setAttribute(MOTION_ATTRIBUTE, resolveMotion());
+        }
+
+        applyMotion(document.documentElement);
+
+        document.addEventListener('astro:before-swap', function (event) {
+          var newRoot = event.newDocument && event.newDocument.documentElement;
+          if (newRoot) applyMotion(newRoot);
+        });
+        document.addEventListener('astro:after-swap', function () {
+          applyMotion(document.documentElement);
+        });
+        document.addEventListener('astro:page-load', function () {
+          applyMotion(document.documentElement);
+        });
+      })();
+    </script>
+
     <meta
       name="theme-color"
       content="#FAF9F6"

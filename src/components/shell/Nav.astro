@@ -4,6 +4,7 @@
  * Mobile hamburger opens a bottom sheet below 900px.
  */
 import ThemeToggle from './ThemeToggle.astro';
+import MotionToggle from './MotionToggle.astro';
 import Logo from './Logo.astro';
 import BookIcon from '../icons/BookIcon.astro';
 import ExternalLinkIcon from '../icons/ExternalLinkIcon.astro';
@@ -38,12 +39,13 @@ const isAbout = currentPath.startsWith('/about');
         class="nav__search-trigger"
         type="button"
         id="nav-search-trigger"
-        title="Search smells"
+        data-tooltip="Search smells"
         aria-label="Search smells"
       >
         <Icon icon={ICON_SEARCH} size={16} />
       </button>
 
+      <MotionToggle />
       <ThemeToggle />
 
       {/* NAV-04: Mobile hamburger button */}
@@ -108,6 +110,10 @@ const isAbout = currentPath.startsWith('/about');
     <div class="mobile-nav__theme-row">
       <span>Appearance</span>
       <ThemeToggle />
+    </div>
+    <div class="mobile-nav__theme-row">
+      <span>Animations</span>
+      <MotionToggle />
     </div>
   </div>
 </div>
@@ -383,10 +389,75 @@ const isAbout = currentPath.startsWith('/about');
     color: var(--text-secondary);
   }
 
+  /* Nav icon button tooltips */
+  .nav__links :global([data-tooltip]) {
+    position: relative;
+  }
+
+  .nav__links :global([data-tooltip])::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(2px);
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity var(--duration-fast) var(--ease-smooth),
+      transform var(--duration-fast) var(--ease-spring);
+    z-index: 2;
+  }
+
+  .nav__links :global([data-tooltip])::before {
+    content: '';
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--surface-raised);
+    border-top: 1px solid var(--border-subtle);
+    border-left: 1px solid var(--border-subtle);
+    transform: translateX(-50%) translateY(2px) rotate(45deg);
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity var(--duration-fast) var(--ease-smooth),
+      transform var(--duration-fast) var(--ease-spring);
+    z-index: 1;
+  }
+
+  .nav__links :global([data-tooltip]):hover::after,
+  .nav__links :global([data-tooltip]):focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    transition-delay: 0.2s;
+  }
+
+  .nav__links :global([data-tooltip]):hover::before,
+  .nav__links :global([data-tooltip]):focus-visible::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) rotate(45deg);
+    transition-delay: 0.2s;
+  }
+
   /* NAV-04: Responsive — hide text links below 900px, show hamburger */
   @media (max-width: 899px) {
     .nav__link,
     .nav__separator {
+      display: none;
+    }
+
+    .nav__links :global(.motion-toggle) {
       display: none;
     }
 
@@ -399,6 +470,11 @@ const isAbout = currentPath.startsWith('/about');
     .nav__search-trigger {
       width: 44px;
       height: 44px;
+    }
+
+    .nav__links :global([data-tooltip])::before,
+    .nav__links :global([data-tooltip])::after {
+      display: none;
     }
   }
 </style>
@@ -446,12 +522,23 @@ const isAbout = currentPath.startsWith('/about');
     }
 
     // --- NAV-04: Mobile hamburger menu ---
-    const hamburger = document.getElementById('nav-hamburger');
-    const overlay = document.getElementById('mobile-nav-overlay');
-    const sheet = document.getElementById('mobile-nav-sheet');
     const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const mobileNavBoundAttribute = 'data-mobile-nav-bound';
+
+    function getHamburger() {
+      return document.getElementById('nav-hamburger');
+    }
+
+    function getOverlay() {
+      return document.getElementById('mobile-nav-overlay');
+    }
+
+    function getSheet() {
+      return document.getElementById('mobile-nav-sheet');
+    }
 
     function focusFirstMobileNavItem() {
+      const sheet = getSheet();
       if (!sheet) return;
       const firstFocusable = sheet.querySelector(focusableSelector);
       if (firstFocusable instanceof HTMLElement) {
@@ -460,6 +547,9 @@ const isAbout = currentPath.startsWith('/about');
     }
 
     function openMobileNav() {
+      const overlay = getOverlay();
+      const sheet = getSheet();
+      const hamburger = getHamburger();
       if (overlay) overlay.setAttribute('aria-hidden', 'false');
       if (sheet) {
         sheet.setAttribute('aria-hidden', 'false');
@@ -473,6 +563,9 @@ const isAbout = currentPath.startsWith('/about');
     }
 
     function closeMobileNav(options) {
+      const overlay = getOverlay();
+      const sheet = getSheet();
+      const hamburger = getHamburger();
       const restoreFocus = !options || options.restoreFocus !== false;
       if (overlay) overlay.classList.remove('mobile-nav__overlay--open');
       if (overlay) overlay.setAttribute('aria-hidden', 'true');
@@ -488,37 +581,51 @@ const isAbout = currentPath.startsWith('/about');
       }
     }
 
-    if (hamburger) {
-      hamburger.addEventListener('click', function () {
-        const isOpen = sheet && sheet.classList.contains('mobile-nav__sheet--open');
-        if (isOpen) {
-          closeMobileNav();
-        } else {
-          openMobileNav();
-        }
-      });
-    }
+    function bindMobileNav() {
+      const hamburger = getHamburger();
+      const overlay = getOverlay();
+      const sheet = getSheet();
 
-    if (overlay) {
-      overlay.addEventListener('click', closeMobileNav);
+      if (hamburger && !hamburger.hasAttribute(mobileNavBoundAttribute)) {
+        hamburger.addEventListener('click', function () {
+          const currentSheet = getSheet();
+          const isOpen = currentSheet && currentSheet.classList.contains('mobile-nav__sheet--open');
+          if (isOpen) {
+            closeMobileNav();
+          } else {
+            openMobileNav();
+          }
+        });
+        hamburger.setAttribute(mobileNavBoundAttribute, 'true');
+      }
+
+      if (overlay && !overlay.hasAttribute(mobileNavBoundAttribute)) {
+        overlay.addEventListener('click', function () {
+          closeMobileNav();
+        });
+        overlay.setAttribute(mobileNavBoundAttribute, 'true');
+      }
+
+      if (sheet) {
+        const links = sheet.querySelectorAll('.mobile-nav__link');
+        links.forEach(function (link) {
+          if (!link.hasAttribute(mobileNavBoundAttribute)) {
+            link.addEventListener('click', function () {
+              closeMobileNav();
+            });
+            link.setAttribute(mobileNavBoundAttribute, 'true');
+          }
+        });
+      }
     }
 
     document.addEventListener('keydown', function (event) {
+      const sheet = getSheet();
       if (event.key !== 'Escape') return;
       if (!(sheet && sheet.classList.contains('mobile-nav__sheet--open'))) return;
       event.preventDefault();
       closeMobileNav();
     });
-
-    // Close mobile nav on link click
-    if (sheet) {
-      const links = sheet.querySelectorAll('.mobile-nav__link');
-      links.forEach(function (link) {
-        link.addEventListener('click', function () {
-          closeMobileNav();
-        });
-      });
-    }
 
     function onSwap() {
       closeMobileNav({ restoreFocus: false });
@@ -550,8 +657,10 @@ const isAbout = currentPath.startsWith('/about');
       });
     }
 
+    bindMobileNav();
     updateActiveLinks();
     document.addEventListener('astro:page-load', bindScroll);
+    document.addEventListener('astro:page-load', bindMobileNav);
     document.addEventListener('astro:page-load', updateActiveLinks);
   })();
 </script>

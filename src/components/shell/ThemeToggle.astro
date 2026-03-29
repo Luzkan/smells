@@ -9,7 +9,7 @@
  */
 ---
 
-<button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">
+<button class="theme-toggle" type="button" aria-label="Switch theme" data-tooltip="Switch theme">
   {/* Sun icon — visible in dark mode */}
   <svg
     class="theme-toggle__icon theme-toggle__icon--sun"
@@ -65,7 +65,6 @@
     transition: all 0.25s var(--ease-spring);
     color: var(--text-secondary);
     position: relative;
-    overflow: hidden;
     flex-shrink: 0;
   }
 
@@ -95,8 +94,9 @@
     display: none;
   }
 
-  /* Spin animation class applied on click */
-  .theme-toggle--spinning {
+  /* Spin animation — targets icons, not the button, so ::before/::after tooltips stay stable */
+  .theme-toggle--spinning .theme-toggle__icon--sun,
+  .theme-toggle--spinning .theme-toggle__icon--moon {
     animation: toggleSpin 0.4s var(--ease-spring);
   }
 </style>
@@ -122,7 +122,7 @@
     const label = labelForTheme(theme);
     document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((btn) => {
       btn.setAttribute('aria-label', label);
-      btn.setAttribute('title', label);
+      btn.setAttribute('data-tooltip', label);
     });
   }
 

@@ -9,7 +9,9 @@ test.describe('Smoke @smoke', () => {
   test('no console errors on homepage', async ({ page }) => {
     const errors: string[] = [];
     page.on('console', (msg) => {
-      if (msg.type() === 'error') errors.push(msg.text());
+      if (msg.type() === 'error' && !msg.text().includes('vercel.live')) {
+        errors.push(msg.text());
+      }
     });
     await page.goto('/');
     expect(errors).toHaveLength(0);

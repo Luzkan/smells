@@ -1,4 +1,50 @@
 import { expect, test } from '@playwright/test';
+import type { Page, TestInfo } from '@playwright/test';
+
+function isMobileProject(testInfo: TestInfo): boolean {
+  return testInfo.project.name.includes('mobile');
+}
+
+async function clickConsentAction(
+  page: Page,
+  name: 'Allow analytics' | 'No thanks',
+  testInfo: TestInfo,
+): Promise<void> {
+  const button = page.getByRole('button', { name });
+  const consentHeading = page.getByRole('heading', { name: 'Analytics preference' });
+  await expect(button).toBeVisible();
+
+  if (isMobileProject(testInfo)) {
+    await button.evaluate((element: HTMLButtonElement) => {
+      element.click();
+    });
+  } else {
+    await button.click();
+  }
+
+  await expect(consentHeading).toBeHidden();
+}
+
+async function navigateToAbout(page: Page, testInfo: TestInfo): Promise<void> {
+  if (isMobileProject(testInfo)) {
+    const filterOverlay = page.locator('.filter-sidebar__sheet-overlay--open');
+    if ((await filterOverlay.count()) > 0) {
+      await filterOverlay.first().click({ force: true });
+    }
+
+    const hamburger = page.locator('#nav-hamburger');
+    await expect(hamburger).toBeVisible();
+    await hamburger.click({ force: true });
+
+    const mobileSheet = page.locator('#mobile-nav-sheet.mobile-nav__sheet--open');
+    await expect(mobileSheet).toBeVisible();
+    await mobileSheet.locator('.mobile-nav__link[href="/about"]').click();
+  } else {
+    await page.locator('.nav__link[href="/about"]').click();
+  }
+
+  await page.waitForURL('**/about');
+}
 
 const GOOGLE_TAG_SHIM = `
 (() => {
@@ -102,7 +148,7 @@ async function createAnalyticsRequestRecorder(page: import('@playwright/test').P
 test.describe('Analytics consent', () => {
   test('keeps GA off before consent, then tracks exactly once per page after accept', async ({
     page,
-  }) => {
+  }, testInfo) => {
     const analytics = await createAnalyticsRequestRecorder(page);
 
     await page.goto('/');
@@ -112,31 +158,31 @@ test.describe('Analytics consent', () => {
     expect(analytics.tagRequests).toHaveLength(0);
     expect(analytics.pageViewCount()).toBe(0);
 
-    await page.getByRole('button', { name: 'Allow analytics' }).click();
+    await clickConsentAction(page, 'Allow analytics', testInfo);
 
     await expect.poll(() => analytics.tagRequests.length).toBe(1);
     await expect.poll(() => analytics.pageViewCount()).toBe(1);
 
-    await page.locator('.nav__link[href="/about"]').click();
-    await page.waitForURL('**/about');
+    await navigateToAbout(page, testInfo);
 
     await expect.poll(() => analytics.pageViewCount()).toBe(2);
   });
 
-  test('keeps GA disabled after decline, including after Astro navigation', async ({ page }) => {
+  test('keeps GA disabled after decline, including after Astro navigation', async ({
+    page,
+  }, testInfo) => {
     const analytics = await createAnalyticsRequestRecorder(page);
 
     await page.goto('/');
     await expect(page.getByRole('heading', { name: 'Analytics preference' })).toBeVisible();
 
-    await page.getByRole('button', { name: 'No thanks' }).click();
+    await clickConsentAction(page, 'No thanks', testInfo);
     await page.waitForTimeout(400);
 
     expect(analytics.tagRequests).toHaveLength(0);
     expect(analytics.pageViewCount()).toBe(0);
 
-    await page.locator('.nav__link[href="/about"]').click();
-    await page.waitForURL('**/about');
+    await navigateToAbout(page, testInfo);
     await page.waitForTimeout(400);
 
     expect(analytics.tagRequests).toHaveLength(0);

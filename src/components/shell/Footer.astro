@@ -1122,6 +1122,10 @@ const mobileAccordions = [
       align-items: center;
       padding: 8px 2px;
     }
+    .footer-bottom-right .footer-top-btn {
+      padding: 4px 12px;
+      min-height: unset;
+    }
     .footer-quip-wrap {
       order: 3;
       border-top: 1px dashed var(--border-subtle);
@@ -1133,13 +1137,11 @@ const mobileAccordions = [
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .footer-quip-text {
-      transition: none;
-    }
-    .footer-heart {
-      animation: none;
-    }
+  :global(html[data-motion='reduced']) .footer-quip-text {
+    transition: none;
+  }
+  :global(html[data-motion='reduced']) .footer-heart {
+    animation: none;
   }
 
   @media print {

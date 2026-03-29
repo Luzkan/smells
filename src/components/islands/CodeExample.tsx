@@ -45,7 +45,7 @@ function useCompareTransition(
       wrapper.classList.add('is-visible');
     });
 
-    const reducedMotion = globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = document.documentElement.dataset.motion === 'reduced';
     if (reducedMotion) {
       isAnimatingRef.current = false;
       return;

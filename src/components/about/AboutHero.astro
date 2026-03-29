@@ -363,12 +363,10 @@ const dailySmell = sortedSmells[epochDay % sortedSmells.length];
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .about-hero__constellation :global(circle),
-    .about-hero__constellation :global(line) {
-      animation: none;
-      opacity: 1;
-      stroke-dashoffset: 0;
-    }
+  :global(html[data-motion='reduced']) .about-hero__constellation :global(circle),
+  :global(html[data-motion='reduced']) .about-hero__constellation :global(line) {
+    animation: none;
+    opacity: 1;
+    stroke-dashoffset: 0;
   }
 </style>
