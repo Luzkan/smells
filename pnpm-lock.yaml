@@ -28,7 +28,7 @@ importers:
         version: 5.2.8
       '@nanostores/preact':
         specifier: ^1.0.0
-        version: 1.0.0(nanostores@1.1.1)(preact@10.28.4)
+        version: 1.0.0(nanostores@1.2.0)(preact@10.28.4)
       '@tailwindcss/vite':
         specifier: ^4.2.1
         version: 4.2.1(vite@6.4.1(jiti@2.6.1)(lightningcss@1.31.1)(yaml@2.8.2))
@@ -42,8 +42,8 @@ importers:
         specifier: ^5.18.0
         version: 5.18.0(jiti@2.6.1)(lightningcss@1.31.1)(rollup@4.59.0)(typescript@5.9.3)(yaml@2.8.2)
       nanostores:
-        specifier: ^1.1.1
-        version: 1.1.1
+        specifier: ^1.2.0
+        version: 1.2.0
       preact:
         specifier: ^10.28.4
         version: 10.28.4
@@ -2465,8 +2465,8 @@ packages:
   nanospinner@1.2.2:
     resolution: {integrity: sha512-Zt/AmG6qRU3e+WnzGGLuMCEAO/dAu45stNbHY223tUxldaDAeE+FxSPsd9Q+j+paejmm0ZbrNVs5Sraqy3dRxA==}
 
-  nanostores@1.1.1:
-    resolution: {integrity: sha512-EYJqS25r2iBeTtGQCHidXl1VfZ1jXM7Q04zXJOrMlxVVmD0ptxJaNux92n1mJ7c5lN3zTq12MhH/8x59nP+qmg==}
+  nanostores@1.2.0:
+    resolution: {integrity: sha512-F0wCzbsH80G7XXo0Jd9/AVQC7ouWY6idUCTnMwW5t/Rv9W8qmO6endavDwg7TNp5GbugwSukFMVZqzPSrSMndg==}
     engines: {node: ^20.0.0 || >=22.0.0}
 
   natural-compare@1.4.0:
@@ -3967,9 +3967,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@nanostores/preact@1.0.0(nanostores@1.1.1)(preact@10.28.4)':
+  '@nanostores/preact@1.0.0(nanostores@1.2.0)(preact@10.28.4)':
     dependencies:
-      nanostores: 1.1.1
+      nanostores: 1.2.0
       preact: 10.28.4
 
   '@nodelib/fs.scandir@2.1.5':
@@ -5868,7 +5868,7 @@ snapshots:
     dependencies:
       picocolors: 1.1.1
 
-  nanostores@1.1.1: {}
+  nanostores@1.2.0: {}
 
   natural-compare@1.4.0: {}
 
