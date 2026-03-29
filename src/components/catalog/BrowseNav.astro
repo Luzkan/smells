@@ -1,0 +1,160 @@
+---
+import GridIcon from '../icons/GridIcon.astro';
+
+interface Props {
+  totalSmells: number;
+  allSlugs: string[];
+  currentSlug: string;
+}
+
+const { totalSmells, allSlugs, currentSlug } = Astro.props;
+---
+
+<div class="browse-nav" data-slugs={JSON.stringify(allSlugs)} data-current={currentSlug}>
+  <a class="browse-nav__all" href="/">
+    <GridIcon class="browse-nav__all-icon" size={14} strokeWidth={2} />
+    Browse All {totalSmells} Smells
+  </a>
+  <span class="browse-nav__dot"></span>
+  <button class="browse-nav__random" type="button">
+    <svg
+      class="browse-nav__dice"
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+      <circle cx="9" cy="9" r="1" fill="currentColor"></circle>
+      <circle cx="15" cy="9" r="1" fill="currentColor"></circle>
+      <circle cx="9" cy="15" r="1" fill="currentColor"></circle>
+      <circle cx="15" cy="15" r="1" fill="currentColor"></circle>
+      <circle cx="12" cy="12" r="1" fill="currentColor"></circle>
+    </svg>
+    or try a random one
+  </button>
+</div>
+
+<script>
+  import { trackEvent } from '../../lib/analytics/tracker';
+  import { initOnce } from '../../lib/lifecycle';
+
+  function parseSlugs(raw: string | null): string[] {
+    try {
+      const parsed = JSON.parse(raw || '[]');
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter((slug) => typeof slug === 'string') as string[];
+    } catch {
+      return [];
+    }
+  }
+
+  initOnce('.browse-nav', (nav) => {
+    const button = nav.querySelector('.browse-nav__random');
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    const onClick = () => {
+      const slugs = parseSlugs(nav.getAttribute('data-slugs'));
+      const current = nav.getAttribute('data-current') || '';
+      const others = slugs.filter((slug) => slug !== current);
+      if (others.length === 0) return;
+
+      const pick = others[Math.floor(Math.random() * others.length)];
+      trackEvent({ name: 'navigate_random', params: { from_smell: current, to_smell: pick } });
+      window.location.href = `/smells/${pick}`;
+    };
+
+    button.addEventListener('click', onClick);
+    return () => {
+      button.removeEventListener('click', onClick);
+    };
+  });
+</script>
+
+<style>
+  .browse-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 0 20px;
+  }
+
+  .browse-nav__all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    transition: all var(--duration-fast) ease;
+  }
+
+  .browse-nav__all:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .browse-nav__dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .browse-nav__random {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 8px 4px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    transition: color var(--duration-fast);
+  }
+
+  .browse-nav__random:hover {
+    color: var(--accent);
+  }
+
+  .browse-nav__random:hover .browse-nav__dice {
+    animation: diceShake 0.5s ease-in-out;
+  }
+
+  .browse-nav__random:active .browse-nav__dice {
+    animation: diceRoll 0.4s var(--ease-spring);
+  }
+
+  .browse-nav__dice {
+    flex-shrink: 0;
+    transition: transform 0.15s var(--ease-spring);
+  }
+
+  @keyframes diceRoll {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.2);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* diceShake keyframes defined globally in global.css */
+</style>

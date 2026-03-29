@@ -1,0 +1,557 @@
+---
+/**
+ * Sticky nav bar (transition:persist, z-index var(--z-nav)).
+ * Mobile hamburger opens a bottom sheet below 900px.
+ */
+import ThemeToggle from './ThemeToggle.astro';
+import Logo from './Logo.astro';
+import BookIcon from '../icons/BookIcon.astro';
+import ExternalLinkIcon from '../icons/ExternalLinkIcon.astro';
+import GridIcon from '../icons/GridIcon.astro';
+import Icon from '../icons/Icon.astro';
+import { ICON_SEARCH } from '../../lib/icon-paths';
+import { SPRINGER_PAPER_URL } from '../../lib/constants';
+
+const currentPath = Astro.url.pathname;
+const isCatalog = currentPath === '/' || currentPath === '/index.html';
+const isAbout = currentPath.startsWith('/about');
+---
+
+<nav class="nav" transition:persist aria-label="Primary navigation">
+  <div class="nav__inner">
+    <Logo class="nav__logo" />
+
+    <div class="nav__links">
+      {/* Text navigation links */}
+      <a href="/" class:list={['nav__link', { 'nav__link--active': isCatalog }]}>Catalog</a>
+      <a href="/about" class:list={['nav__link', { 'nav__link--active': isAbout }]}>About</a>
+      <a href={SPRINGER_PAPER_URL} class="nav__link" target="_blank" rel="noopener">
+        Research
+        <ExternalLinkIcon class="nav__external-icon" size={10} />
+      </a>
+
+      {/* NAV-03: Vertical separator */}
+      <div class="nav__separator" aria-hidden="true"></div>
+
+      {/* NAV-02: Search trigger button */}
+      <button
+        class="nav__search-trigger"
+        type="button"
+        id="nav-search-trigger"
+        title="Search smells"
+        aria-label="Search smells"
+      >
+        <Icon icon={ICON_SEARCH} size={16} />
+      </button>
+
+      <ThemeToggle />
+
+      {/* NAV-04: Mobile hamburger button */}
+      <button
+        class="nav__hamburger"
+        type="button"
+        id="nav-hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+{/* NAV-04: Mobile nav bottom sheet */}
+<div class="mobile-nav__overlay" id="mobile-nav-overlay" aria-hidden="true"></div>
+<div class="mobile-nav__sheet" id="mobile-nav-sheet" aria-hidden="true" inert>
+  <div class="mobile-nav__handle" aria-hidden="true"></div>
+  <div class="mobile-nav__links">
+    <a href="/" class:list={['mobile-nav__link', { 'mobile-nav__link--active': isCatalog }]}>
+      <GridIcon class="mobile-nav__icon" size={18} strokeWidth={2} />
+      Catalog
+    </a>
+    <a href="/about" class:list={['mobile-nav__link', { 'mobile-nav__link--active': isAbout }]}>
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 16v-4"></path>
+        <path d="M12 8h.01"></path>
+      </svg>
+      About
+    </a>
+    <a href={SPRINGER_PAPER_URL} class="mobile-nav__link" target="_blank" rel="noopener">
+      <BookIcon class="mobile-nav__icon" size={18} strokeWidth={2} />
+      Research
+      <ExternalLinkIcon class="mobile-nav__external-icon" size={14} />
+    </a>
+    <div class="mobile-nav__divider" aria-hidden="true"></div>
+    <div class="mobile-nav__theme-row">
+      <span>Appearance</span>
+      <ThemeToggle />
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ============================================
+     NAV BAR
+     ============================================ */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-nav);
+    background: var(--nav-backdrop);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border-bottom: 1px solid var(--border-subtle);
+    height: var(--nav-height);
+    transition:
+      background var(--duration-normal) var(--ease-smooth),
+      box-shadow var(--duration-normal) var(--ease-smooth);
+  }
+
+  .nav--scrolled {
+    box-shadow: var(--nav-shadow-scrolled);
+  }
+
+  .nav__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Logo — positioning only; visual styles live in Logo.astro */
+  .nav__logo {
+    flex-shrink: 0;
+  }
+
+  /* NAV-01: Navigation links container */
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* NAV-01: Text navigation links */
+  .nav__link {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    transition: all var(--duration-fast) var(--ease-smooth);
+    cursor: pointer;
+    letter-spacing: 0.005em;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .nav__link:hover {
+    color: var(--text-primary);
+    background: var(--surface-raised);
+  }
+
+  .nav__link--active {
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .nav__link--active::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--accent);
+  }
+
+  .nav__external-icon {
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin-left: 3px;
+    opacity: 0.4;
+    flex-shrink: 0;
+    transform: translateY(-1px);
+    transition: opacity var(--duration-fast);
+  }
+
+  .nav__link:hover .nav__external-icon {
+    opacity: 0.7;
+  }
+
+  /* NAV-03: Vertical separator */
+  .nav__separator {
+    width: 1px;
+    height: 18px;
+    background: var(--border-subtle);
+    margin: 0 4px;
+    flex-shrink: 0;
+  }
+
+  /* NAV-02: Search trigger button */
+  .nav__search-trigger {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s var(--ease-smooth);
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+
+  .nav__search-trigger:hover {
+    background: var(--surface-raised);
+    border-color: var(--text-tertiary);
+    color: var(--text-secondary);
+  }
+
+  /* :global() needed — SVG rendered by child Icon.astro component */
+  .nav__search-trigger :global(svg) {
+    transition: color var(--duration-fast);
+  }
+
+  /* NAV-04: Mobile hamburger button — hidden by default, shown below 900px */
+  .nav__hamburger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    transition:
+      color var(--duration-fast),
+      background var(--duration-fast);
+  }
+
+  .nav__hamburger:hover {
+    color: var(--text-primary);
+    background: var(--surface-raised);
+  }
+
+  .nav__hamburger svg {
+    display: block;
+  }
+
+  /* ============================================
+     MOBILE NAV — Bottom sheet
+     ============================================ */
+  .mobile-nav__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    background: rgba(28, 25, 23, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease-smooth);
+  }
+
+  .mobile-nav__overlay--open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  :global([data-theme='dark']) .mobile-nav__overlay {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
+  .mobile-nav__sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-sheet);
+    background: var(--surface);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -8px 40px rgba(28, 25, 23, 0.15);
+    padding: 12px 24px 32px;
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .mobile-nav__sheet--open {
+    transform: translateY(0);
+  }
+
+  .mobile-nav__handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    margin: 0 auto 20px;
+  }
+
+  .mobile-nav__links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all var(--duration-fast);
+    min-height: 48px;
+    cursor: pointer;
+  }
+
+  .mobile-nav__link:hover,
+  .mobile-nav__link--active {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .mobile-nav__link svg {
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+
+  .mobile-nav__link--active svg {
+    color: var(--accent);
+  }
+
+  .mobile-nav__external-icon {
+    margin-left: auto;
+    opacity: 0.4;
+  }
+
+  .mobile-nav__divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 8px 0;
+  }
+
+  .mobile-nav__theme-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  /* NAV-04: Responsive — hide text links below 900px, show hamburger */
+  @media (max-width: 899px) {
+    .nav__link,
+    .nav__separator {
+      display: none;
+    }
+
+    .nav__hamburger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav__search-trigger {
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    // --- Scroll shadow ---
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+
+    const threshold = 8;
+
+    function onScroll() {
+      if (window.scrollY > threshold) {
+        nav.classList.add('nav--scrolled');
+      } else {
+        nav.classList.remove('nav--scrolled');
+      }
+    }
+
+    function bindScroll() {
+      window.removeEventListener('scroll', onScroll);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    bindScroll();
+
+    // --- NAV-02: Search trigger ---
+    const searchBtn = document.getElementById('nav-search-trigger');
+    if (searchBtn) {
+      searchBtn.addEventListener('click', function () {
+        // If on the catalog page, scroll to and focus the sidebar search input
+        const sidebarInput = document.querySelector('.filter-sidebar__search-input');
+        if (sidebarInput) {
+          sidebarInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(function () {
+            sidebarInput.focus();
+          }, 400);
+        } else {
+          // On non-catalog pages, navigate to catalog with search hash
+          window.location.href = '/#search';
+        }
+      });
+    }
+
+    // --- NAV-04: Mobile hamburger menu ---
+    const hamburger = document.getElementById('nav-hamburger');
+    const overlay = document.getElementById('mobile-nav-overlay');
+    const sheet = document.getElementById('mobile-nav-sheet');
+    const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    function focusFirstMobileNavItem() {
+      if (!sheet) return;
+      const firstFocusable = sheet.querySelector(focusableSelector);
+      if (firstFocusable instanceof HTMLElement) {
+        firstFocusable.focus();
+      }
+    }
+
+    function openMobileNav() {
+      if (overlay) overlay.setAttribute('aria-hidden', 'false');
+      if (sheet) {
+        sheet.setAttribute('aria-hidden', 'false');
+        sheet.removeAttribute('inert');
+      }
+      if (overlay) overlay.classList.add('mobile-nav__overlay--open');
+      if (sheet) sheet.classList.add('mobile-nav__sheet--open');
+      if (hamburger) hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      window.requestAnimationFrame(focusFirstMobileNavItem);
+    }
+
+    function closeMobileNav(options) {
+      const restoreFocus = !options || options.restoreFocus !== false;
+      if (overlay) overlay.classList.remove('mobile-nav__overlay--open');
+      if (overlay) overlay.setAttribute('aria-hidden', 'true');
+      if (sheet) {
+        sheet.classList.remove('mobile-nav__sheet--open');
+        sheet.setAttribute('aria-hidden', 'true');
+        sheet.setAttribute('inert', '');
+      }
+      if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      if (restoreFocus && hamburger instanceof HTMLElement) {
+        hamburger.focus();
+      }
+    }
+
+    if (hamburger) {
+      hamburger.addEventListener('click', function () {
+        const isOpen = sheet && sheet.classList.contains('mobile-nav__sheet--open');
+        if (isOpen) {
+          closeMobileNav();
+        } else {
+          openMobileNav();
+        }
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', closeMobileNav);
+    }
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      if (!(sheet && sheet.classList.contains('mobile-nav__sheet--open'))) return;
+      event.preventDefault();
+      closeMobileNav();
+    });
+
+    // Close mobile nav on link click
+    if (sheet) {
+      const links = sheet.querySelectorAll('.mobile-nav__link');
+      links.forEach(function (link) {
+        link.addEventListener('click', function () {
+          closeMobileNav();
+        });
+      });
+    }
+
+    function onSwap() {
+      closeMobileNav({ restoreFocus: false });
+    }
+    document.addEventListener('astro:before-swap', onSwap);
+
+    // Update active nav link on View Transition navigation
+    function updateActiveLinks() {
+      const path = window.location.pathname;
+      const isCatalog = path === '/' || path === '/index.html';
+      const isAbout = path.indexOf('/about') === 0;
+
+      // Desktop nav links
+      const navLinks = document.querySelectorAll('.nav__link');
+      navLinks.forEach(function (link) {
+        const href = link.getAttribute('href');
+        link.classList.remove('nav__link--active');
+        if (href === '/' && isCatalog) link.classList.add('nav__link--active');
+        if (href === '/about' && isAbout) link.classList.add('nav__link--active');
+      });
+
+      // Mobile nav links
+      const mobileLinks = document.querySelectorAll('.mobile-nav__link');
+      mobileLinks.forEach(function (link) {
+        const href = link.getAttribute('href');
+        link.classList.remove('mobile-nav__link--active');
+        if (href === '/' && isCatalog) link.classList.add('mobile-nav__link--active');
+        if (href === '/about' && isAbout) link.classList.add('mobile-nav__link--active');
+      });
+    }
+
+    updateActiveLinks();
+    document.addEventListener('astro:page-load', bindScroll);
+    document.addEventListener('astro:page-load', updateActiveLinks);
+  })();
+</script>

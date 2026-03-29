@@ -1,13 +1,13 @@
 ---
-slug: "oddball-solution"
+slug: 'oddball-solution'
 meta:
   last_update_date: 2022-04-19
-  title: "Oddball Solution"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Oddball Solution'
+  description: "Same problem, two solutions, different files. One uses an adapter, the other rolls its own socket logic, and you can't tell which approach is the correct one. Or if either is."
   known_as:
     - Inconsistent Solution
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Bloaters
   occurrence:
@@ -46,8 +46,8 @@ problems:
 refactors:
   - Unify Interfaces with Adapter
 history:
-  - author: "Joshua Kerievsky"
-    type: "origin"
+  - author: 'Joshua Kerievsky'
+    type: 'origin'
     named_as:
       - Oddball Solution
     regarded_as:
@@ -56,11 +56,11 @@ history:
       year: 2005
       authors:
         - Joshua Kerievsky
-      named_as: "Oddball Solution"
-      name: "Smells to Refactorings Cheatsheet"
-      type: "cheatsheet"
+      named_as: 'Oddball Solution'
+      name: 'Smells to Refactorings Cheatsheet'
+      type: 'cheatsheet'
       href:
-        direct_url: "https://www.industriallogic.com/img/blog/2005/09/smellstorefactorings.pdf"
+        direct_url: 'https://www.industriallogic.com/img/blog/2005/09/smellstorefactorings.pdf'
 ---
 
 ## Oddball Solution

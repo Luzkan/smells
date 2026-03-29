@@ -1,0 +1,59 @@
+---
+/**
+ * DimensionTag — Shared tag/pill for dimension values.
+ *
+ * Two variants with different interaction contracts:
+ * - "filter": <button type="button"> with data-filter-* attrs for delegated handling (catalog cards)
+ * - "link": <a href> navigating to catalog with pre-set filter (article hero)
+ *
+ * Visual styling is owned by the parent context via the `class` prop.
+ * This component handles: dimension lookup, CSS custom properties,
+ * correct HTML element, ARIA attributes, and href generation.
+ */
+import { getDimension } from '../../lib/catalog/dimensions';
+import type { DimensionKey } from '../../lib/catalog/dimensions';
+
+interface Props {
+  dimensionKey: DimensionKey;
+  value: string;
+  label?: string;
+  variant: 'filter' | 'link';
+  class?: string;
+}
+
+const { dimensionKey, value, label, variant, class: className } = Astro.props;
+const dim = getDimension(dimensionKey);
+const displayText = label ?? value;
+const cssVars = `--dim-color: var(${dim.color}); --dim-light: var(${dim.lightColor});`;
+---
+
+{
+  variant === 'filter' ? (
+    <button
+      type="button"
+      class={className}
+      data-filter-dimension={dimensionKey}
+      data-filter-value={value}
+      style={cssVars}
+      aria-pressed="false"
+    >
+      {displayText}
+    </button>
+  ) : (
+    <a class={className} style={cssVars} href={`/#${dim.urlParam}=${encodeURIComponent(value)}`}>
+      <span class="dim-tag-bar" aria-hidden="true" />
+      {displayText}
+    </a>
+  )
+}
+
+<style>
+  .dim-tag-bar {
+    display: inline-block;
+    width: 3px;
+    height: 12px;
+    background: var(--dim-color);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+</style>

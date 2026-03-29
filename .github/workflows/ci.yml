@@ -1,0 +1,263 @@
+name: CI
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: ['*']
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '10'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Lint: ESLint + Prettier + Astro type-check
+  # ---------------------------------------------------------------------------
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+
+      - name: Astro type-check
+        run: pnpm check
+
+  # ---------------------------------------------------------------------------
+  # Unit & integration tests (Vitest)
+  # ---------------------------------------------------------------------------
+  unit-test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test -- --reporter=github-actions
+
+  # ---------------------------------------------------------------------------
+  # Python scraper smoke test
+  # ---------------------------------------------------------------------------
+  python-scraper:
+    name: Python Scraper
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: actions/setup-python@c4e89fac7e8767b327bbad6cb4d859eda999cf08 # v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: data_scraper/requirements.txt
+
+      - name: Install scraper dependencies
+        run: python -m pip install -r data_scraper/requirements.txt
+
+      - name: Smoke test scraper
+        run: |
+          out_dir="$RUNNER_TEMP/data_scraper-smells"
+          python -m data_scraper.main --save_path "$out_dir"
+          python data_scraper/verify_output.py --save_path "$out_dir"
+
+  # ---------------------------------------------------------------------------
+  # Build: verify Astro produces all 56 smell pages
+  # ---------------------------------------------------------------------------
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+        env:
+          PUBLIC_GA_TRACKING_ID: G-TEST123456
+
+      - name: Verify 56 smell pages were generated
+        run: |
+          count=$(find dist/smells -name 'index.html' -mindepth 2 | wc -l | tr -d ' ')
+          echo "Generated $count smell pages"
+          if [ "$count" -lt 56 ]; then
+            echo "::error::Expected at least 56 smell pages, found $count"
+            exit 1
+          fi
+
+      - name: Validate RSS feed
+        run: |
+          if [ ! -f dist/rss.xml ]; then
+            echo "::error::RSS feed not found at dist/rss.xml"
+            exit 1
+          fi
+          node -e "
+            const fs = require('fs');
+            const xml = fs.readFileSync('dist/rss.xml', 'utf8');
+            if (!xml.startsWith('<?xml')) throw new Error('Not valid XML');
+            const items = (xml.match(/<item>/g) || []).length;
+            console.log('Found ' + items + ' items in RSS feed');
+            if (items < 56) { process.exitCode = 1; console.error('Expected at least 56 RSS items, found ' + items); }
+          "
+
+      - name: Validate sitemap
+        run: node scripts/verify-sitemap.mjs
+
+      - name: Validate build output
+        run: pnpm test:build-output -- --reporter=github-actions
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  # ---------------------------------------------------------------------------
+  # Bundle size check (size-limit against build output)
+  # ---------------------------------------------------------------------------
+  bundle-size:
+    name: Bundle Size
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Download build artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+
+      - name: Check bundle size
+        run: pnpm exec size-limit
+
+  # ---------------------------------------------------------------------------
+  # E2E tests (Playwright)
+  #   PR  -> chromium + reduced-motion only
+  #   main -> full 6-browser matrix
+  # ---------------------------------------------------------------------------
+  e2e:
+    name: 'E2E (${{ matrix.project }})'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && fromJSON('["chromium","reduced-motion","firefox","webkit","mobile-chrome","mobile-safari"]') || fromJSON('["chromium","reduced-motion"]') }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Download build artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist
+          path: dist/
+
+      - name: Verify dist artifact exists
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "::error::dist/ artifact missing or incomplete"
+            exit 1
+          fi
+
+      - name: Install Playwright browsers
+        run: |
+          if [[ "${{ matrix.project }}" == *"firefox"* ]]; then
+            pnpm exec playwright install --with-deps firefox
+          elif [[ "${{ matrix.project }}" == *"webkit"* ]] || [[ "${{ matrix.project }}" == *"safari"* ]]; then
+            pnpm exec playwright install --with-deps webkit
+          else
+            pnpm exec playwright install --with-deps chromium
+          fi
+
+      - name: Start preview server
+        run: |
+          pnpm exec astro preview --port 4324 &
+
+          for attempt in $(seq 1 10); do
+            if curl --fail --silent --max-time 5 --output /dev/null http://localhost:4324; then
+              echo "Preview server ready"
+              exit 0
+            fi
+
+            echo "Not ready yet (attempt ${attempt}/10)"
+            sleep 2
+          done
+
+          echo "::error::Preview server did not start"
+          exit 1
+
+      - name: Run Playwright tests
+        run: pnpm exec playwright test --project=${{ matrix.project }}
+        env:
+          CI: true
+          BASE_URL: http://localhost:4324
+
+      - name: Upload test results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: playwright-report/
+          retention-days: 7

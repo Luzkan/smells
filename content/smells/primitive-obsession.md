@@ -1,13 +1,13 @@
 ---
-slug: "primitive-obsession"
+slug: 'primitive-obsession'
 meta:
   last_update_date: 2022-04-19
-  title: "Primitive Obsession"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Primitive Obsession'
+  description: "A phone number stored as a string. A price stored as a float. Concepts that deserve their own types get crammed into primitives, losing validation, scattering logic, and pretending a bare string is something it's not."
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Bloaters
   occurrence:
@@ -47,8 +47,8 @@ refactors:
   - Replace Type Code/Conditional Logic with State/Strategy
   - Move Embellishment to Decorator
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Primitive Obsession
     regarded_as:
@@ -59,11 +59,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Primitive Obsession
@@ -72,7 +72,7 @@ Whenever a variable that is just a simple `string`, or an `int` simulates being 
 
 ### Causation
 
-Possibly a missing class to represent the concept in the first place. Mäntylä gives an example of representing money as primitive rather than creating a separate class [[1](#sources)], and so does Fowler, who states that many programmers are reluctant to create their own fundamental types. [[2](#sources)]. Higher-level abstraction knowledge is needed to clarify or simplify the code. [[3](#sources)
+Possibly a missing class to represent the concept in the first place. Mäntylä gives an example of representing money as primitive rather than creating a separate class [[1](#sources)], and so does Fowler, who states that many programmers are reluctant to create their own fundamental types. [[2](#sources)]. Higher-level abstraction knowledge is needed to clarify or simplify the code. [3](#sources)
 
 ### Problems
 

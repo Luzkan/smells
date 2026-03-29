@@ -1,0 +1,82 @@
+---
+/**
+ * CatalogLayout — Layout for the catalog page.
+ *
+ * Extends BaseLayout with a sidebar + card grid CSS grid structure.
+ * Includes an aria-live region for filter result announcements.
+ * Responsive: single column on mobile, sidebar at --breakpoint-md (900px).
+ */
+import BaseLayout from './BaseLayout.astro';
+import type { SeoMeta } from '../lib/types';
+
+interface Props {
+  seo: SeoMeta;
+}
+
+const { seo } = Astro.props;
+---
+
+<BaseLayout seo={seo}>
+  <slot name="hero" />
+  <div class="catalog-layout">
+    <aside class="catalog-layout__sidebar">
+      <slot name="sidebar" />
+    </aside>
+    <div class="catalog-layout__content">
+      <div id="filter-results-live" role="status" aria-live="polite" class="sr-only"></div>
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .catalog-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px clamp(60px, 8vw, 100px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .catalog-layout__sidebar {
+    /* Keep fixed-position mobile filter controls mounted without reserving layout space. */
+    display: contents;
+  }
+
+  @media (min-width: 900px) {
+    .catalog-layout {
+      grid-template-columns: var(--sidebar-width) 1fr;
+      gap: 36px;
+    }
+
+    .catalog-layout__sidebar {
+      display: block;
+      position: sticky;
+      top: calc(var(--nav-height) + 16px);
+      max-height: calc(100vh - var(--nav-height) - 32px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .catalog-layout__sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .catalog-layout__sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .catalog-layout__sidebar::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 1200px) {
+    .catalog-layout {
+      --sidebar-width: 240px;
+    }
+  }
+</style>

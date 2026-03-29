@@ -1,13 +1,13 @@
 ---
-slug: "binary-operator-in-name"
+slug: 'binary-operator-in-name'
 meta:
   last_update_date: 2022-04-19
-  title: "Binary Operator in Name"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Binary Operator in Name'
+  description: 'If a method has "and" or "or" in its name, it''s confessing to doing two things, and that confession is an invitation to split it in half.'
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Couplers
   occurrence:
@@ -42,20 +42,20 @@ problems:
 refactors:
   - Extract Method
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Binary Operator in Name
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
 ---
 
 ## Binary Operator in Name

@@ -1,0 +1,1348 @@
+---
+/**
+ * "Anatomy of an Entry" section — annotated card with four callouts,
+ * rotating through curated specimens. Relies on shared section styles
+ * from about.astro.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { RELATION_TYPE_LABELS } from '../../lib/constants';
+import { DIMENSION_CONFIG } from '../../lib/catalog/dimensions';
+import Icon from '../icons/Icon.astro';
+import {
+  ICON_ALERT_CIRCLE,
+  ICON_RELATIONSHIP_GRAPH,
+  ICON_PENCIL,
+  ICON_WRENCH,
+  ICON_ARROW_RIGHT,
+  ICON_CODE,
+  ICON_WARNING,
+  ICON_EXTERNAL_ARROW,
+  ICON_BOOK_LINES,
+  ICON_COPY,
+} from '../../lib/icon-paths';
+import { groupRelationsByType } from '../../lib/content/smell-utils';
+
+interface Props {
+  allSmells: CollectionEntry<'smells'>[];
+}
+
+const CURATED_SPECIMENS: { slug: string; fact: string }[] = [
+  {
+    slug: 'feature-envy',
+    fact: 'Named by Martin Fowler in 1999. A method that uses another class\u2019s data more than its own \u2014 the most common coupler smell in Java.',
+  },
+  {
+    slug: 'large-class',
+    fact: 'God Class is the most frequently cited smell in enterprise Java research. Also called \u201CThe Blob\u201D \u2014 it consumes everything.',
+  },
+  {
+    slug: 'magic-number',
+    fact: 'The name comes from the fact that the number appears to work \u201Cby magic\u201D \u2014 nobody knows why it\u2019s 86400 until they multiply 60\u00d760\u00d724.',
+  },
+  {
+    slug: 'duplicated-code',
+    fact: 'Fowler called it the single worst smell in 1999. It has more aliases than any other entry in this catalog: Clones, Code Clone, External Duplication.',
+  },
+  {
+    slug: 'long-method',
+    fact: 'Also called God Method or Brain Method. The average problematic method has 4\u00d7 the lines and 6\u00d7 the cyclomatic complexity of its neighbors.',
+  },
+  {
+    slug: 'shotgun-surgery',
+    fact: 'Named by Fowler in 1999 as the inverse of Divergent Change. One fix, many files. The smell that turns a 5-minute bug into a morning of grep.',
+  },
+];
+
+const REL_LABELS = Object.fromEntries(
+  Object.entries(RELATION_TYPE_LABELS).map(([k, v]) => [k, v.label]),
+);
+
+const DIM_COLOR = Object.fromEntries(DIMENSION_CONFIG.map((d) => [d.key, d.color])) as Record<
+  (typeof DIMENSION_CONFIG)[number]['key'],
+  string
+>;
+
+interface AnatomyTag {
+  label: string;
+  color: string;
+}
+
+interface AnatomySmell {
+  title: string;
+  slug: string;
+  category: string;
+  aka: string | null;
+  description: string;
+  tags: AnatomyTag[];
+  relationships: string;
+  refactoring: string;
+  fact: string;
+}
+
+type ExtractedAnatomySmell = Omit<AnatomySmell, 'fact'>;
+
+function extract(entry: CollectionEntry<'smells'>): ExtractedAnatomySmell {
+  const d = entry.data;
+  const obstruction = d.categories.obstruction[0];
+  const hierarchy = d.categories.smell_hierarchies[0];
+  const aliases = d.meta.known_as ?? [];
+
+  const relGroups = groupRelationsByType(d.relations.related_smells);
+
+  return {
+    title: d.meta.title,
+    slug: d.slug,
+    category: `${obstruction} \u00b7 ${hierarchy}`,
+    aka: aliases.length > 0 ? aliases.slice(0, 3).join(', ') : null,
+    description: d.meta.description ?? '',
+    tags: [
+      { label: obstruction, color: DIM_COLOR.obstruction },
+      { label: d.categories.occurrence[0], color: DIM_COLOR.occurrence },
+      { label: hierarchy, color: DIM_COLOR.smell_hierarchies },
+      {
+        label: d.categories.expanse === 'Between' ? 'Between Classes' : 'Within Class',
+        color: DIM_COLOR.expanse,
+      },
+    ],
+    relationships: Object.entries(relGroups)
+      .filter(([t]) => REL_LABELS[t])
+      .map(([t, names]) => `${REL_LABELS[t]}: ${names.join(', ')}`)
+      .join('<br>'),
+    refactoring: d.refactors.join(', '),
+  };
+}
+
+const { allSmells } = Astro.props;
+const totalSmells = allSmells.length;
+const smellsUnrotated: AnatomySmell[] = CURATED_SPECIMENS.map(({ slug, fact }) => {
+  const entry = allSmells.find((e) => e.data.slug === slug);
+  if (!entry) throw new Error(`Curated smell not found: ${slug}`);
+  return { ...extract(entry), fact };
+});
+
+const startIdx = Math.floor(Math.random() * smellsUnrotated.length);
+const smells = [...smellsUnrotated.slice(startIdx), ...smellsUnrotated.slice(0, startIdx)];
+
+const initial = smells[0];
+const nextTitle = smells[1].title;
+const smellsJson = JSON.stringify(smells);
+---
+
+<div
+  class="about-section section-wide"
+  id="sec-anatomy"
+  data-smells={smellsJson}
+  data-total={String(totalSmells)}
+>
+  <div class="section-label">Inside</div>
+  <h2>Anatomy of a Smell</h2>
+  <p class="anatomy-intro">Every smell gets the same treatment. Here&rsquo;s what you get.</p>
+
+  <div class="about-content-wide">
+    <div class="anatomy-stage" id="anatomyStage">
+      <!-- Left annotations -->
+      <div class="anatomy-annotations-left">
+        <div
+          class="anatomy-annotation"
+          data-region-target="classification"
+          style="--ann-color: var(--accent)"
+        >
+          <div class="anatomy-annotation-icon">
+            <Icon icon={ICON_ALERT_CIRCLE} size={14} />
+          </div>
+          <div class="anatomy-annotation-title">Classified</div>
+          <div class="anatomy-annotation-body">
+            Five independent dimensions &mdash; filter from any angle
+          </div>
+        </div>
+        <div
+          class="anatomy-annotation"
+          data-region-target="relationships"
+          style="--ann-color: var(--red)"
+        >
+          <div class="anatomy-annotation-icon">
+            <Icon icon={ICON_RELATIONSHIP_GRAPH} size={14} />
+          </div>
+          <div class="anatomy-annotation-title">Cause Chains</div>
+          <div class="anatomy-annotation-body">
+            Mapped to the smells it triggers &mdash; and the ones that trigger it
+          </div>
+        </div>
+      </div>
+
+      <!-- Center card -->
+      <div class="anatomy-card" id="anatomyCard">
+        <div class="anatomy-card-bar shimmer" id="anatomyCardBar"></div>
+        <div
+          class="anatomy-card-content"
+          id="anatomyCardContent"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <div class="anatomy-card-top" data-region="classification">
+            <div class="anatomy-card-category" id="acCategory">{initial.category}</div>
+            <a class="anatomy-card-title-link" id="acTitleLink" href={`/smells/${initial.slug}`}>
+              <span id="acTitle">{initial.title}</span>
+              <Icon icon={ICON_EXTERNAL_ARROW} class="anatomy-card-title-arrow" size={14} />
+            </a>
+            <div
+              class="anatomy-card-aka"
+              id="acAka"
+              style={initial.aka ? undefined : 'display:none'}
+            >
+              {initial.aka ? `Also known as: ${initial.aka}` : ''}
+            </div>
+          </div>
+          <div data-region="description" class="anatomy-card-desc-wrap">
+            <div class="anatomy-card-desc" id="acDesc">{initial.description}</div>
+          </div>
+          <div class="anatomy-card-tags" data-region="classification" id="acTags">
+            {
+              initial.tags.map((tag) => (
+                <span
+                  class="anatomy-tag"
+                  style={`border-color:var(${tag.color});color:var(${tag.color});background:var(${tag.color}-light)`}
+                >
+                  {tag.label}
+                </span>
+              ))
+            }
+          </div>
+          <div class="anatomy-card-bottom">
+            <div class="anatomy-card-meta" data-region="relationships">
+              <div class="anatomy-card-meta-label">Relationships</div>
+              <div class="anatomy-card-meta-list" id="acRel" set:html={initial.relationships} />
+            </div>
+            <div class="anatomy-card-meta" data-region="refactoring">
+              <div class="anatomy-card-meta-label">Refactoring</div>
+              <div class="anatomy-card-meta-list" id="acRefactor">{initial.refactoring}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right annotations -->
+      <div class="anatomy-annotations-right">
+        <div
+          class="anatomy-annotation"
+          data-region-target="description"
+          style="--ann-color: var(--blue)"
+        >
+          <div class="anatomy-annotation-icon">
+            <Icon icon={ICON_PENCIL} size={14} />
+          </div>
+          <div class="anatomy-annotation-title">Plain Language</div>
+          <div class="anatomy-annotation-body">Written for developers, not academic journals</div>
+        </div>
+        <div
+          class="anatomy-annotation"
+          data-region-target="refactoring"
+          style="--ann-color: var(--green)"
+        >
+          <div class="anatomy-annotation-icon">
+            <Icon icon={ICON_WRENCH} size={14} />
+          </div>
+          <div class="anatomy-annotation-title">Fixable</div>
+          <div class="anatomy-annotation-body">
+            Concrete refactoring techniques, not just &ldquo;clean this up&rdquo;
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Smell switcher -->
+  <div class="anatomy-switcher" id="anatomySwitcher">
+    <span class="anatomy-counter" id="anatomyCounter">1 / {smells.length}</span>
+    This is <strong id="anatomySmellName">{initial.title}</strong>.
+    <button type="button" id="anatomyNextBtn">Show another &rarr; {nextTitle}</button>
+  </div>
+
+  <!-- Depth teaser row -->
+  <div class="about-content-wide">
+    <div class="anatomy-depth" id="anatomyDepth">
+      <a
+        class="anatomy-depth-link"
+        href={`/smells/${initial.slug}#example`}
+        data-depth-section="example"
+      >
+        <div class="anatomy-depth-item" style="--depth-color: var(--teal)">
+          <div class="anatomy-depth-icon" style="background: var(--teal-light); color: var(--teal)">
+            <Icon icon={ICON_CODE} size={16} />
+          </div>
+          <div class="anatomy-depth-text">
+            <div class="anatomy-depth-title">Before &amp; After Code</div>
+            <div class="anatomy-depth-sub">The smell, then the fix. Side by side.</div>
+          </div>
+          <Icon icon={ICON_ARROW_RIGHT} class="anatomy-depth-arrow" size={14} />
+        </div>
+      </a>
+      <a
+        class="anatomy-depth-link"
+        href={`/smells/${initial.slug}#problems`}
+        data-depth-section="problems"
+      >
+        <div class="anatomy-depth-item" style="--depth-color: var(--red)">
+          <div class="anatomy-depth-icon" style="background: var(--red-light); color: var(--red)">
+            <Icon icon={ICON_WARNING} size={16} />
+          </div>
+          <div class="anatomy-depth-text">
+            <div class="anatomy-depth-title">What It Breaks</div>
+            <div class="anatomy-depth-sub">Which principles it breaks, and which it bends</div>
+          </div>
+          <Icon icon={ICON_ARROW_RIGHT} class="anatomy-depth-arrow" size={14} />
+        </div>
+      </a>
+      <a
+        class="anatomy-depth-link"
+        href={`/smells/${initial.slug}#sources`}
+        data-depth-section="sources"
+      >
+        <div class="anatomy-depth-item" style="--depth-color: var(--blue)">
+          <div class="anatomy-depth-icon" style="background: var(--blue-light); color: var(--blue)">
+            <Icon icon={ICON_BOOK_LINES} size={16} />
+          </div>
+          <div class="anatomy-depth-text">
+            <div class="anatomy-depth-title">Academic Sources</div>
+            <div class="anatomy-depth-sub">The paper trail. Who named it, and when.</div>
+          </div>
+          <Icon icon={ICON_ARROW_RIGHT} class="anatomy-depth-arrow" size={14} />
+        </div>
+      </a>
+      <a
+        class="anatomy-depth-link"
+        href={`/smells/${initial.slug}#relations`}
+        data-depth-section="relations"
+      >
+        <div class="anatomy-depth-item" style="--depth-color: var(--purple)">
+          <div
+            class="anatomy-depth-icon"
+            style="background: var(--purple-light); color: var(--purple)"
+          >
+            <Icon icon={ICON_RELATIONSHIP_GRAPH} size={16} />
+          </div>
+          <div class="anatomy-depth-text">
+            <div class="anatomy-depth-title">Full Relationship Map</div>
+            <div class="anatomy-depth-sub">
+              Every link to the smells it triggers or travels with
+            </div>
+          </div>
+          <Icon icon={ICON_ARROW_RIGHT} class="anatomy-depth-arrow" size={14} />
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- CTA closer -->
+  <div class="anatomy-cta" id="anatomyCta">
+    <div class="anatomy-cta-line">
+      That&rsquo;s the surface. Every one of the {totalSmells} goes this <strong>deep</strong>.
+    </div>
+    <a href="/" class="cta-button">Explore the Catalog &rarr;</a>
+  </div>
+
+  <!-- Shareable fact -->
+  <div class="anatomy-fact-wrap">
+    <button type="button" class="anatomy-fact" id="anatomyFact">
+      <span class="anatomy-fact-text" id="anatomyFactText" aria-live="polite">{initial.fact}</span>
+      <Icon icon={ICON_COPY} class="anatomy-fact-icon" size={14} />
+    </button>
+  </div>
+</div>
+
+<script>
+  import { initOnce } from '../../lib/lifecycle';
+  import { copyToClipboardWithFeedback, COPY_FEEDBACK_MS } from '../../lib/copy-code';
+  import { staggerReveal } from '../../lib/observe-reveal';
+
+  initOnce('#sec-anatomy', (root) => {
+    const smells = JSON.parse(root.dataset.smells ?? '[]');
+    if (!smells.length) return;
+
+    const totalSmells = Number.parseInt(root.dataset.total ?? '', 10);
+    const catalogSmellCount = Number.isNaN(totalSmells) ? smells.length : totalSmells;
+
+    let currentIdx = 0;
+    let viewedCount = 1;
+
+    const el = (id: string) => document.getElementById(id);
+
+    function renderSmell(idx: number) {
+      const s = smells[idx];
+
+      const categoryEl = el('acCategory');
+      const titleEl = el('acTitle');
+      const titleLink = el('acTitleLink') as HTMLAnchorElement | null;
+      const akaEl = el('acAka');
+      const descEl = el('acDesc');
+      const relEl = el('acRel');
+      const refactorEl = el('acRefactor');
+      const nameEl = el('anatomySmellName');
+      const factTextEl = el('anatomyFactText');
+      const tagsEl = el('acTags');
+      const cardEl = el('anatomyCard');
+
+      if (categoryEl) categoryEl.textContent = s.category;
+      if (titleEl) titleEl.textContent = s.title;
+      if (titleLink) titleLink.href = `/smells/${s.slug}`;
+
+      if (akaEl) {
+        if (s.aka) {
+          akaEl.textContent = 'Also known as: ' + s.aka;
+          akaEl.style.display = '';
+        } else {
+          akaEl.style.display = 'none';
+        }
+      }
+
+      if (descEl) descEl.textContent = s.description;
+      if (relEl) relEl.innerHTML = s.relationships;
+      if (refactorEl) refactorEl.textContent = s.refactoring;
+      if (nameEl) nameEl.textContent = s.title;
+      if (factTextEl) factTextEl.textContent = s.fact;
+
+      if (tagsEl) {
+        tagsEl.innerHTML = s.tags
+          .map(
+            (t: { label: string; color: string }) =>
+              `<span class="anatomy-tag" style="border-color:var(${t.color});color:var(${t.color});background:var(${t.color}-light)">${t.label}</span>`,
+          )
+          .join('');
+      }
+
+      root
+        .querySelectorAll<HTMLAnchorElement>('.anatomy-depth-link[data-depth-section]')
+        .forEach((link) => {
+          link.href = `/smells/${s.slug}#${link.dataset.depthSection}`;
+        });
+
+      if (tagsEl && cardEl?.classList.contains('revealed')) {
+        const tags = tagsEl.querySelectorAll<HTMLElement>('.anatomy-tag');
+        tags.forEach((tag) => {
+          tag.style.transition = 'none';
+          tag.style.opacity = '0';
+          tag.style.transform = 'scale(0.8)';
+        });
+        requestAnimationFrame(() => {
+          tags.forEach((tag, i) => {
+            tag.style.transition = '';
+            setTimeout(() => {
+              tag.style.opacity = '1';
+              tag.style.transform = 'scale(1)';
+            }, i * 50);
+          });
+        });
+      }
+    }
+
+    /* ── Smell rotation ── */
+
+    const nextBtn = el('anatomyNextBtn');
+    let exhausted = false;
+
+    function handleNextClick() {
+      if (exhausted) {
+        window.location.href = '/';
+        return;
+      }
+
+      const content = el('anatomyCardContent');
+      if (!content) return;
+      content.classList.add('fading');
+
+      setTimeout(() => {
+        currentIdx = (currentIdx + 1) % smells.length;
+        viewedCount++;
+        renderSmell(currentIdx);
+        content.classList.remove('fading');
+
+        const bar = el('anatomyCardBar');
+        if (bar) {
+          bar.style.animation = 'none';
+          void bar.offsetWidth;
+          bar.style.animation = '';
+        }
+
+        root.querySelectorAll<HTMLElement>('.anatomy-annotation').forEach((a) => {
+          a.style.transition = 'transform 0.2s var(--ease-spring)';
+          a.style.transform = 'scale(1.02)';
+          setTimeout(() => {
+            a.style.transform = '';
+          }, 200);
+        });
+
+        const counter = el('anatomyCounter');
+        if (viewedCount >= smells.length) {
+          exhausted = true;
+          if (nextBtn) {
+            nextBtn.textContent =
+              `You\u2019ve seen ${smells.length} of ${catalogSmellCount}. ` +
+              `What about the other ${catalogSmellCount - smells.length}? \u2192`;
+          }
+          if (counter) {
+            counter.style.opacity = '0';
+            counter.addEventListener(
+              'transitionend',
+              () => {
+                counter.style.display = 'none';
+              },
+              { once: true },
+            );
+          }
+        } else {
+          const nextSmellIdx = (currentIdx + 1) % smells.length;
+          if (nextBtn) nextBtn.textContent = `Show another \u2192 ${smells[nextSmellIdx].title}`;
+          if (counter) counter.textContent = `${currentIdx + 1} / ${smells.length}`;
+        }
+      }, 250);
+    }
+
+    nextBtn?.addEventListener('click', handleNextClick);
+
+    /* ── Scroll-triggered staggered reveal ── */
+
+    const stage = el('anatomyStage');
+    let cleanupStageReveal = () => {};
+
+    if (stage) {
+      const stageCard = el('anatomyCard');
+      const annotations = Array.from(stage.querySelectorAll('.anatomy-annotation'));
+      const depth = el('anatomyDepth');
+      const cta = el('anatomyCta');
+      const delays = [500, 1000, 750, 1250];
+
+      cleanupStageReveal = staggerReveal(
+        stage,
+        [
+          { el: stageCard },
+          ...annotations.map((ann, i) => ({ el: ann, delayMs: delays[i] })),
+          { el: depth, delayMs: 1500 },
+          { el: cta, delayMs: 1700 },
+        ],
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+      );
+    }
+
+    /* ── Bidirectional hover: annotation ↔ card region ── */
+
+    const maybeCard = el('anatomyCard');
+    if (!maybeCard) return cleanupStageReveal;
+    const hoverCard = maybeCard;
+
+    const annotations = root.querySelectorAll<HTMLElement>(
+      '.anatomy-annotation[data-region-target]',
+    );
+
+    function activate(ann: Element, regionName: string) {
+      const annColor = getComputedStyle(ann).getPropertyValue('--ann-color').trim();
+      hoverCard.style.setProperty('--active-region-color', annColor);
+      hoverCard.classList.add('has-active-region');
+      ann.classList.add('active');
+      hoverCard
+        .querySelectorAll(`[data-region="${regionName}"]`)
+        .forEach((r) => r.classList.add('region-active'));
+    }
+
+    function deactivate(ann: Element, regionName: string) {
+      hoverCard.style.removeProperty('--active-region-color');
+      hoverCard.classList.remove('has-active-region');
+      ann.classList.remove('active');
+      hoverCard
+        .querySelectorAll(`[data-region="${regionName}"]`)
+        .forEach((r) => r.classList.remove('region-active'));
+    }
+
+    annotations.forEach((ann) => {
+      const regionName = ann.dataset.regionTarget;
+      if (!regionName) return;
+      ann.setAttribute('tabindex', '0');
+      ann.setAttribute('role', 'button');
+
+      const title = ann.querySelector('.anatomy-annotation-title')?.textContent ?? '';
+      const body = ann.querySelector('.anatomy-annotation-body')?.textContent ?? '';
+      ann.setAttribute('aria-label', `${title}: ${body}`);
+
+      ann.addEventListener('mouseenter', () => activate(ann, regionName));
+      ann.addEventListener('mouseleave', () => deactivate(ann, regionName));
+      ann.addEventListener('focus', () => activate(ann, regionName));
+      ann.addEventListener('blur', () => deactivate(ann, regionName));
+    });
+
+    hoverCard.querySelectorAll<HTMLElement>('[data-region]').forEach((region) => {
+      const regionName = region.dataset.region;
+      if (!regionName) return;
+      const matchingAnn = root.querySelector(`[data-region-target="${regionName}"]`);
+      if (!matchingAnn) return;
+
+      region.addEventListener('mouseenter', () => activate(matchingAnn, regionName));
+      region.addEventListener('mouseleave', () => deactivate(matchingAnn, regionName));
+    });
+
+    /* ── Click-to-copy fact ── */
+
+    const factEl = el('anatomyFact');
+    const factTextEl = el('anatomyFactText');
+    if (factEl && factTextEl) {
+      factEl.addEventListener('click', async () => {
+        const text = `\u201C${factTextEl.textContent}\u201D \u2014 codesmells.org`;
+        const original = factTextEl.textContent ?? '';
+        if (!(await copyToClipboardWithFeedback(text, factEl, { durationMs: COPY_FEEDBACK_MS }))) {
+          return;
+        }
+
+        factTextEl.textContent = 'Copied!';
+        setTimeout(() => {
+          factTextEl.textContent = original;
+        }, COPY_FEEDBACK_MS);
+      });
+    }
+
+    return cleanupStageReveal;
+  });
+</script>
+
+<style>
+  .anatomy-intro {
+    margin-bottom: 32px;
+  }
+
+  /* ─── Stage: 3-column grid ─── */
+
+  .anatomy-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 480px) 1fr;
+    gap: 0;
+    align-items: start;
+    margin-top: 8px;
+  }
+
+  .anatomy-annotations-left,
+  .anatomy-annotations-right {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 12px;
+  }
+
+  .anatomy-annotations-left {
+    align-items: flex-end;
+    padding-right: 20px;
+  }
+
+  .anatomy-annotations-right {
+    align-items: flex-start;
+    padding-left: 20px;
+  }
+
+  /* ─── Annotation callouts ─── */
+
+  .anatomy-annotation {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+    max-width: 210px;
+    cursor: default;
+    opacity: 0;
+    transition:
+      opacity 0.4s var(--ease-out),
+      transform 0.4s var(--ease-out),
+      box-shadow 0.2s var(--ease-smooth);
+  }
+
+  .anatomy-annotations-left .anatomy-annotation {
+    border-right: 2.5px solid var(--ann-color, var(--accent));
+    transform: translateX(-14px);
+  }
+
+  .anatomy-annotations-right .anatomy-annotation {
+    border-left: 2.5px solid var(--ann-color, var(--accent));
+    transform: translateX(14px);
+  }
+
+  .anatomy-annotation:global(.revealed) {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (hover: hover) {
+    .anatomy-annotation:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+  }
+
+  .anatomy-annotation-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--ann-color, var(--accent)) 10%, var(--bg));
+    color: var(--ann-color, var(--accent));
+    margin-bottom: 8px;
+    flex-shrink: 0;
+  }
+
+  .anatomy-annotation-title {
+    font-size: 10px;
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ann-color, var(--accent));
+    margin-bottom: 4px;
+  }
+
+  .anatomy-annotation-body {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ─── Connector lines (CSS pseudo-elements) ─── */
+
+  .anatomy-annotation::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    border-top: 1.5px dashed var(--border);
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition:
+      transform 0.3s var(--ease-out),
+      border-color 0.2s;
+  }
+
+  .anatomy-annotations-left .anatomy-annotation::after {
+    right: -20px;
+    transform-origin: left center;
+  }
+
+  .anatomy-annotations-right .anatomy-annotation::after {
+    left: -20px;
+    transform-origin: right center;
+  }
+
+  .anatomy-annotation:global(.revealed)::after {
+    transform: scaleX(1);
+    transition-delay: 0.15s;
+  }
+
+  .anatomy-annotation:global(.active)::after {
+    border-top-style: solid;
+    border-color: var(--ann-color, var(--accent));
+  }
+
+  /* Connector endpoint dots */
+  .anatomy-annotation::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+    transform: translateY(-50%) scale(0);
+    transition:
+      transform 0.25s var(--ease-spring),
+      background 0.2s;
+  }
+
+  .anatomy-annotations-left .anatomy-annotation::before {
+    right: -23px;
+  }
+
+  .anatomy-annotations-right .anatomy-annotation::before {
+    left: -23px;
+  }
+
+  .anatomy-annotation:global(.revealed)::before {
+    transform: translateY(-50%) scale(1);
+    transition-delay: 0.3s;
+  }
+
+  .anatomy-annotation:global(.active)::before {
+    background: var(--ann-color, var(--accent));
+    transform: translateY(-50%) scale(1.3);
+  }
+
+  /* ─── The card ─── */
+
+  .anatomy-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: scale(0.97);
+    transition:
+      opacity 0.6s var(--ease-out),
+      transform 0.6s var(--ease-out),
+      box-shadow 0.3s;
+  }
+
+  .anatomy-card:global(.revealed) {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .anatomy-card-bar {
+    height: 3px;
+    background: var(--accent);
+    opacity: 0.4;
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 0.8s var(--ease-out);
+  }
+
+  .anatomy-card:global(.revealed) .anatomy-card-bar {
+    transform: scaleX(1);
+    transition-delay: 0.2s;
+  }
+
+  .anatomy-card:global(.revealed) .anatomy-card-bar:global(.shimmer) {
+    background: linear-gradient(
+      90deg,
+      var(--accent) 0%,
+      var(--accent) 35%,
+      color-mix(in srgb, var(--accent) 55%, var(--surface)) 50%,
+      var(--accent) 65%,
+      var(--accent) 100%
+    );
+    background-size: 200% 100%;
+    animation: barShimmer 1.4s 0.4s var(--ease-out) forwards;
+  }
+
+  @keyframes barShimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .anatomy-card-content {
+    transition: opacity 0.25s var(--ease-out);
+  }
+
+  .anatomy-card-content:global(.fading) {
+    opacity: 0;
+  }
+
+  /* Card regions — spotlight effect on hover */
+  .anatomy-card :global([data-region]) {
+    transition:
+      background 0.25s,
+      opacity 0.25s;
+    border-radius: 4px;
+  }
+
+  .anatomy-card:global(.has-active-region) :global([data-region]) {
+    opacity: 0.35;
+  }
+
+  .anatomy-card:global(.has-active-region) :global([data-region].region-active) {
+    opacity: 1;
+    background: color-mix(in srgb, var(--active-region-color, var(--accent)) 8%, transparent);
+  }
+
+  /* Bottom meta cells: dim children instead of container to preserve surface bg */
+  .anatomy-card:global(.has-active-region) .anatomy-card-meta {
+    opacity: 1;
+  }
+
+  .anatomy-card:global(.has-active-region) .anatomy-card-meta .anatomy-card-meta-label,
+  .anatomy-card:global(.has-active-region) .anatomy-card-meta .anatomy-card-meta-list {
+    opacity: 0.35;
+    transition: opacity 0.25s;
+  }
+
+  .anatomy-card:global(.has-active-region)
+    .anatomy-card-meta:global(.region-active)
+    .anatomy-card-meta-label,
+  .anatomy-card:global(.has-active-region)
+    .anatomy-card-meta:global(.region-active)
+    .anatomy-card-meta-list {
+    opacity: 1;
+  }
+
+  /* Card top section */
+  .anatomy-card-top {
+    position: relative;
+    padding: 28px 28px 20px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--accent) 3%, var(--bg)) 0%,
+      var(--surface) 100%
+    );
+    transition: opacity 0.2s;
+  }
+
+  .anatomy-card-category {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .anatomy-card-title-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    font-variation-settings: 'opsz' 32;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .anatomy-card-title-link:hover {
+    color: var(--accent);
+  }
+
+  .anatomy-card-title-link :global(.anatomy-card-title-arrow) {
+    flex-shrink: 0;
+    opacity: 0;
+    transform: translate(-2px, 2px);
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+  }
+
+  .anatomy-card-title-link:hover :global(.anatomy-card-title-arrow) {
+    opacity: 0.6;
+    transform: translate(0, 0);
+  }
+
+  .anatomy-card-aka {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+
+  /* Card description */
+  .anatomy-card-desc-wrap {
+    padding: 8px 28px 16px;
+    transition: opacity 0.25s;
+  }
+
+  .anatomy-card-desc {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* Tags — :global() because JS recreates them on rotation */
+  .anatomy-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 28px 12px;
+    transition: opacity 0.25s;
+  }
+
+  :global(.anatomy-tag) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid;
+    opacity: 0;
+    transform: scale(0.8);
+    transition:
+      opacity 0.3s var(--ease-spring),
+      transform 0.3s var(--ease-spring);
+  }
+
+  .anatomy-card:global(.revealed) :global(.anatomy-tag) {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .anatomy-card:global(.revealed) :global(.anatomy-tag:nth-child(1)) {
+    transition-delay: 0.4s;
+  }
+  .anatomy-card:global(.revealed) :global(.anatomy-tag:nth-child(2)) {
+    transition-delay: 0.45s;
+  }
+  .anatomy-card:global(.revealed) :global(.anatomy-tag:nth-child(3)) {
+    transition-delay: 0.5s;
+  }
+  .anatomy-card:global(.revealed) :global(.anatomy-tag:nth-child(4)) {
+    transition-delay: 0.55s;
+  }
+
+  /* Card bottom split panel */
+  .anatomy-card-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border-subtle);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .anatomy-card-meta {
+    background: var(--surface);
+    padding: 14px 20px;
+    transition:
+      background 0.25s,
+      opacity 0.25s;
+  }
+
+  .anatomy-card-meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    margin-bottom: 6px;
+  }
+
+  .anatomy-card-meta-list {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ─── Smell switcher ─── */
+
+  .anatomy-switcher {
+    text-align: center;
+    margin-top: 16px;
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .anatomy-counter {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--surface-raised);
+    border-radius: var(--radius-pill);
+    padding: 2px 8px;
+    color: var(--text-tertiary);
+    margin-right: 4px;
+    letter-spacing: 0.02em;
+    vertical-align: baseline;
+    transition: opacity 0.3s var(--ease-out);
+  }
+
+  .anatomy-switcher button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--accent);
+    font-weight: 500;
+    padding: 0;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .anatomy-switcher button:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+  }
+
+  /* ─── Depth teaser row ─── */
+
+  .anatomy-depth-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+  }
+
+  .anatomy-depth {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 40px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.5s var(--ease-out);
+  }
+
+  .anatomy-depth:global(.revealed) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .anatomy-depth-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    transition:
+      transform 0.2s var(--ease-spring),
+      box-shadow 0.2s;
+  }
+
+  .anatomy-depth-item :global(.anatomy-depth-arrow) {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: var(--depth-color);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 0.15s,
+      transform 0.15s;
+  }
+
+  @media (hover: hover) {
+    .anatomy-depth-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .anatomy-depth-item:hover .anatomy-depth-icon {
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--depth-color) 12%, transparent);
+    }
+
+    .anatomy-depth-item:hover :global(.anatomy-depth-arrow) {
+      opacity: 0.7;
+      transform: translateX(0);
+    }
+  }
+
+  .anatomy-depth-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    transition: box-shadow 0.2s;
+  }
+
+  .anatomy-depth-text {
+    min-width: 0;
+  }
+
+  .anatomy-depth-title {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .anatomy-depth-sub {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    line-height: 1.4;
+  }
+
+  /* ─── CTA closer ─── */
+
+  .anatomy-cta {
+    text-align: center;
+    margin-top: 36px;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+  }
+
+  .anatomy-cta:global(.revealed) {
+    opacity: 1;
+  }
+
+  .anatomy-cta-line {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 350;
+    font-variation-settings: 'opsz' 28;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .anatomy-cta-line strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* ─── Shareable fact ─── */
+
+  .anatomy-fact-wrap {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .anatomy-fact {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: inherit;
+    font-size: var(--text-xs);
+    font-style: italic;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px dashed transparent;
+    background: none;
+    transition:
+      color 0.2s,
+      background 0.2s,
+      border-color 0.2s;
+  }
+
+  .anatomy-fact:hover,
+  .anatomy-fact:focus-visible {
+    color: var(--text-secondary);
+    background: var(--surface-raised);
+    border-color: var(--border);
+    outline: none;
+  }
+
+  .anatomy-fact:global(.copied) {
+    color: var(--green);
+    border-color: var(--green);
+  }
+
+  .anatomy-fact-icon {
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .anatomy-fact:hover .anatomy-fact-icon,
+  .anatomy-fact:focus-visible .anatomy-fact-icon {
+    opacity: 0.6;
+  }
+
+  .anatomy-fact:global(.copied) .anatomy-fact-icon {
+    opacity: 1;
+    color: var(--green);
+  }
+
+  /* ─── Responsive ─── */
+
+  @media (max-width: 900px) {
+    .anatomy-stage {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .anatomy-annotations-left,
+    .anatomy-annotations-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0;
+      align-items: stretch;
+    }
+
+    .anatomy-annotations-left {
+      order: 2;
+    }
+
+    .anatomy-annotations-right {
+      order: 3;
+    }
+
+    .anatomy-annotations-left .anatomy-annotation,
+    .anatomy-annotations-right .anatomy-annotation {
+      max-width: none;
+      border-right: none;
+      border-left: 2.5px solid var(--ann-color, var(--accent));
+      transform: translateY(8px);
+    }
+
+    .anatomy-annotations-left .anatomy-annotation:global(.revealed),
+    .anatomy-annotations-right .anatomy-annotation:global(.revealed) {
+      transform: translateY(0);
+    }
+
+    .anatomy-annotation::after,
+    .anatomy-annotation::before {
+      display: none;
+    }
+
+    .anatomy-depth {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .anatomy-card-bottom {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .anatomy-annotations-left,
+    .anatomy-annotations-right {
+      grid-template-columns: 1fr;
+    }
+
+    .anatomy-depth {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ─── Reduced motion ─── */
+
+  @media (prefers-reduced-motion: reduce) {
+    .anatomy-card {
+      opacity: 1;
+      transform: none;
+    }
+
+    .anatomy-card-bar {
+      transform: scaleX(1);
+    }
+
+    .anatomy-annotation {
+      opacity: 1;
+      transform: none;
+    }
+
+    .anatomy-annotation::after {
+      transform: scaleX(1);
+    }
+
+    .anatomy-annotation::before {
+      transform: translateY(-50%) scale(1);
+    }
+
+    :global(.anatomy-tag) {
+      opacity: 1;
+      transform: none;
+    }
+
+    .anatomy-depth {
+      opacity: 1;
+      transform: none;
+    }
+
+    .anatomy-cta {
+      opacity: 1;
+    }
+  }
+</style>

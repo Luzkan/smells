@@ -13,8 +13,8 @@ class SmellFilesLoader:
 
     @classmethod
     def _load_smell(cls, filepath: Path) -> frontmatter.Post:
-        with open(f'./{filepath}') as f:
+        with filepath.open(encoding='utf-8') as f:
             return frontmatter.load(f)
 
     def _get_all_smell_files(self) -> list[Path]:
-        return [file for file in Path(self.content_path).glob('*.md')]
+        return [file for file in self.content_path.glob('*.md')]

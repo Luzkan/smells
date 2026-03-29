@@ -1,13 +1,13 @@
 ---
-slug: "indecent-exposure"
+slug: 'indecent-exposure'
 meta:
   last_update_date: 2022-04-19
-  title: "Indecent Exposure"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Indecent Exposure'
+  description: "Everything's public. Nothing's hidden. Other modules couple to implementation details they were never meant to see, and now you can't change a private algorithm without breaking six callers who shouldn't have known it existed."
   known_as:
     - Excessive Exposure
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Couplers
   occurrence:
@@ -51,8 +51,8 @@ refactors:
   - Hide Behind Abstract Class
   - Hide Behind Interface
 history:
-  - author: "Joshua Kerievsky"
-    type: "origin"
+  - author: 'Joshua Kerievsky'
+    type: 'origin'
     named_as:
       - Indecent Exposure
     regarded_as:
@@ -61,10 +61,10 @@ history:
       year: 2005
       authors:
         - Joshua Kerievsky
-      name: "Smells to Refactorings Cheatsheet"
-      type: "cheatsheet"
+      name: 'Smells to Refactorings Cheatsheet'
+      type: 'cheatsheet'
       href:
-        direct_url: "https://www.industriallogic.com/img/blog/2005/09/smellstorefactorings.pdf"
+        direct_url: 'https://www.industriallogic.com/img/blog/2005/09/smellstorefactorings.pdf'
 ---
 
 ## Indecent Exposure

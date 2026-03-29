@@ -1,13 +1,13 @@
 ---
-slug: "parallel-inheritance-hierarchies"
+slug: 'parallel-inheritance-hierarchies'
 meta:
   last_update_date: 2022-04-19
-  title: "Parallel Inheritance Hierarchies"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Parallel Inheritance Hierarchies'
+  description: 'Add a BasicUser, and you need a BasicFunctions. Add a PremiumUser, and here comes PremiumFunctions. Every subclass in one hierarchy demands a mirror in the other, and the cost of every new feature doubles.'
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Change Preventers
   occurrence:
@@ -44,8 +44,8 @@ refactors:
   - Create Partial
   - Fold Hierarchy into One
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Parallel Inheritance Hierarchies
     regarded_as:
@@ -56,11 +56,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Parallel Inheritance Hierarchies

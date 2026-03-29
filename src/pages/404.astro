@@ -1,0 +1,757 @@
+---
+/**
+ * Custom 404 page. Frames "not found" as the Dead Code smell —
+ * rotating diagnoses link to real catalog entries.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import GridIcon from '../components/icons/GridIcon.astro';
+import Icon from '../components/icons/Icon.astro';
+import { ICON_WARNING, ICON_SHARE, ICON_CHEVRON_LEFT } from '../lib/icon-paths';
+import { COPY_FEEDBACK_MS } from '../lib/copy-code';
+import { SPRINGER_PAPER_URL, SITE_URL } from '../lib/constants';
+import { DIAGNOSES } from '../lib/404/404-diagnoses';
+import { serializeJsonForScriptTag } from '../lib/json-script';
+import type { SeoMeta } from '../lib/types';
+
+const allSmells = await getCollection('smells');
+const allSmellSlugs = allSmells.map((s) => ({ slug: s.data.slug, name: s.data.meta.title }));
+const serializedAllSmellSlugs = serializeJsonForScriptTag(allSmellSlugs);
+const serialized404Config = serializeJsonForScriptTag({
+  copyFeedbackMs: COPY_FEEDBACK_MS,
+  diagnoses: DIAGNOSES,
+  siteUrl: SITE_URL,
+});
+const notFoundSeo: SeoMeta = {
+  title: '404 — Code Smells Catalog',
+  description: 'The URL you followed resolves to nothing. A code smell in the wild.',
+  ogImage: '/og/default.png',
+  type: 'website',
+  noindex: true,
+};
+---
+
+<BaseLayout seo={notFoundSeo} preloadCodeFont>
+  <div class="page-404">
+    <div class="num-404" aria-hidden="true">404</div>
+
+    <div class="content-404">
+      <div class="error-code-404">
+        <span class="error-code-num">404</span> &mdash; Page Not Found
+      </div>
+
+      <div class="smell-badge">
+        <span class="smell-badge-icon">
+          <Icon icon={ICON_WARNING} size={14} />
+        </span>
+        Smell Detected
+      </div>
+
+      <h1 class="headline-404"><span class="dead-prefix">This page is</span> <em>Dead Code</em></h1>
+      <p class="subtitle-404">
+        The URL you followed resolves to nothing. Unreachable content that confuses visitors about
+        what matters.
+      </p>
+
+      {/* "Did you mean?" — populated by JS if current path fuzzy-matches a smell slug */}
+      <div class="suggestion-404" id="suggestion404" style="display: none;"></div>
+
+      <div class="code-block-404">
+        <div class="code-block-header">
+          <div class="code-block-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span>router.ts</span>
+        </div>
+        <div class="code-block-body">
+          <span class="code-keyword">function</span>
+          <span class="code-fn">resolve</span>(slug) {'{'}<br />
+          <span class="code-keyword">const</span> page = catalog.find(slug);<br /><span
+            class="code-highlight-line"
+          >
+            <span class="code-keyword">return</span>
+            <span class="code-null">null</span>; <span class="code-comment"
+              >// &larr; you are here</span
+            ><span class="code-cursor"></span></span
+          ><br />{'}'}
+        </div>
+      </div>
+
+      <div class="actions-404">
+        <a href="/" class="btn-primary cta-button">
+          <GridIcon class="btn-primary__icon" size={15} strokeWidth={2} />
+          Browse the Catalog
+        </a>
+        <button class="btn-ghost" id="goBackBtn">
+          <Icon icon={ICON_CHEVRON_LEFT} size={14} />
+          Go Back
+        </button>
+      </div>
+
+      <div class="diagnosis-404" id="diagnosis404">
+        <span class="diagnosis-quote" id="diagnosisQuote"></span>
+        <span class="diagnosis-actions">
+          <button
+            class="diagnosis-btn"
+            id="shuffleBtn"
+            title="Another diagnosis"
+            aria-label="Show another diagnosis"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              ><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"
+              ></polyline><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"
+              ></path></svg
+            >
+          </button>
+          <button
+            class="diagnosis-btn"
+            id="shareBtn"
+            title="Share this diagnosis"
+            aria-label="Share this diagnosis"
+          >
+            <Icon icon={ICON_SHARE} size={12} />
+          </button>
+        </span>
+        <div class="diagnosis-counter" id="diagCounter"></div>
+      </div>
+
+      <div class="trust-line-404">
+        <span>Part of a catalog of <strong>{allSmells.length} smells</strong></span>
+        <span class="trust-dot"></span>
+        <a href={SPRINGER_PAPER_URL} target="_blank" rel="noopener">Published in Springer Nature</a>
+        <span class="trust-dot"></span>
+        <a href="https://github.com/luzkan/smells" target="_blank" rel="noopener">Open Source</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ============================================
+     404 PAGE
+     ============================================ */
+  .page-404 {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--nav-height) + 24px) 24px 48px;
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - var(--nav-height));
+  }
+
+  .content-404 {
+    text-align: center;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Big 404 watermark */
+  .num-404 {
+    font-family: var(--font-display);
+    font-size: clamp(8rem, 18vw, 13rem);
+    font-weight: 300;
+    color: var(--text-primary);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variation-settings: 'opsz' 144;
+    opacity: 0.08;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    user-select: none;
+    cursor: default;
+    animation:
+      num404In 1.2s var(--ease-out) both,
+      num404Float 8s ease-in-out 1.5s infinite;
+    z-index: 0;
+  }
+  :global([data-theme='dark']) .num-404 {
+    opacity: 0.06;
+  }
+  @keyframes num404In {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%) scale(0.9);
+      filter: blur(12px);
+    }
+    to {
+      opacity: 0.08;
+      transform: translate(-50%, -60%) scale(1);
+      filter: blur(0);
+    }
+  }
+  @keyframes num404Float {
+    0%,
+    100% {
+      transform: translate(-50%, -60%);
+    }
+    50% {
+      transform: translate(-50%, -62%);
+    }
+  }
+
+  /* Error code */
+  .error-code-404 {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--text-tertiary);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    animation: fadeInUp 0.6s var(--ease-out) 0.05s both;
+  }
+  .error-code-num {
+    color: var(--red);
+    font-weight: 600;
+  }
+
+  /* Smell badge */
+  .smell-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px 5px 10px;
+    background: var(--accent-light);
+    border: 1px solid rgba(180, 83, 9, 0.12);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.7s var(--ease-out) 0.15s both;
+  }
+  .smell-badge-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    opacity: 0.85;
+  }
+
+  /* Headline */
+  .headline-404 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--text-primary);
+    font-variation-settings: 'opsz' 48;
+    margin-bottom: 10px;
+    animation: fadeInUp 0.8s var(--ease-out) 0.25s both;
+  }
+  .headline-404 :global(em) {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 300;
+  }
+  .dead-prefix {
+    position: relative;
+  }
+  .dead-prefix::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 52%;
+    height: 1.5px;
+    background: var(--text-tertiary);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: strikeIn 0.6s var(--ease-out) 1.4s forwards;
+  }
+  @keyframes strikeIn {
+    to {
+      opacity: 0.45;
+      transform: scaleX(1);
+    }
+  }
+
+  /* Subtitle */
+  .subtitle-404 {
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 420px;
+    margin: 0 auto 24px;
+    text-wrap: pretty;
+    animation: fadeInUp 0.8s var(--ease-out) 0.35s both;
+  }
+
+  /* Code block */
+  .code-block-404 {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    text-align: left;
+    margin: 0 auto 28px;
+    max-width: 400px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    animation: fadeInUp 0.8s var(--ease-out) 0.5s both;
+  }
+  :global([data-theme='dark']) .code-block-404 {
+    background: var(--surface-raised);
+  }
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface-raised);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+  }
+  :global([data-theme='dark']) .code-block-header {
+    background: var(--surface);
+  }
+  .code-block-dots {
+    display: flex;
+    gap: 5px;
+  }
+  .code-block-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  :global([data-theme='dark']) .code-block-dots span {
+    background: var(--border-subtle);
+  }
+
+  .code-block-body {
+    padding: 16px 18px;
+    font-family: var(--font-mono);
+    font-size: clamp(11.5px, 1.2vw, 13px);
+    line-height: 1.75;
+    color: var(--text-secondary);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  :global(.code-comment) {
+    color: var(--text-tertiary);
+    font-style: italic;
+  }
+  :global(.code-keyword) {
+    color: var(--purple);
+    font-weight: 500;
+  }
+  :global(.code-fn) {
+    color: var(--accent);
+  }
+  :global(.code-null) {
+    color: var(--red);
+    font-weight: 500;
+  }
+  .code-highlight-line {
+    background: var(--accent-light);
+    margin: 0 -18px;
+    padding: 0 18px;
+    display: inline-block;
+    width: calc(100% + 36px);
+    border-left: 2px solid var(--accent);
+    padding-left: 16px;
+  }
+
+  /* "Did you mean?" suggestion */
+  .suggestion-404 {
+    animation: fadeInUp 0.6s var(--ease-out) 0.5s both;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .suggestion-404 :global(a) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px 8px 12px;
+    background: var(--green-light);
+    border: 1px solid color-mix(in srgb, var(--green) 15%, var(--border));
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--duration-fast) var(--ease-smooth);
+  }
+  .suggestion-404 :global(a:hover) {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+  .suggestion-404 :global(.suggestion-label) {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    font-weight: 400;
+  }
+  .suggestion-404 :global(.suggestion-name) {
+    font-weight: 600;
+  }
+
+  /* Blinking cursor */
+  .code-cursor {
+    display: inline-block;
+    width: 1.5px;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 3px;
+    vertical-align: text-bottom;
+    animation: cursorBlink 1.2s step-end infinite;
+    opacity: 0;
+    animation-delay: 1.5s;
+  }
+  @keyframes cursorBlink {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Action buttons */
+  .actions-404 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    animation: fadeInUp 0.7s var(--ease-out) 0.6s both;
+  }
+
+  .btn-primary__icon {
+    flex-shrink: 0;
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 20px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--duration-fast) var(--ease-smooth);
+  }
+  .btn-ghost:hover {
+    color: var(--text-primary);
+    border-color: var(--text-tertiary);
+    background: var(--surface-raised);
+  }
+
+  /* Diagnosis */
+  .diagnosis-404 {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    font-style: italic;
+    letter-spacing: 0.005em;
+    animation: fadeInUp 0.6s var(--ease-out) 0.75s both;
+    min-height: 3em;
+    line-height: 1.55;
+    max-width: 440px;
+    margin: 0 auto 16px;
+  }
+  .diagnosis-404 :global(.smell-name) {
+    color: var(--accent);
+    font-weight: 600;
+    font-style: normal;
+    text-decoration: none;
+  }
+  .diagnosis-404 :global(a.smell-name:hover) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Diagnosis action buttons — shuffle + share */
+  .diagnosis-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .diagnosis-btn {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+    transition:
+      opacity 0.2s ease,
+      color 0.2s ease,
+      background 0.15s ease;
+    min-width: 36px;
+    min-height: 36px;
+  }
+  .diagnosis-btn:hover {
+    opacity: 1;
+    color: var(--accent);
+    background: var(--surface-raised);
+  }
+  .diagnosis-btn.copied {
+    opacity: 1;
+    color: var(--green);
+  }
+
+  @keyframes shuffleSpin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .diagnosis-btn.spinning :global(svg) {
+    animation: shuffleSpin 0.4s var(--ease-out);
+  }
+
+  /* Diagnosis counter */
+  .diagnosis-counter {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    margin-top: 6px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.02em;
+    animation: fadeInUp 0.5s var(--ease-out) 1s both;
+  }
+  .diagnosis-counter :global(.counter-current) {
+    color: var(--accent);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Trust line */
+  .trust-line-404 {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+    animation: fadeInUp 0.5s var(--ease-out) 0.9s both;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .trust-line-404 a {
+    color: var(--text-tertiary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--duration-fast);
+  }
+  .trust-line-404 a:hover {
+    color: var(--accent);
+  }
+  .trust-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-block;
+  }
+
+  /* Generic animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 600px) {
+    .page-404 {
+      padding: calc(var(--nav-height) + 16px) 16px 32px;
+    }
+    .code-block-body {
+      font-size: 11px;
+      padding: 14px 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .code-highlight-line {
+      margin: 0 -14px;
+      padding: 0 14px;
+      padding-left: 12px;
+      width: calc(100% + 28px);
+    }
+    .actions-404 {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .actions-404 a,
+    .actions-404 button {
+      width: 100%;
+      justify-content: center;
+    }
+    .num-404 {
+      font-size: 8rem;
+    }
+    .diagnosis-btn {
+      opacity: 0.5;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .trust-line-404 {
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .num-404 {
+      opacity: 0.08;
+      transform: translate(-50%, -60%);
+      animation: none;
+    }
+    :global([data-theme='dark']) .num-404 {
+      opacity: 0.06;
+    }
+    .dead-prefix::after {
+      opacity: 0.45;
+      transform: scaleX(1);
+      animation: none;
+    }
+    .error-code-404,
+    .smell-badge,
+    .headline-404,
+    .subtitle-404,
+    .code-block-404,
+    .actions-404,
+    .diagnosis-404,
+    .diagnosis-counter,
+    .suggestion-404,
+    .trust-line-404 {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    .code-cursor {
+      animation: none;
+      opacity: 0.7;
+    }
+  }
+
+  @media print {
+    .trust-line-404,
+    .diagnosis-404,
+    .diagnosis-actions,
+    .suggestion-404 {
+      display: none;
+    }
+    .num-404 {
+      opacity: 0.08;
+      transform: translate(-50%, -60%);
+      animation: none;
+    }
+  }
+</style>
+
+{/* Build-time data serialized as JSON for the module script */}
+<script is:inline type="application/json" id="all-smells-404" set:html={serializedAllSmellSlugs} />
+<script is:inline type="application/json" id="404-config" set:html={serialized404Config} />
+
+<script>
+  import { initDiagnosis } from '../lib/404/404-diagnosis';
+  import { initGoBack, initShareButton, initFuzzySuggestion } from '../lib/404/404-ui';
+  import type { Diagnosis } from '../lib/404/404-diagnoses';
+  import type { FuzzyCandidate } from '../lib/404/fuzzy-match';
+
+  interface PageConfig {
+    copyFeedbackMs: number;
+    diagnoses: Diagnosis[];
+    siteUrl: string;
+  }
+
+  function parseJsonBlock<T>(id: string): T | null {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    try {
+      return JSON.parse(el.textContent || '');
+    } catch {
+      return null;
+    }
+  }
+
+  let cleanups: Array<() => void> = [];
+
+  function setup404(): void {
+    for (const fn of cleanups) fn();
+    cleanups = [];
+
+    const config = parseJsonBlock<PageConfig>('404-config');
+    const candidates = parseJsonBlock<FuzzyCandidate[]>('all-smells-404');
+    if (!config) return;
+
+    cleanups.push(initGoBack(document.getElementById('goBackBtn')));
+
+    const diagnosis = initDiagnosis(
+      config.diagnoses,
+      document.getElementById('diagnosisQuote'),
+      document.getElementById('diagCounter'),
+      document.getElementById('shuffleBtn'),
+    );
+    cleanups.push(diagnosis.cleanup);
+
+    cleanups.push(
+      initShareButton(
+        document.getElementById('shareBtn'),
+        diagnosis.currentDiagnosis,
+        config.siteUrl,
+        config.copyFeedbackMs,
+      ),
+    );
+
+    initFuzzySuggestion(candidates ?? [], document.getElementById('suggestion404'));
+  }
+
+  function cleanup404(): void {
+    for (const fn of cleanups) fn();
+    cleanups = [];
+  }
+
+  setup404();
+  document.addEventListener('astro:page-load', setup404);
+  document.addEventListener('astro:before-swap', cleanup404);
+</script>

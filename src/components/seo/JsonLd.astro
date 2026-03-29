@@ -1,0 +1,9 @@
+---
+interface Props {
+  graph: unknown;
+}
+
+const { graph } = Astro.props as Props;
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(graph)} />

@@ -1,0 +1,32 @@
+---
+description: Core project identity and orientation for every agent session
+globs:
+alwaysApply: true
+---
+
+# Code Smells Catalog — Project Context
+
+This is the **Code Smells Catalog** — a structured reference of 56 code smells, built by Marcel Jerzyk as a companion to his Springer Nature research paper and Master's thesis.
+
+- Live at `https://codesmells.org` (Vercel) — **#1 Google result** for "code smells catalog"
+- Legacy URL `https://luzkan.github.io/smells` redirects to codesmells.org
+- Content lives in `content/smells/*.md` (56 files with rich YAML frontmatter) — this is the primary asset
+- Built with **Astro 5**, Preact islands, Tailwind CSS v4, Nano Stores
+- Deployed to **Vercel** as static output (no adapter)
+
+## Critical constraints
+
+- **Do not modify** the content frontmatter schema without explicit instruction
+- **SEO is paramount** — preserve URL structure, canonical URLs, meta tags, sitemap, and redirects
+- The Python `data_scraper/` reads the same markdown files — keep it working
+- Internal links between smells use `./slug.md` — transformed by `src/plugins/remark-smell-links.ts`
+
+## Key directories
+
+- `content/smells/` — the 56 smell articles (Markdown + YAML frontmatter)
+- `src/` — Astro application (components, layouts, pages, lib, stores, plugins)
+- `scripts/` — build helpers (OG images, GH Pages redirects, sitemap verification)
+- `tests/` — unit (Vitest), integration, E2E (Playwright)
+- `.cursor/rules/` — agent context rules (content-model, architecture, deployment)
+
+For the full frontmatter schema, see `content-model.mdc`. For architecture details, see `architecture.mdc`. For deployment, see `deployment.mdc`.

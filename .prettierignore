@@ -1,0 +1,4 @@
+dist/
+.astro/
+test-results/
+pnpm-lock.yaml

@@ -1,13 +1,13 @@
 ---
-slug: "vertical-separation"
+slug: 'vertical-separation'
 meta:
   last_update_date: 2022-04-19
-  title: "Vertical Separation"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Vertical Separation'
+  description: "Variables declared at the top of a method, used fifty lines later. By the time you reach the logic that needs them, you've already forgotten what half the variables were for."
   known_as:
     - Regions
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Obfuscators
   occurrence:
@@ -35,8 +35,8 @@ problems:
 refactors:
   - Remove the Code Smells
 history:
-  - author: "Robert C. Martin"
-    type: "origin"
+  - author: 'Robert C. Martin'
+    type: 'origin'
     named_as:
       - Vertical Separation
     regarded_as:
@@ -45,11 +45,11 @@ history:
       year: 2008
       authors:
         - Robert C. Martin
-      name: "Clean Code: A Handbook of Agile Software Craftsmanship"
-      type: "book"
+      name: 'Clean Code: A Handbook of Agile Software Craftsmanship'
+      type: 'book'
       href:
-        isbn_13: "978-0132350884"
-        isbn_10: "9780132350884"
+        isbn_13: '978-0132350884'
+        isbn_10: '9780132350884'
 ---
 
 ## Vertical Separation
@@ -72,7 +72,7 @@ Regions could be used to hide bloat and be a very inexpensive deodorant for othe
 
 #### **Encouraged Grouping by Visibility instead of Functionality**
 
-It is much better to group code by functionality [[16](#sources)]. It leads to better cohesion.
+It is much better to group code by functionality [[1](#sources)]. It leads to better cohesion.
 
 #### **Hidden Perspective**
 

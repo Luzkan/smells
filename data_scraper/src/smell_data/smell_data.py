@@ -2,7 +2,9 @@ from __future__ import annotations
 import json
 import frontmatter
 from dataclasses import dataclass, asdict
-from data_scraper.src.smell_data import Categories, Meta, Relations
+from pathlib import Path
+from data_scraper.src.smell_data import Categories, HistoryEntry, Meta, Problems, Relations
+from data_scraper.src.smell_data.normalization import normalize_string_array
 
 
 @dataclass(frozen=True)
@@ -11,23 +13,25 @@ class SmellData:
     meta: Meta
     categories: Categories
     relations: Relations
-    problems: list[str] | None
-    refactors: list[str] | None
+    problems: Problems
+    refactors: list[str]
+    history: list[HistoryEntry]
 
     @staticmethod
     def init(smell: frontmatter.Post) -> 'SmellData':
-        def safe_get(container: dict | frontmatter.Post, key: str, default=None):
-            return container[key] if key in smell else default
-
         return SmellData(
             slug=smell['slug'],
             meta=Meta.init(smell['meta']),
             categories=Categories.init(smell['categories']),
-            relations=Relations.init(smell['relations']),
-            problems=safe_get(smell, 'problems'),
-            refactors=safe_get(smell, 'refactors'),
+            relations=Relations.init(smell['relations'] if 'relations' in smell else None),
+            problems=Problems.init(smell['problems'] if 'problems' in smell else None),
+            refactors=normalize_string_array(smell['refactors'] if 'refactors' in smell else None),
+            history=[
+                HistoryEntry.init(entry)
+                for entry in (smell['history'] if 'history' in smell else [])
+            ],
         )
 
-    def save_to_file_as_json(self, filepath: str) -> None:
-        with open(filepath, 'w') as file:
+    def save_to_file_as_json(self, filepath: Path | str) -> None:
+        with Path(filepath).open('w', encoding='utf-8') as file:
             json.dump(asdict(self), file, indent=2)

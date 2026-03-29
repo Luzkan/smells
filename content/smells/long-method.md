@@ -1,15 +1,15 @@
 ---
-slug: "long-method"
+slug: 'long-method'
 meta:
   last_update_date: 2022-04-19
-  title: "Long Method"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Long Method'
+  description: 'A method so long you scroll past the beginning before reaching the end. Every change requires re-reading the whole thing, every piece of logic is trapped inside, and the side effects could be hiding three screens away.'
   known_as:
     - Complex Method
     - God Method
     - Brain Method
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Bloaters
   occurrence:
@@ -65,8 +65,8 @@ refactors:
   - Preserve the Whole Object
   - Split Loop
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Long Method
     regarded_as:
@@ -77,11 +77,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Long Method

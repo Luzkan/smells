@@ -1,0 +1,490 @@
+---
+/**
+ * Catalog page — loads all 56 smells into cards + FilterSidebar.
+ *
+ * Load sequence: HTML → theme script → cards visible → inline script
+ * seeds stores & applies filters → FilterSidebar hydrates.
+ */
+import { getCollection } from 'astro:content';
+import CatalogLayout from '../layouts/CatalogLayout.astro';
+import CatalogHero from '../components/catalog/CatalogHero.astro';
+import GridIcon from '../components/icons/GridIcon.astro';
+import SmellCard from '../components/catalog/SmellCard.astro';
+import FilterSidebar from '../components/islands/FilterSidebar';
+import JsonLd from '../components/seo/JsonLd.astro';
+import { COPY_FEEDBACK_MS } from '../lib/copy-code';
+import { resolveSmellDescription } from '../lib/content/extract-description';
+import { getBody, sortSmellsByTitle } from '../lib/content/smell-utils';
+import { toSmellCardData } from '../lib/content/to-smell-card-data';
+import {
+  buildCatalogHeroStats,
+  buildCategoryGroups,
+  buildCatalogJsonLdData,
+  buildSmellsFilterData,
+} from '../lib/catalog/build-catalog-data';
+import { buildCatalogGraph } from '../lib/json-ld';
+import { SITE_TITLE, siteDescription } from '../lib/constants';
+import type { SeoMeta } from '../lib/types';
+
+const allSmells = await getCollection('smells');
+const sorted = sortSmellsByTitle(allSmells);
+
+const smellCards = sorted.map((smell) =>
+  toSmellCardData(
+    smell.data,
+    resolveSmellDescription(
+      smell.data.meta.description,
+      getBody(smell),
+      undefined,
+      smell.data.slug,
+    ),
+  ),
+);
+const { categoryCount, hierarchyCount } = buildCatalogHeroStats(sorted);
+const categoryGroups = buildCategoryGroups(sorted);
+const smellsDataForFilter = buildSmellsFilterData(sorted);
+const catalogGraph = buildCatalogGraph(buildCatalogJsonLdData(sorted));
+const catalogSeo: SeoMeta = {
+  title: SITE_TITLE,
+  description: siteDescription(sorted.length),
+  ogImage: '/og/default.png',
+  type: 'website',
+};
+---
+
+<CatalogLayout seo={catalogSeo}>
+  <CatalogHero
+    slot="hero"
+    totalCount={sorted.length}
+    categoryCount={categoryCount}
+    hierarchyCount={hierarchyCount}
+  />
+
+  <FilterSidebar slot="sidebar" client:load />
+
+  {/* GRID-01: Grid toolbar — sort + view controls */}
+  <div class="grid-toolbar" id="grid-toolbar">
+    <div class="grid-toolbar__left">
+      <button
+        class="grid-toolbar__sort-btn grid-toolbar__sort-btn--active"
+        id="sort-alpha"
+        type="button"
+        title="Sort A-Z"
+        aria-pressed="true"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M3 6h7"></path>
+          <path d="M3 12h10"></path>
+          <path d="M3 18h5"></path>
+          <path d="M16 6l4 12"></path>
+          <path d="M14 18h6"></path>
+        </svg>
+        A&ndash;Z
+      </button>
+      <button
+        class="grid-toolbar__sort-btn"
+        id="sort-category"
+        type="button"
+        title="Sort by category"
+        aria-pressed="false"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+        </svg>
+        Category
+      </button>
+    </div>
+    <div class="grid-toolbar__right">
+      <button
+        class="grid-toolbar__view-btn grid-toolbar__view-btn--active"
+        id="view-grid"
+        type="button"
+        title="Grid view"
+        aria-label="Grid view"
+        aria-pressed="true"
+      >
+        <GridIcon class="grid-toolbar__view-icon" size={16} strokeWidth={2} />
+      </button>
+      <button
+        class="grid-toolbar__view-btn"
+        id="view-list"
+        type="button"
+        title="List view"
+        aria-label="List view"
+        aria-pressed="false"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  {/* Card grid — anchor for hero stat links */}
+  <div class="smell-grid" id="grid">
+    {smellCards.map((smell) => <SmellCard {...smell} />)}
+  </div>
+
+  {/* Serialized data for client-side filtering */}
+  <script
+    is:inline
+    type="application/json"
+    id="smells-data"
+    set:html={JSON.stringify(smellsDataForFilter)}
+  />
+
+  {/* Category group data for JS-based category sort */}
+  <script
+    is:inline
+    type="application/json"
+    id="category-groups-data"
+    set:html={JSON.stringify(categoryGroups)}
+  />
+
+  {/* Structured data for search engines */}
+  <JsonLd graph={catalogGraph} />
+
+  {
+    /* CAT-01: Inline card controls — runs at parse time so share/tag
+      interactions stay independent from the stretched card link before hydration */
+  }
+  <script is:inline define:vars={{ COPY_FEEDBACK_MS }}>
+    (function () {
+      function setShareButtonFeedback(shareBtn, copied) {
+        const defaultTitle = shareBtn.getAttribute('data-share-title-default') || 'Copy link';
+        const copiedTitle = shareBtn.getAttribute('data-share-title-copied') || 'Copied!';
+        const defaultLabel =
+          shareBtn.getAttribute('data-share-label-default') || 'Copy link to this smell';
+        const copiedLabel =
+          shareBtn.getAttribute('data-share-label-copied') || 'Link copied to clipboard';
+        shareBtn.setAttribute('title', copied ? copiedTitle : defaultTitle);
+        shareBtn.setAttribute('aria-label', copied ? copiedLabel : defaultLabel);
+      }
+
+      function announceCopyFeedback(message) {
+        if (!message) return;
+        const liveRegion = document.getElementById('filter-results-live');
+        if (!liveRegion) return;
+        const previousText = liveRegion.textContent || '';
+        liveRegion.textContent = message;
+        setTimeout(function () {
+          if (liveRegion.textContent === message) {
+            liveRegion.textContent = previousText;
+          }
+        }, COPY_FEEDBACK_MS);
+      }
+
+      document.addEventListener('click', function (e) {
+        const shareBtn = e.target.closest ? e.target.closest('.smell-card__share') : null;
+        if (shareBtn && shareBtn.closest('.smell-card')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const url = shareBtn.getAttribute('data-share-url');
+          if (url && navigator.clipboard) {
+            navigator.clipboard
+              .writeText(url)
+              .then(function () {
+                shareBtn.classList.add('smell-card__share--copied');
+                setShareButtonFeedback(shareBtn, true);
+                announceCopyFeedback(
+                  shareBtn.getAttribute('data-share-label-copied') || 'Link copied to clipboard',
+                );
+                setTimeout(function () {
+                  shareBtn.classList.remove('smell-card__share--copied');
+                  setShareButtonFeedback(shareBtn, false);
+                }, COPY_FEEDBACK_MS);
+              })
+              .catch(function (error) {
+                console.error('[catalog] clipboard write failed', error);
+              });
+          }
+          if (url) {
+            document.dispatchEvent(
+              new CustomEvent('analytics', {
+                detail: { name: 'copy_link', params: { smell: url.split('/').pop() } },
+              }),
+            );
+          }
+          return;
+        }
+
+        const tag = e.target.closest ? e.target.closest('[data-filter-dimension]') : null;
+        if (!tag || !tag.closest('.smell-card')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const dim = tag.getAttribute('data-filter-dimension');
+        const val = tag.getAttribute('data-filter-value');
+        if (dim && val) {
+          document.dispatchEvent(
+            new CustomEvent('tag-filter-click', {
+              detail: { dimension: dim, value: val },
+            }),
+          );
+        }
+      });
+    })();
+  </script>
+
+  {/* GRID-01: Parse-time preference restore to avoid view/sort FOUC */}
+  <script is:inline>
+    (function () {
+      try {
+        const grid = document.getElementById('grid');
+        if (!grid) return;
+        if (localStorage.getItem('catalog-view') === 'list') {
+          grid.classList.add('smell-grid--list');
+        }
+        if (localStorage.getItem('catalog-sort') === 'category') {
+          grid.classList.add('smell-grid--category-sort');
+        }
+      } catch {}
+    })();
+  </script>
+
+  {
+    /* Hydrated subscriber script — runs at T2.
+       Wrapped in astro:page-load so it re-initializes after View Transition navigation. */
+  }
+  <script>
+    import { initCatalog } from '../lib/catalog/catalog-init';
+    import { initCatalogToolbar } from '../lib/catalog/catalog-toolbar';
+    import { toggleFilter, $filters } from '../stores/filters';
+    import { isDimensionKey } from '../lib/catalog/dimensions';
+    import type { FilterState } from '../lib/catalog/dimensions';
+
+    let cleanupCatalog: (() => void) | null = null;
+    let cleanupToolbar: (() => void) | null = null;
+    let cleanupTagListener: (() => void) | null = null;
+    let cleanupTagMatched: (() => void) | null = null;
+
+    function setupCatalog() {
+      // Clean up any previous session (safety net for View Transitions)
+      if (cleanupCatalog) cleanupCatalog();
+      if (cleanupToolbar) cleanupToolbar();
+      if (cleanupTagListener) cleanupTagListener();
+      if (cleanupTagMatched) cleanupTagMatched();
+
+      // Only init if we're on the catalog page (has #smells-data)
+      if (!document.getElementById('smells-data')) return;
+
+      try {
+        cleanupCatalog = initCatalog(document);
+      } catch (e) {
+        console.error('Catalog initialization failed:', e);
+        return;
+      }
+      cleanupToolbar = initCatalogToolbar(document);
+
+      // Listen for tag clicks dispatched by the inline guard script
+      const tagHandler = ((e: CustomEvent) => {
+        const { dimension, value } = e.detail;
+        if (isDimensionKey(dimension) && value) {
+          toggleFilter(dimension, value);
+        }
+      }) as EventListener;
+      document.addEventListener('tag-filter-click', tagHandler);
+      cleanupTagListener = () => document.removeEventListener('tag-filter-click', tagHandler);
+
+      // Update tag matched state when filters change
+      function updateTagMatchedStates(filters: FilterState) {
+        document.querySelectorAll<HTMLElement>('[data-filter-dimension]').forEach((tag) => {
+          const dim = tag.getAttribute('data-filter-dimension');
+          const val = tag.getAttribute('data-filter-value');
+          if (!dim || !val || !isDimensionKey(dim)) return;
+          const activeSet = filters[dim];
+          const isActive = activeSet.has(val);
+          tag.setAttribute('aria-pressed', String(isActive));
+          if (isActive) {
+            tag.classList.add('tag-matched');
+          } else {
+            tag.classList.remove('tag-matched');
+          }
+        });
+      }
+
+      cleanupTagMatched = $filters.subscribe((filters) => {
+        updateTagMatchedStates(filters);
+      });
+    }
+
+    // Run on initial load and after every View Transition navigation
+    setupCatalog();
+    document.addEventListener('astro:page-load', setupCatalog);
+  </script>
+</CatalogLayout>
+
+<style>
+  /* ============================================
+     GRID TOOLBAR
+     ============================================ */
+  .grid-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--border-subtle);
+    gap: 12px;
+  }
+
+  .grid-toolbar__left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .grid-toolbar__sort-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    transition: all var(--duration-fast) var(--ease-smooth);
+    letter-spacing: 0.02em;
+  }
+
+  .grid-toolbar__sort-btn:hover {
+    color: var(--text-primary);
+    background: var(--surface-raised);
+  }
+
+  .grid-toolbar__sort-btn--active {
+    color: var(--accent);
+  }
+
+  .grid-toolbar__right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .grid-toolbar__view-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all var(--duration-fast) var(--ease-smooth);
+  }
+
+  .grid-toolbar__view-btn:hover {
+    color: var(--text-primary);
+    background: var(--surface-raised);
+  }
+
+  .grid-toolbar__view-btn--active {
+    color: var(--text-primary);
+    border-color: var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ============================================
+     CARD GRID
+     ============================================ */
+  .smell-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    align-content: start;
+    padding-top: 18px;
+  }
+
+  @media (max-width: 599px) {
+    .smell-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1200px) {
+    .smell-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 901px) and (max-width: 999px) {
+    .smell-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* List view mode */
+  :global(.smell-grid--list) {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+
+  /* Category sort headers */
+  :global(.category-group-header) {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 0 8px;
+    margin-top: 8px;
+  }
+
+  :global(.category-group-header:first-child) {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  :global(.category-group-header__bar) {
+    width: 3px;
+    height: 18px;
+    border-radius: 2px;
+    background: var(--cat-color, var(--accent));
+    flex-shrink: 0;
+  }
+
+  :global(.category-group-header__label) {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+  }
+</style>

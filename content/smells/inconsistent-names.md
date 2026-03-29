@@ -1,13 +1,13 @@
 ---
-slug: "inconsistent-names"
+slug: 'inconsistent-names'
 meta:
   last_update_date: 2022-04-19
-  title: "Inconsistent Names"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Inconsistent Names'
+  description: 'The mental shortcuts that let developers navigate by pattern break when one class calls it store(), another says add(), and a third insists on put(). Same operation. Three names. Zero muscle memory.'
   known_as:
     - Use Standard Nomenclature Where Possible
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Lexical Abusers
   occurrence:
@@ -34,8 +34,8 @@ problems:
 refactors:
   - Rename Method
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Inconsistent Names
     regarded_as:
@@ -44,11 +44,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Inconsistent Names

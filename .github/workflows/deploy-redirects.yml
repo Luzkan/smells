@@ -1,0 +1,61 @@
+name: Deploy GH-Pages Redirect Cutover
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_full_cutover:
+        description: 'This replaces the gh-pages branch with redirect artifacts.'
+        required: true
+        type: boolean
+      confirm_kill_switch_soak:
+        description: 'Confirm the kill-switch-only deploy has already soaked, or this cutover is otherwise explicitly approved.'
+        required: true
+        type: boolean
+
+permissions:
+  contents: write
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '10'
+
+jobs:
+  deploy-redirects:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Require cutover acknowledgements
+        if: ${{ github.event.inputs.confirm_full_cutover != 'true' || github.event.inputs.confirm_kill_switch_soak != 'true' }}
+        run: |
+          echo "::error::This workflow replaces the gh-pages branch."
+          echo "::error::Run the kill-switch-only workflow first unless the soak window has already been completed and approved."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate redirect pages
+        run: pnpm redirects:generate
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh-pages-redirects
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: 'Deploy GH Pages redirect cutover artifacts'

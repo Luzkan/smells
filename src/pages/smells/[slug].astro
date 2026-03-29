@@ -1,0 +1,182 @@
+---
+/** Individual smell article — generates static paths for all 56 entries. */
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import ArticleHero from '../../components/article/ArticleHero.astro';
+import TableOfContents from '../../components/article/TableOfContents.astro';
+import ProblemCards from '../../components/article/ProblemCards.astro';
+import RefactoringList from '../../components/article/RefactoringList.astro';
+import SourcesList from '../../components/article/SourcesList.astro';
+import ArticleSidebar from '../../components/article/ArticleSidebar.astro';
+import PrevNextNav from '../../components/article/PrevNextNav.astro';
+import EngagementBar from '../../components/article/EngagementBar.astro';
+import BrowseNav from '../../components/catalog/BrowseNav.astro';
+import CodeExample from '../../components/islands/CodeExample';
+import { prepareArticleData } from '../../lib/content/prepare-article';
+import JsonLd from '../../components/seo/JsonLd.astro';
+import { buildArticleGraph } from '../../lib/json-ld';
+import { AUTHOR_PERSON } from '../../lib/constants';
+import { sortSmellsByTitle, toSmellLink } from '../../lib/content/smell-utils';
+import type { SmellLink } from '../../lib/types';
+
+interface Props {
+  entry: CollectionEntry<'smells'>;
+  allSlugs: string[];
+  prev: SmellLink;
+  next: SmellLink;
+}
+
+export async function getStaticPaths() {
+  const smells = await getCollection('smells');
+  const sorted = sortSmellsByTitle(smells);
+  const allSlugs = sorted.map((e) => e.data.slug);
+
+  return sorted.map((entry, index) => {
+    const prev = index > 0 ? sorted[index - 1] : sorted[sorted.length - 1];
+    const next = index < sorted.length - 1 ? sorted[index + 1] : sorted[0];
+
+    return {
+      params: { slug: entry.data.slug },
+      props: { entry, allSlugs, prev: toSmellLink(prev), next: toSmellLink(next) },
+    };
+  });
+}
+
+const { entry, prev, next, allSlugs } = Astro.props;
+const { Content, headings } = await render(entry);
+const articleData = await prepareArticleData(entry, headings);
+const {
+  wordCount,
+  readTime,
+  sourceCount,
+  primaryObstruction,
+  renderedExamples,
+  problemDescriptions,
+  exceptionHtml,
+  tocHeadings,
+  description,
+} = articleData;
+const articleGraph = buildArticleGraph(
+  {
+    title: entry.data.meta.title,
+    slug: entry.data.slug,
+    lastUpdateDate: entry.data.meta.last_update_date,
+    obstruction: primaryObstruction,
+    occurrence: entry.data.categories.occurrence,
+    smellHierarchies: entry.data.categories.smell_hierarchies,
+    wordCount,
+    knownAs: entry.data.meta.known_as.length ? entry.data.meta.known_as : undefined,
+  },
+  description,
+);
+const modifiedTime = entry.data.meta.last_update_date.toISOString();
+---
+
+<ArticleLayout
+  title={entry.data.meta.title}
+  description={description}
+  ogImage={`/og/${entry.data.slug}.png`}
+  type="article"
+  obstruction={primaryObstruction}
+  modifiedTime={modifiedTime}
+>
+  {/* ART-01: Hero rendered in the hero slot (full-width, above grid) */}
+  <ArticleHero
+    slot="hero"
+    data={entry.data}
+    readTime={readTime}
+    sourceCount={sourceCount}
+    description={description}
+  />
+
+  {/* Left: Table of Contents */}
+  <TableOfContents slot="toc" headings={tocHeadings} prev={prev} next={next} />
+
+  <div class="article-prose">
+    <Content />
+  </div>
+
+  <div class="article-section-divider"></div>
+
+  <ProblemCards problems={entry.data.problems} descriptions={problemDescriptions} />
+
+  <div class="article-section-divider"></div>
+
+  {
+    renderedExamples.length > 0 && (
+      <h3 class="article-section-heading" id="example">
+        Example
+      </h3>
+    )
+  }
+
+  {
+    renderedExamples.map((example) => {
+      if (example.kind === 'with-solution') {
+        return (
+          <CodeExample
+            client:visible
+            kind="with-solution"
+            slug={entry.data.slug}
+            smelly={example.smelly}
+            solution={example.solution}
+            fallbackHtml={example.smelly.html + example.solution.html}
+          />
+        );
+      }
+
+      return (
+        <CodeExample
+          client:visible
+          kind="smelly-only"
+          slug={entry.data.slug}
+          smelly={example.smelly}
+          fallbackHtml={example.smelly.html}
+        />
+      );
+    })
+  }
+
+  {
+    exceptionHtml && (
+      <div class="callout" id="exceptions" role="note" style="--callout-color: var(--teal)">
+        <h3 class="sr-only">Exceptions</h3>
+        <div class="callout-label" aria-hidden="true">
+          Exceptions
+        </div>
+        <Fragment set:html={exceptionHtml} />
+      </div>
+    )
+  }
+
+  <div class="article-section-divider"></div>
+
+  <RefactoringList refactors={entry.data.refactors} />
+
+  <div class="article-section-divider"></div>
+
+  <SourcesList history={entry.data.history} />
+  {/* Right: Article sidebar */}
+  <ArticleSidebar slot="sidebar" data={entry.data} />
+
+  {/* C-06: Full-width footer below the grid */}
+  <PrevNextNav slot="footer" prev={prev} next={next} category={primaryObstruction} />
+  <EngagementBar
+    slot="footer"
+    citation={{
+      slug: entry.data.slug,
+      title: entry.data.meta.title,
+      author: AUTHOR_PERSON.name,
+      year: entry.data.meta.last_update_date.getFullYear(),
+    }}
+  />
+  <BrowseNav
+    slot="footer"
+    totalSmells={allSlugs.length}
+    allSlugs={allSlugs}
+    currentSlug={entry.data.slug}
+  />
+
+  {/* Structured data for search engines */}
+  <JsonLd graph={articleGraph} />
+</ArticleLayout>

@@ -1,0 +1,199 @@
+---
+/**
+ * About page. Shared section styles (content container, reveal animations,
+ * `.section-label` pattern) live here; section components depend on them.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AboutHero from '../components/about/AboutHero.astro';
+import AboutOrigin from '../components/about/AboutOrigin.astro';
+import AboutTaxonomy from '../components/about/AboutTaxonomy.astro';
+import AboutAnatomy from '../components/about/AboutAnatomy.astro';
+import AboutResearch from '../components/about/AboutResearch.astro';
+import AboutSectionDots from '../components/about/AboutSectionDots.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import { buildAboutGraph } from '../lib/json-ld';
+import { getCollection } from 'astro:content';
+import type { SeoMeta } from '../lib/types';
+
+const allSmells = await getCollection('smells');
+
+const aboutDescription = `Learn about the Code Smells Catalog — a structured reference of ${allSmells.length} code quality issues, published through Springer Nature.`;
+const aboutSeo: SeoMeta = {
+  title: 'About — Code Smells Catalog',
+  description: aboutDescription,
+  ogImage: '/og/about.png',
+  type: 'website',
+};
+---
+
+<BaseLayout seo={aboutSeo}>
+  <AboutHero allSmells={allSmells} />
+
+  <div class="about-content">
+    <AboutOrigin />
+    <AboutTaxonomy />
+    <AboutAnatomy allSmells={allSmells} />
+    <AboutResearch smellCount={allSmells.length} />
+  </div>
+
+  <AboutSectionDots />
+  <JsonLd graph={buildAboutGraph(aboutDescription, allSmells.length)} />
+</BaseLayout>
+
+<script>
+  import { initOnce } from '../lib/lifecycle';
+
+  initOnce('.about-content', (root) => {
+    const sections = root.querySelectorAll<HTMLElement>('.about-section');
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('revealed');
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -60px 0px' },
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+    return () => observer.disconnect();
+  });
+</script>
+
+<style is:global>
+  /* Content container — shared by all about sections */
+  .about-content {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 32px clamp(60px, 8vw, 100px);
+  }
+
+  /* Wide content breakout — extends beyond 820px to ~960px */
+  .about-content-wide {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% + 140px);
+  }
+
+  @media (max-width: 1000px) {
+    .about-content-wide {
+      width: 100%;
+      left: 0;
+      transform: none;
+    }
+  }
+
+  /* Section reveal animation */
+  .about-section {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.7s var(--ease-out),
+      transform 0.7s var(--ease-out);
+  }
+
+  .about-section.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .about-section.reveal-left {
+    transform: translateX(-32px);
+  }
+
+  .about-section.reveal-left.revealed {
+    transform: translateX(0);
+  }
+
+  .about-section.reveal-scale {
+    transform: scale(0.95);
+  }
+
+  .about-section.reveal-scale.revealed {
+    transform: scale(1);
+  }
+
+  .about-section + .about-section {
+    margin-top: clamp(48px, 6vw, 80px);
+  }
+
+  .about-section.section-tight {
+    margin-top: clamp(32px, 4vw, 52px);
+  }
+
+  .about-section.section-wide {
+    margin-top: clamp(64px, 8vw, 100px);
+  }
+
+  /* Section label — uppercase accent text with trailing gradient line */
+  .section-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  /* Section heading */
+  .about-section h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 350;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    font-variation-settings: 'opsz' 36;
+    text-wrap: balance;
+  }
+
+  /* Section body text — scoped to direct children to avoid overriding
+     nested component paragraphs (e.g. paper-desc in AboutResearch) */
+  .about-section > p {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    line-height: 1.85;
+    max-width: 65ch;
+    text-wrap: pretty;
+  }
+
+  .about-section > p + p {
+    margin-top: 16px;
+  }
+
+  .about-section > p strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* Reduced motion — show sections immediately */
+  @media (prefers-reduced-motion: reduce) {
+    .about-section {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .about-content {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+</style>

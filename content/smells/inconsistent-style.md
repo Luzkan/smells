@@ -1,13 +1,13 @@
 ---
-slug: "inconsistent-style"
+slug: 'inconsistent-style'
 meta:
   last_update_date: 2022-04-19
-  title: "Inconsistent Style"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Inconsistent Style'
+  description: "Mixed formatting, flipped parameter orders, and clashing conventions in the same codebase. The code works, but the inconsistency saps trust. If they couldn't agree on style, what else didn't they agree on?"
   known_as:
     - Sequence Inconsistency
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Obfuscators
   occurrence:
@@ -36,20 +36,20 @@ refactors:
   - Introduce Linter Rules
   - Reorder Parameters
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Inconsistent Style
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
 ---
 
 ## Inconsistent Style
