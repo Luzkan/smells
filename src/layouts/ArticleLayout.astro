@@ -1,0 +1,263 @@
+---
+/**
+ * 3-column article layout (ToC | content | sidebar).
+ * Single column on mobile, expands at lg (1100px).
+ */
+import BaseLayout from './BaseLayout.astro';
+import { getObstructionTheme } from '../lib/category-colors';
+import type { ObstructionCategory } from '../lib/constants';
+import type { ArticleSeoMeta } from '../lib/types';
+import '../styles/article-prose.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage: string;
+  type: 'article';
+  modifiedTime: string;
+  obstruction: ObstructionCategory;
+}
+
+const { title, description, ogImage, type, modifiedTime, obstruction } = Astro.props as Props;
+const { color: accentColor, lightColor: obstructionLightColor } = getObstructionTheme(obstruction);
+const seo: ArticleSeoMeta = {
+  title: `${title} — Code Smells Catalog`,
+  description,
+  ogImage,
+  type,
+  modifiedTime,
+};
+---
+
+<BaseLayout seo={seo} preloadCodeFont>
+  {/* ART-09: Reading progress bar at top: 0 (above navbar) */}
+  <div class="reading-progress" id="reading-progress" style={`--progress-color: ${accentColor}`}>
+    <div class="reading-progress__bar" id="reading-progress-bar"></div>
+  </div>
+
+  {/* ART-01: Hero is full-width section ABOVE the 3-column grid */}
+  <div
+    class="article-hero-wrapper"
+    style={`--hero-obstruction-color: ${accentColor}; --hero-category-light: ${obstructionLightColor}`}
+  >
+    <slot name="hero" />
+  </div>
+
+  {/* ART-06: Hero divider between hero and grid */}
+  <div class="article-hero-divider">
+    <div class="article-hero-divider__line"></div>
+  </div>
+
+  <div
+    class="article-layout"
+    style={`--category-color: ${accentColor}; --category-light: ${obstructionLightColor}`}
+  >
+    <aside class="article-layout__toc" aria-label="Table of contents">
+      <slot name="toc" />
+    </aside>
+
+    <article class="article-layout__content">
+      <slot />
+    </article>
+
+    <aside class="article-layout__sidebar" aria-label="Related smells and metadata">
+      <slot name="sidebar" />
+    </aside>
+  </div>
+
+  {/* C-06: Full-width footer section below the 3-column grid */}
+  <div class="article-footer">
+    <div class="article-footer__divider"></div>
+    <slot name="footer" />
+  </div>
+</BaseLayout>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    const bar = document.getElementById('reading-progress-bar');
+    if (!bar) return;
+    function update() {
+      const article = document.querySelector('.article-layout__content');
+      if (!article) return;
+      const rect = article.getBoundingClientRect();
+      const total = Math.max(article.scrollHeight - window.innerHeight, 1);
+      const scrolled = -rect.top;
+      const pct = Math.min(100, Math.max(0, (scrolled / total) * 100));
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+    document.addEventListener(
+      'astro:before-swap',
+      function () {
+        window.removeEventListener('scroll', update);
+      },
+      { once: true },
+    );
+  })();
+</script>
+
+<style>
+  /* ART-09: Reading progress bar at top: 0 (above navbar) */
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: calc(var(--z-nav) + 1);
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .reading-progress__bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(
+      90deg,
+      var(--progress-color),
+      color-mix(in srgb, var(--progress-color) 60%, var(--accent))
+    );
+    transition: width 0.1s linear;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ART-01: Full-width hero wrapper above the grid */
+  .article-hero-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: calc(var(--nav-height) + clamp(40px, 5vw, 64px)) 32px 0;
+    position: relative;
+  }
+
+  /* ART-05: Full-bleed background tint using pre-baked --*-light variables for accurate theme tones */
+  .article-hero-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100vw;
+    right: -100vw;
+    bottom: 0;
+    background: linear-gradient(180deg, var(--hero-category-light) 0%, var(--bg) 100%);
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global([data-theme='dark']) .article-hero-wrapper::before {
+    background:
+      radial-gradient(ellipse at 20% 0%, var(--hero-category-light) 0%, transparent 60%),
+      linear-gradient(180deg, var(--hero-category-light) 0%, var(--bg) 100%);
+    opacity: 0.5;
+  }
+
+  .article-hero-wrapper > :global(*) {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ART-06: Hero divider between hero and grid */
+  .article-hero-divider {
+    max-width: 1400px;
+    margin: 0 auto clamp(24px, 3vw, 40px);
+    padding: 0 32px;
+  }
+
+  .article-hero-divider__line {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 80%);
+  }
+
+  /* ART-08: Grid columns 180px 1fr 300px with gap 48px */
+  .article-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px 4rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .article-layout__toc {
+    display: none;
+  }
+
+  .article-layout__sidebar {
+    order: 1;
+  }
+
+  .article-layout__content {
+    max-width: 75ch;
+    width: 100%;
+    margin: 0 auto;
+    order: 0;
+  }
+
+  /* ART-07: Intermediate 2-column breakpoint (900-1100px) — content + sidebar, hide TOC */
+  @media (min-width: 900px) and (max-width: 1099px) {
+    .article-layout {
+      grid-template-columns: 1fr 300px;
+      gap: 36px;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    .article-layout__toc {
+      display: none;
+    }
+
+    .article-layout__content {
+      order: 0;
+      max-width: none;
+    }
+
+    .article-layout__sidebar {
+      order: 0;
+    }
+  }
+
+  /* ART-08: Full 3-column at >= 1100px */
+  @media (min-width: 1100px) {
+    .article-layout {
+      grid-template-columns: 180px 1fr 300px;
+      gap: 48px;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    .article-layout__toc {
+      display: block;
+      order: 0;
+    }
+
+    .article-layout__content {
+      order: 0;
+      max-width: none;
+    }
+
+    .article-layout__sidebar {
+      order: 0;
+    }
+  }
+
+  /* ART-08: Responsive at 1300px -> narrower columns, smaller gap */
+  @media (min-width: 1100px) and (max-width: 1299px) {
+    .article-layout {
+      grid-template-columns: 160px 1fr 280px;
+      gap: 36px;
+    }
+  }
+
+  /* C-06: Full-width footer below the 3-column grid */
+  .article-footer {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px 36px;
+  }
+
+  .article-footer__divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 80%);
+    margin-bottom: 2rem;
+  }
+</style>

@@ -1,15 +1,15 @@
 ---
-slug: "fallacious-comment"
+slug: 'fallacious-comment'
 meta:
   last_update_date: 2022-04-19
-  title: "Fallacious Comment"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Fallacious Comment'
+  description: "A comment that was true once but now lies. The code changed, the comment didn't, and there's no linter that catches the drift."
   known_as:
     - Comment
     - Attribute Signature and Comment are Opposite
     - Method Signature and Comment are Opposite
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Lexical Abusers
   occurrence:
@@ -25,11 +25,11 @@ relations:
       slug: what-comment
       type:
         - family
-    - name: "Fallacious Method Name"
+    - name: 'Fallacious Method Name'
       slug: fallacious-method-name
       type:
         - family
-    - name: "Duplicated Code"
+    - name: 'Duplicated Code'
       slug: duplicated-code
       type:
         - caused
@@ -44,22 +44,22 @@ problems:
 refactors:
   - Remove Inconsistency
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Fallacious Comment
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
-  - author: "Venera Arnaoudova"
-    type: "parentage"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
+  - author: 'Venera Arnaoudova'
+    type: 'parentage'
     named_as:
       - Attribute and Comment are Opposite
       - Method Signature and Comment are Opposite
@@ -71,17 +71,17 @@ history:
         - Venera Arnaoudova
         - Massimiliano Di Penta
         - Giuliano Antoniol
-      name: "Linguistic Antipatterns: What they are and how developers perceive them"
-      type: "paper"
+      name: 'Linguistic Antipatterns: What they are and how developers perceive them'
+      type: 'paper'
       href:
-        journal: "Empirical Software Engineering"
-        pages: "104--158"
-        publisher: "Springer"
+        journal: 'Empirical Software Engineering'
+        pages: '104--158'
+        publisher: 'Springer'
         year: 2016
         volume: 21
         number: 1
-  - author: "Martin Fowler"
-    type: "parentage"
+  - author: 'Martin Fowler'
+    type: 'parentage'
     named_as:
       - Comments
     regarded_as:
@@ -92,11 +92,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Fallacious Comment

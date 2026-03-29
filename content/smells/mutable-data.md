@@ -1,13 +1,13 @@
 ---
-slug: "mutable-data"
+slug: 'mutable-data'
 meta:
   last_update_date: 2022-04-19
-  title: "Mutable Data"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Mutable Data'
+  description: 'Data that anything can modify at any time. The bug reproduces instantly in production and vanishes in your debugger — by the time you pause execution, something else already changed the value.'
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Functional Abusers
   occurrence:
@@ -18,8 +18,8 @@ categories:
     - Code Smell
 relations:
   related_smells:
-    - name: Mutable Data Class
-      slug: mutable-data-class
+    - name: Fate Over Action
+      slug: fate-over-action
       type:
         - family
     - name: Side Effects
@@ -45,8 +45,8 @@ refactors:
   - Encapsulate Variable
   - Combine Methods into Class
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Mutable Data
     regarded_as:
@@ -55,13 +55,13 @@ history:
       year: 2018
       authors:
         - Martin Fowler
-      name: "Refactoring: Improving the Design of Existing Code (3rd Edition)"
-      named_as: "Global Data"
-      regarded_as: "Code Smell"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code (3rd Edition)'
+      named_as: 'Global Data'
+      regarded_as: 'Code Smell'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Mutable Data

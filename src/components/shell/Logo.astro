@@ -1,0 +1,254 @@
+---
+interface Props {
+  href?: string;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const { href = '/', ariaLabel = 'Code Smells Catalog — Home', class: className } = Astro.props;
+---
+
+<a href={href} class:list={['logo', className]} aria-label={ariaLabel}>
+  <span class="logo__primary">Code Smells</span>
+  <span class="logo__secondary">Catalog</span>
+  <svg
+    class="logo__waft"
+    width="19"
+    height="13"
+    viewBox="0 0 20 14"
+    fill="none"
+    stroke-linecap="round"
+    aria-hidden="true"
+  >
+    <g class="logo__braces" stroke="currentColor">
+      <path
+        d="M3.5 1.5 C2.2 1.5 1.2 2.8 1.2 4.2 L1.2 5.5 Q1.2 7 0 7 Q1.2 7 1.2 8.5 L1.2 9.8 C1.2 11.2 2.2 12.5 3.5 12.5"
+        stroke-width="2"></path>
+      <path
+        d="M16.5 1.5 C17.8 1.5 18.8 2.8 18.8 4.2 L18.8 5.5 Q18.8 7 20 7 Q18.8 7 18.8 8.5 L18.8 9.8 C18.8 11.2 17.8 12.5 16.5 12.5"
+        stroke-width="2"></path>
+    </g>
+    <g class="logo__waft-group" stroke="currentColor">
+      <path d="M7 11.5 Q8.5 9.5 7 7.5 Q5.5 5.5 7 4" stroke-width="1.6"></path>
+      <path d="M10 12.5 Q11.5 10.5 10 8 Q8.5 5.5 10 3" stroke-width="1.6"></path>
+      <path d="M13 11.5 Q14.5 9.5 13 7.5 Q11.5 5.5 13 4" stroke-width="1.6"></path>
+    </g>
+  </svg>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .logo::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: linear-gradient(
+      90deg,
+      var(--accent) 0%,
+      color-mix(in srgb, var(--accent) 30%, transparent) 100%
+    );
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.4s var(--ease-out) 0.05s;
+  }
+
+  .logo:hover::after {
+    transform: scaleX(1);
+  }
+
+  .logo__primary {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.025em;
+    font-variation-settings:
+      'opsz' 28,
+      'WONK' 1;
+    transition: color 0.4s var(--ease-smooth);
+  }
+
+  .logo__secondary {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    margin-left: 6px;
+    display: inline-block;
+    font-variation-settings:
+      'opsz' 28,
+      'WONK' 1,
+      'SOFT' 0;
+    transition:
+      color 0.4s var(--ease-smooth) 0.05s,
+      transform 0.4s var(--ease-spring) 0.05s,
+      font-variation-settings 0.4s var(--ease-smooth) 0.05s;
+  }
+
+  .logo.nav__logo .logo__secondary {
+    /* Darkened from var(--accent) for WCAG AA on the semi-transparent nav backdrop. */
+    color: var(--logo-nav-secondary);
+  }
+
+  .logo__waft {
+    margin-left: 3px;
+    flex-shrink: 0;
+    position: relative;
+    top: -3px;
+    transition:
+      transform var(--duration-normal) var(--ease-spring),
+      filter 0.4s var(--ease-smooth) 0.1s;
+  }
+
+  .logo__braces {
+    color: var(--text-primary);
+    transition: color 0.4s var(--ease-smooth);
+  }
+
+  .logo__waft-group {
+    color: var(--accent);
+  }
+
+  .logo__waft-group path {
+    opacity: 0.5;
+    animation: logoWaft 3s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center center;
+  }
+
+  .logo__waft-group path:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+
+  .logo__waft-group path:nth-child(3) {
+    animation-delay: 0.8s;
+  }
+
+  .logo:hover .logo__primary {
+    color: color-mix(in srgb, var(--text-primary), var(--accent) 12%);
+  }
+
+  .logo:hover .logo__secondary {
+    color: var(--accent-hover);
+    transform: translateY(-1px);
+    font-variation-settings:
+      'opsz' 28,
+      'WONK' 1,
+      'SOFT' 40;
+  }
+
+  .logo:hover .logo__braces {
+    color: color-mix(in srgb, var(--text-primary), var(--accent) 8%);
+  }
+
+  .logo:hover .logo__waft {
+    transform: translateY(-1px);
+    filter: drop-shadow(0 -1px 3px color-mix(in srgb, var(--accent) 35%, transparent));
+  }
+
+  .logo:hover .logo__waft-group path {
+    stroke-dasharray: 7 3;
+    animation: logoWaftRise 1.2s ease-in-out infinite;
+  }
+
+  .logo:hover .logo__waft-group path:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .logo:hover .logo__waft-group path:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes logoWaft {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+
+  @keyframes logoWaftRise {
+    0% {
+      transform: translateY(0);
+      opacity: 0.4;
+      stroke-dashoffset: 0;
+    }
+    40% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-4px);
+      opacity: 0.15;
+      stroke-dashoffset: -10;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo::after {
+      transition: none;
+    }
+
+    .logo__primary,
+    .logo__secondary,
+    .logo__braces {
+      transition: none;
+    }
+
+    .logo__waft {
+      transition: none;
+    }
+
+    .logo__waft-group path {
+      animation: none;
+      opacity: 0.6;
+    }
+
+    .logo:hover .logo__primary {
+      color: var(--text-primary);
+    }
+
+    .logo:hover .logo__secondary {
+      transform: none;
+      font-variation-settings:
+        'opsz' 28,
+        'WONK' 1,
+        'SOFT' 0;
+    }
+
+    .logo:hover .logo__braces {
+      color: var(--text-primary);
+    }
+
+    .logo:hover .logo__waft {
+      transform: none;
+      filter: none;
+    }
+
+    .logo:hover .logo__waft-group path {
+      animation: none;
+      opacity: 0.8;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .logo__secondary {
+      display: none;
+    }
+  }
+</style>

@@ -1,13 +1,13 @@
 ---
-slug: "middle-man"
+slug: 'middle-man'
 meta:
   last_update_date: 2022-04-19
-  title: "Middle Man"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Middle Man'
+  description: "Half its methods just call the same method on another class. It exists, it delegates, and its author can't explain what it adds. Remove it, and nothing breaks."
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Data Dealers
   occurrence:
@@ -46,8 +46,8 @@ refactors:
   - Replace Delegation with Inheritance
   - Replace Superclass with Delegate
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Middle Man
     regarded_as:
@@ -58,11 +58,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Middle Man

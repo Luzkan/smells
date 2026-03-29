@@ -1,0 +1,521 @@
+---
+/**
+ * Catalog card. Uses data-slug / data-obstruction for filter-engine
+ * visibility toggling and a stretched title link for full-card click area.
+ */
+import { getObstructionTheme } from '../../lib/category-colors';
+import type { SmellCardData } from '../../lib/types';
+import BookIcon from '../icons/BookIcon.astro';
+import Icon from '../icons/Icon.astro';
+import { ICON_WRENCH, ICON_SHARE, ICON_LINK, ICON_CHECK } from '../../lib/icon-paths';
+import DimensionTag from './DimensionTag.astro';
+import { SITE_URL } from '../../lib/constants';
+
+type Props = SmellCardData;
+
+const {
+  slug,
+  title,
+  knownAs,
+  obstruction,
+  smellHierarchies,
+  expanse,
+  description,
+  refactorCount,
+  relatedCount,
+  originInfo,
+} = Astro.props;
+
+const primaryObstruction = obstruction[0];
+const { color: cardColor, initial: avatarInitial } = getObstructionTheme(primaryObstruction);
+const normalizedTitle = title.trim().toLowerCase();
+const filteredAliases = knownAs
+  .map((alias: string) => alias.trim())
+  .filter((alias: string) => alias && alias.toLowerCase() !== normalizedTitle);
+const maxAliasesOnCard = 2;
+const displayAliases = filteredAliases.slice(0, maxAliasesOnCard);
+const extraAliasCount = Math.max(filteredAliases.length - displayAliases.length, 0);
+const smellUrl = `/smells/${slug}`;
+const shareUrl = `${SITE_URL}${smellUrl}`;
+---
+
+<article
+  class="smell-card"
+  data-slug={slug}
+  data-obstruction={primaryObstruction}
+  style={`--card-color: ${cardColor}`}
+>
+  <div class="smell-card__header">
+    <div class="smell-card__avatar" aria-hidden="true">
+      {avatarInitial}
+    </div>
+    <div class="smell-card__header-text">
+      <h2 class="smell-card__title">
+        <a class="smell-card__link" href={smellUrl}>
+          <span class="smell-card__title-text">{title}</span>
+        </a>
+      </h2>
+      {
+        displayAliases.length > 0 && (
+          <p class="smell-card__aliases">
+            <span class="smell-card__aliases-text">aka {displayAliases.join(', ')}</span>
+            {extraAliasCount > 0 && (
+              <span class="smell-card__aliases-more">+{extraAliasCount} more</span>
+            )}
+          </p>
+        )
+      }
+    </div>
+    <span class="smell-card__arrow" aria-hidden="true">&rarr;</span>
+  </div>
+
+  {description && <p class="smell-card__desc">{description}</p>}
+
+  <div class="smell-card__tags">
+    {
+      obstruction.map((cat: string) => (
+        <DimensionTag
+          dimensionKey="obstruction"
+          value={cat}
+          variant="filter"
+          class="smell-card__tag"
+        />
+      ))
+    }
+    {
+      smellHierarchies.map((h: string) => (
+        <DimensionTag
+          dimensionKey="smell_hierarchies"
+          value={h}
+          variant="filter"
+          class="smell-card__tag"
+        />
+      ))
+    }
+    <DimensionTag dimensionKey="expanse" value={expanse} variant="filter" class="smell-card__tag" />
+  </div>
+
+  <div class="smell-card__meta">
+    <span
+      class="smell-card__meta-item"
+      title={`${refactorCount} refactoring${refactorCount !== 1 ? 's' : ''}`}
+    >
+      <Icon icon={ICON_WRENCH} size={12} />
+      {refactorCount}
+    </span>
+    <span
+      class="smell-card__meta-item"
+      title={`${relatedCount} related smell${relatedCount !== 1 ? 's' : ''}`}
+    >
+      <Icon icon={ICON_SHARE} size={12} />
+      {relatedCount}
+    </span>
+    <button
+      class="smell-card__share"
+      data-share-url={shareUrl}
+      data-share-title-default="Copy link"
+      data-share-title-copied="Copied!"
+      data-share-label-default="Copy link to this smell"
+      data-share-label-copied="Link copied to clipboard"
+      title="Copy link"
+      aria-label="Copy link to this smell"
+    >
+      <Icon
+        icon={ICON_LINK}
+        class="smell-card__share-icon smell-card__share-icon--link"
+        size={12}
+      />
+      <Icon
+        icon={ICON_CHECK}
+        class="smell-card__share-icon smell-card__share-icon--check"
+        size={12}
+        strokeWidth={2.5}
+      />
+    </button>
+    {
+      originInfo && (
+        <span class="smell-card__meta-item smell-card__meta-item--end">
+          <BookIcon class="smell-card__meta-icon" size={12} strokeWidth={2} />
+          {originInfo}
+        </span>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .smell-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-smooth);
+    position: relative;
+    overflow: hidden;
+    --card-color: var(--accent);
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+  }
+
+  .smell-card__link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .smell-card__link:focus-visible {
+    outline: none;
+  }
+
+  .smell-card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .smell-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--card-color),
+      color-mix(in srgb, var(--card-color), var(--purple) 35%)
+    );
+    opacity: 0.28;
+    transition: opacity 0.25s var(--ease-smooth);
+  }
+
+  :global([data-theme='dark']) .smell-card::before {
+    background: linear-gradient(
+      90deg,
+      var(--card-color),
+      color-mix(in srgb, var(--card-color), #a78bdb 35%)
+    );
+    opacity: 0.35;
+  }
+
+  @media (hover: hover) {
+    .smell-card:hover,
+    .smell-card:has(.smell-card__link:focus-visible) {
+      border-color: var(--border);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    .smell-card:hover::before,
+    .smell-card:has(.smell-card__link:focus-visible)::before {
+      opacity: 1;
+    }
+  }
+
+  /* Avatar */
+  .smell-card__avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 400;
+    color: white;
+    opacity: 0.75;
+    background: var(--card-color);
+    transition: opacity 0.25s var(--ease-smooth);
+  }
+
+  .smell-card:hover .smell-card__avatar,
+  .smell-card:has(.smell-card__link:focus-visible) .smell-card__avatar {
+    opacity: 0.9;
+  }
+
+  :global([data-theme='dark']) .smell-card__avatar {
+    opacity: 0.75;
+  }
+
+  :global([data-theme='dark']) .smell-card:hover .smell-card__avatar,
+  :global([data-theme='dark'])
+    .smell-card:has(.smell-card__link:focus-visible)
+    .smell-card__avatar {
+    opacity: 0.9;
+  }
+
+  .smell-card__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .smell-card__header-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .smell-card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    font-variation-settings: 'opsz' 32;
+    margin: 0;
+  }
+
+  .smell-card__title-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  .smell-card__aliases {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin: 4px 0 0;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .smell-card__aliases-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .smell-card__aliases-more {
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+    font-style: normal;
+  }
+
+  .smell-card__arrow {
+    color: var(--text-tertiary);
+    font-size: 18px;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all 0.25s var(--ease-spring);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .smell-card:hover .smell-card__arrow,
+  .smell-card:has(.smell-card__link:focus-visible) .smell-card__arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Description */
+  .smell-card__desc {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0 0 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: 0.01em;
+    text-wrap: pretty;
+  }
+
+  /* Tags */
+  .smell-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  :global(.smell-card__tag) {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.03em;
+    transition: all var(--duration-fast) var(--ease-smooth);
+    cursor: pointer;
+    min-height: 28px;
+    border: 0;
+    appearance: none;
+    font-family: inherit;
+    line-height: 1.2;
+    position: relative;
+    z-index: 2;
+  }
+
+  :global(.smell-card__tag:hover) {
+    filter: brightness(0.82);
+    transform: translateY(-1px);
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+
+  /* "+" indicator on hover */
+  :global(.smell-card__tag::after) {
+    content: '+';
+    font-size: 9px;
+    font-weight: 700;
+    margin-left: 4px;
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-smooth);
+  }
+
+  :global(.smell-card__tag:hover::after) {
+    opacity: 0.7;
+  }
+
+  :global(.smell-card__tag:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+
+  :global(.smell-card__tag[style]) {
+    background: var(--dim-light);
+    color: var(--dim-color);
+  }
+
+  /* When tag matches active filter */
+  :global(.tag-matched)::after {
+    content: none !important;
+  }
+
+  :global(.tag-matched) {
+    font-weight: 700;
+    box-shadow: 0 0 0 1.5px currentColor;
+    transform: scale(1.04);
+  }
+
+  :global(.tag-matched)::before {
+    content: '\2713 ';
+    font-size: 8px;
+    margin-right: 1px;
+  }
+
+  /* Meta footer */
+  .smell-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-subtle);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+  :global([data-theme='dark']) .smell-card__meta {
+    border-top-color: var(--border);
+  }
+
+  .smell-card__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  /* :global() needed — SVG rendered by child Icon.astro component */
+  .smell-card__meta-item :global(svg) {
+    flex-shrink: 0;
+    opacity: 0.55;
+  }
+
+  .smell-card__meta-item--end {
+    margin-left: auto;
+  }
+
+  /* Share / copy-link button */
+  .smell-card__share {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    margin: -4px 0;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-tertiary);
+    opacity: 0;
+    transition:
+      opacity var(--duration-fast) var(--ease-smooth),
+      color var(--duration-fast) var(--ease-smooth),
+      background var(--duration-fast) var(--ease-smooth),
+      border-color var(--duration-fast) var(--ease-smooth);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* :global() needed — SVG rendered by child Icon.astro component */
+  .smell-card__share :global(svg) {
+    flex-shrink: 0;
+    opacity: 0.55;
+    transition: opacity var(--duration-fast) var(--ease-smooth);
+  }
+
+  :global(.smell-card__share-icon--check) {
+    display: none;
+  }
+
+  @media (hover: hover) {
+    .smell-card:hover .smell-card__share,
+    .smell-card:has(.smell-card__link:focus-visible) .smell-card__share {
+      opacity: 1;
+    }
+
+    .smell-card__share:hover {
+      color: var(--accent);
+      background: var(--accent-light);
+      border-color: color-mix(in srgb, var(--accent) 15%, transparent);
+    }
+
+    .smell-card__share:hover :global(svg) {
+      opacity: 0.85;
+    }
+  }
+
+  @media (hover: none) {
+    .smell-card__share {
+      opacity: 1;
+    }
+  }
+
+  .smell-card__share:focus-visible {
+    opacity: 1;
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+
+  :global(.smell-card__share--copied) {
+    color: var(--green);
+  }
+
+  :global(.smell-card__share--copied) :global(svg) {
+    opacity: 0.85;
+  }
+
+  :global(.smell-card__share--copied) :global(.smell-card__share-icon--link) {
+    display: none;
+  }
+
+  :global(.smell-card__share--copied) :global(.smell-card__share-icon--check) {
+    display: block;
+  }
+</style>

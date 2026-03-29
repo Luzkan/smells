@@ -1,0 +1,386 @@
+---
+/**
+ * ProblemCards — Renders problems with rich descriptions from body extraction.
+ *
+ * When body descriptions are available, renders cards with heading + description
+ * + keyword-matched icon + per-card color. Falls back to frontmatter label-only
+ * cards when no body descriptions exist.
+ *
+ * Deduplicates: if a body card heading matches a frontmatter violation principle,
+ * the badge is suppressed to avoid showing the same concept twice.
+ */
+import type { ProblemDescription } from '../../lib/content/extract-problems';
+import type { SmellFrontmatter } from '../../schemas/smell';
+
+interface Props {
+  problems: SmellFrontmatter['problems'];
+  descriptions: ProblemDescription[];
+}
+
+const { problems, descriptions } = Astro.props;
+
+const generalProblems = problems.general;
+const violatedPrinciples = problems.violation.principles;
+const violatedPatterns = problems.violation.patterns;
+
+const hasDescriptions = descriptions.length > 0;
+const hasAnyProblems =
+  descriptions.length > 0 ||
+  generalProblems.length > 0 ||
+  violatedPrinciples.length > 0 ||
+  violatedPatterns.length > 0;
+
+// Per-card color palette — rotates by index for visual rhythm
+const CARD_COLORS = [
+  { color: 'var(--accent)', lightColor: 'var(--accent-light)' },
+  { color: 'var(--red)', lightColor: 'var(--red-light)' },
+  { color: 'var(--purple)', lightColor: 'var(--purple-light)' },
+  { color: 'var(--blue)', lightColor: 'var(--blue-light)' },
+  { color: 'var(--teal)', lightColor: 'var(--teal-light)' },
+];
+
+/*
+ * Keyword-based icon matching. Handles heading variants like:
+ *   "Low Readability", "Decreased Readability", "Hard to Read" → 👁
+ *   "Duplication", "Duplicated Code" → 📋
+ *   "Bijection Violation", "Bijection Problems" → ↔
+ *   "Low Testability", "Hard to Test", "Increased Test Complexity" → 🧪
+ *   "Reusability", "Low Reuse", "Inability to Reuse" → ♻
+ *   "Coupling", "Inter Component Coupling" → 🔗
+ *   "Increased Complexity", "More Complex APIs" → 🧩
+ *   "Comprehensibility", "Comprehensibility Issues" → 📖
+ *   "Error-Prone", "Reduced Reliability" → ⚠
+ *   "Code Pollution" → 🗑
+ *   "Hard to Understand" → 🧠
+ *   "Side Effects" → 💥
+ *   "Encapsulation", "Lack of Encapsulation" → 📦
+ *   "...Violation", "...Principle" → ⚖
+ */
+const ICON_KEYWORD_MAP: Record<string, string> = {
+  'hard to read': '👁',
+  read: '👁',
+  duplic: '📋',
+  repeat: '📋',
+  bijection: '↔',
+  test: '🧪',
+  reuse: '♻',
+  reusa: '♻',
+  coupl: '🔗',
+  complex: '🧩',
+  comprehensi: '📖',
+  understand: '🧠',
+  reason: '🧠',
+  error: '⚠',
+  reliab: '⚠',
+  pollut: '🗑',
+  'side effect': '💥',
+  encapsul: '📦',
+  indirection: '🔀',
+  cohesion: '🧲',
+  extend: '🔧',
+  hidden: '🔍',
+  abstraction: '🔍',
+  overload: '📡',
+  information: '📡',
+  'flow state': '🌊',
+  violation: '⚖',
+  principle: '⚖',
+};
+
+const ICON_KEYWORDS = Object.keys(ICON_KEYWORD_MAP).sort((a, b) => b.length - a.length);
+
+function getIcon(heading: string): string {
+  const lower = heading.toLowerCase();
+  for (const keyword of ICON_KEYWORDS) {
+    if (lower.includes(keyword)) return ICON_KEYWORD_MAP[keyword];
+  }
+  return '⚠';
+}
+
+// Deduplicate: suppress violation badges that already appear as body cards
+function fuzzyMatch(bodyHeading: string, violationLabel: string): boolean {
+  const h = bodyHeading.toLowerCase();
+  const v = violationLabel.toLowerCase();
+  return h.includes(v) || v.includes(h);
+}
+
+const bodyHeadings = descriptions.map((d) => d.heading);
+const dedupedPrinciples = violatedPrinciples.filter(
+  (p) => !bodyHeadings.some((h) => fuzzyMatch(h, p)),
+);
+const dedupedPatterns = violatedPatterns.filter((p) => !bodyHeadings.some((h) => fuzzyMatch(h, p)));
+---
+
+{
+  hasAnyProblems && (
+    <section class="problem-cards">
+      <h3 id="problems" class="problem-cards__title">
+        Problems
+      </h3>
+
+      {hasDescriptions && (
+        <div class="problem-cards__grid">
+          {descriptions.map((desc, index) => {
+            const { color, lightColor } = CARD_COLORS[index % CARD_COLORS.length];
+            return (
+              <div
+                class="problem-card problem-card--rich"
+                style={`--card-delay: ${index * 0.1}s; --problem-color: ${color}; --problem-color-light: ${lightColor}`}
+              >
+                <div class="problem-card__icon">{getIcon(desc.heading)}</div>
+                <div class="problem-card__body">
+                  {desc.headingHref ? (
+                    <a
+                      href={desc.headingHref}
+                      class="problem-card__heading problem-card__heading--link"
+                    >
+                      {desc.heading}
+                    </a>
+                  ) : (
+                    <span class="problem-card__heading">{desc.heading}</span>
+                  )}
+                  {desc.descriptionHtml && (
+                    <p class="problem-card__desc" set:html={desc.descriptionHtml} />
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {!hasDescriptions && generalProblems.length > 0 && (
+        <div class="problem-cards__grid">
+          {generalProblems.map((problem, index) => {
+            const { color, lightColor } = CARD_COLORS[index % CARD_COLORS.length];
+            return (
+              <div
+                class="problem-card"
+                style={`--card-delay: ${index * 0.1}s; --problem-color: ${color}; --problem-color-light: ${lightColor}`}
+              >
+                <div class="problem-card__icon">{getIcon(problem)}</div>
+                <div class="problem-card__body">
+                  <span class="problem-card__heading">{problem}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {(dedupedPrinciples.length > 0 || dedupedPatterns.length > 0) && (
+        <div class="problem-cards__violations">
+          {dedupedPrinciples.length > 0 && (
+            <div class="violation-group">
+              <span class="violation-group__label">Violated Principles</span>
+              <div class="violation-group__items">
+                {dedupedPrinciples.map((p) => (
+                  <span class="violation-badge violation-badge--principle">{p}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          {dedupedPatterns.length > 0 && (
+            <div class="violation-group">
+              <span class="violation-group__label">Violated Patterns</span>
+              <div class="violation-group__items">
+                {dedupedPatterns.map((p) => (
+                  <span class="violation-badge violation-badge--pattern">{p}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  )
+}
+
+<style>
+  .problem-cards {
+    margin: 2rem 0;
+  }
+
+  .problem-cards__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 0 0 1rem;
+  }
+
+  .problem-cards__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .problem-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-12px);
+    animation: card-enter 0.4s ease forwards;
+    animation-delay: var(--card-delay, 0s);
+    transition:
+      border-color var(--duration-fast),
+      box-shadow var(--duration-fast);
+  }
+
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--problem-color, var(--accent));
+    opacity: 0.5;
+    transition: opacity var(--duration-fast);
+  }
+
+  .problem-card:hover {
+    border-color: var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .problem-card:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes card-enter {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .problem-card__icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--problem-color-light, var(--accent-light));
+    color: var(--problem-color, var(--accent));
+    border-radius: 6px;
+    margin-top: 2px;
+  }
+
+  .problem-card__body {
+    min-width: 0;
+  }
+
+  .problem-card__heading {
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.005em;
+  }
+
+  .problem-card__heading--link {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--duration-fast);
+  }
+
+  .problem-card__heading--link:hover {
+    color: var(--accent);
+  }
+
+  .problem-card__desc {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 4px 0 0;
+    max-width: none;
+  }
+
+  .problem-card__desc :global(code) {
+    background: var(--surface-raised);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .problem-card__desc :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    text-underline-offset: 2px;
+  }
+
+  .problem-card__desc :global(ul) {
+    margin: 4px 0 0;
+    padding-left: 1.2em;
+  }
+
+  .problem-cards__violations {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .violation-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .violation-group__label {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .violation-group__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .violation-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    font-weight: 500;
+  }
+
+  .violation-badge--principle {
+    background: var(--red-light);
+    color: color-mix(in srgb, var(--red) 78%, var(--text-primary));
+    border: 1px solid color-mix(in srgb, var(--red) 22%, transparent);
+  }
+
+  .violation-badge--pattern {
+    background: var(--teal-light);
+    color: color-mix(in srgb, var(--teal) 80%, var(--text-primary));
+    border: 1px solid color-mix(in srgb, var(--teal) 22%, transparent);
+  }
+
+  @media (max-width: 640px) {
+    .problem-card {
+      padding: 16px 18px;
+      gap: 12px;
+    }
+
+    .problem-card__desc {
+      font-size: var(--text-xs);
+    }
+  }
+</style>

@@ -1,13 +1,13 @@
 ---
-slug: "global-data"
+slug: 'global-data'
 meta:
   last_update_date: 2022-04-19
-  title: "Global Data"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Global Data'
+  description: 'Any code, anywhere, can read and write these variables. When something breaks, every function in the codebase is a suspect.'
   known_as:
     - Global Variables
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Data Dealers
   occurrence:
@@ -56,8 +56,8 @@ problems:
 refactors:
   - Encapsulate Variable
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Global Data
     regarded_as:
@@ -66,16 +66,16 @@ history:
       year: 2018
       authors:
         - Martin Fowler
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Global Data
 
-The _Global Data_ is quite similar to the [Middle Man](./middle-man.md) code smell, but here rather than a class, the broker is the _global scope_ in which the data is freely available to everyone. These global scope variables are undesirable because it directly causes the [Hidden Dependencies](./hidden-dependencies.md) code smell and a highly nasty [Mutable Data](./mutable-data.md) code smell. Global data can be read from anywhere, and there is no easy way to discover which bit of code touches it. If the variable in the global scope is additionally mutable, then this becomes an extremally bad case of _[Mutable](./mutable-data.md) [Fate over Action](./fate-over-action.md) (data class)_. Fowler, in 1999 recalled that in the early days of programming, back when there were no objects, even causing the [Long Parameter List](./long-paramter-list.md) code smell was preferable to the Global Data [[1](#sources)]. For the same reasons, a Singleton Pattern can also be problematic [[2](#sources)].
+The _Global Data_ is quite similar to the [Middle Man](./middle-man.md) code smell, but here rather than a class, the broker is the _global scope_ in which the data is freely available to everyone. These global scope variables are undesirable because it directly causes the [Hidden Dependencies](./hidden-dependencies.md) code smell and a highly nasty [Mutable Data](./mutable-data.md) code smell. Global data can be read from anywhere, and there is no easy way to discover which bit of code touches it. If the variable in the global scope is additionally mutable, then this becomes an extremally bad case of _[Mutable](./mutable-data.md) [Fate over Action](./fate-over-action.md) (data class)_. Fowler, in 1999 recalled that in the early days of programming, back when there were no objects, even causing the [Long Parameter List](./long-parameter-list.md) code smell was preferable to the Global Data [[1](#sources)]. For the same reasons, a Singleton Pattern can also be problematic [[2](#sources)].
 
 ### Problems
 

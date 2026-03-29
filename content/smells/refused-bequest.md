@@ -1,13 +1,13 @@
 ---
-slug: "refused-bequest"
+slug: 'refused-bequest'
 meta:
   last_update_date: 2022-04-19
-  title: "Refused Bequest"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Refused Bequest'
+  description: 'A Tower that extends Minion but throws NotImplemented on move(). The inheritance contract promises full support; the subclass delivers a runtime exception and an apology.'
   known_as:
     - Refused Parent Bequest
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Object Oriented Abusers
   occurrence:
@@ -38,8 +38,8 @@ refactors:
   - Replace Inheritance with Delegation
   - Replace Superclass/Subclass with Delegate
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Refused Bequest
     regarded_as:
@@ -50,11 +50,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Refused Bequest

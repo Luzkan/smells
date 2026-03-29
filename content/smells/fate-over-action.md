@@ -1,13 +1,13 @@
 ---
-slug: "fate-over-action"
+slug: 'fate-over-action'
 meta:
   last_update_date: 2022-04-19
-  title: "Fate over Action"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Fate over Action'
+  description: 'A class that holds data but owns none of the behavior operating on it. External code reaches in, pulls values out, and makes decisions the object never learned to make for itself.'
   known_as:
     - Data Class
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Couplers
   occurrence:
@@ -27,8 +27,8 @@ relations:
       slug: feature-envy
       type:
         - causes
-    - name: Data Clumps
-      slug: data-clumps
+    - name: Data Clump
+      slug: data-clump
       type:
         - antagonistic
     - name: Primitive Obsession
@@ -48,22 +48,22 @@ refactors:
   - Extract method
   - Freeze Variables
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Fate Over Action
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
-  - author: "Martin Fowler"
-    type: "parentage"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
+  - author: 'Martin Fowler'
+    type: 'parentage'
     named_as:
       - Data Class
     regarded_as:
@@ -74,11 +74,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Fate over Action

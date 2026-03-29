@@ -1,13 +1,13 @@
 ---
-slug: "status-variable"
+slug: 'status-variable'
 meta:
   last_update_date: 2022-04-19
-  title: "Status Variable"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Status Variable'
+  description: 'found = False. Then a loop. Then found = True somewhere inside. Then a check after. Mutable flags that complicate control flow when a direct return or a built-in would express the same logic in a single line.'
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Obfuscators
   occurrence:
@@ -55,20 +55,20 @@ refactors:
   - Extract Method
   - Remove Status Variables
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Status Variable
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
 ---
 
 ## Status Variable

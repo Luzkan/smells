@@ -1,16 +1,16 @@
 ---
-slug: "uncommunicative-name"
+slug: 'uncommunicative-name'
 meta:
   last_update_date: 2022-04-19
-  title: "Uncommunicative Name"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Uncommunicative Name'
+  description: 'data, val, m1, temp, get_f(). The code compiles fine. Understanding it requires reverse-engineering every abbreviation the original author thought was self-evident.'
   known_as:
     - Mysterious Name
     - Function Names Should Say What They Do
     - Choose Descriptive Names
     - Ambiguous Name
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Lexical Abusers
   occurrence:
@@ -55,8 +55,8 @@ refactors:
   - Rename Variable
   - Rename Field
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Uncommunicative Name (Names)
     regarded_as:
@@ -65,11 +65,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Uncommunicative Name

@@ -1,0 +1,83 @@
+---
+import FeedbackButton from '../engagement/FeedbackButton.astro';
+import ShareButton from '../engagement/ShareButton.astro';
+import CiteToggle from '../engagement/CiteToggle.astro';
+import CitePanel from '../engagement/CitePanel.astro';
+import type { CitationData } from '../../lib/types';
+
+interface Props {
+  citation: CitationData;
+}
+
+const { citation } = Astro.props;
+---
+
+<div class="engagement-bar">
+  <FeedbackButton slug={citation.slug} />
+  <span class="engage-sep"></span>
+  <ShareButton slug={citation.slug} />
+  <span class="engage-sep"></span>
+  <CiteToggle />
+</div>
+<CitePanel citation={citation} />
+
+<style>
+  .engagement-bar {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 0;
+  }
+
+  .engage-sep {
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  :global(.engagement-bar:has(+ .cite-panel[aria-hidden='false'])) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  :global(.engage-btn) {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--duration-fast) ease;
+  }
+
+  :global(.engage-btn:hover) {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  @media (max-width: 640px) {
+    .engagement-bar {
+      flex-direction: column;
+      padding: 16px 20px;
+      gap: 12px;
+    }
+
+    .engage-sep {
+      width: 100%;
+      height: 1px;
+    }
+  }
+</style>

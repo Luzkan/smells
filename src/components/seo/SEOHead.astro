@@ -1,0 +1,43 @@
+---
+import { SITE_TITLE, SITE_URL, TWITTER_HANDLE } from '../../lib/constants';
+import type { SeoMeta } from '../../lib/types';
+
+interface Props {
+  seo: SeoMeta;
+}
+
+const { seo } = Astro.props as Props;
+const { title, description, ogImage, canonical, type, noindex = false } = seo;
+
+const siteUrl = Astro.site?.origin ?? SITE_URL;
+const canonicalUrl = noindex ? undefined : (canonical ?? new URL(Astro.url.pathname, siteUrl).href);
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+{/* Open Graph */}
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={title} />
+{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE_TITLE} />
+{seo.type === 'article' && <meta property="article:modified_time" content={seo.modifiedTime} />}
+
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_US" />
+
+{/* Twitter Card */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={TWITTER_HANDLE} />
+<meta name="twitter:creator" content={TWITTER_HANDLE} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:image:alt" content={title} />

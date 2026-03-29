@@ -1,13 +1,13 @@
 ---
-slug: "null-check"
+slug: 'null-check'
 meta:
   last_update_date: 2022-04-19
-  title: "Null Check"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Null Check'
+  description: 'Defensive null checks scattered everywhere like a nervous tic — each one a band-aid over a missing Null Object, and each a reminder that Tony Hoare called his invention a billion-dollar mistake.'
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Bloaters
   occurrence:
@@ -50,8 +50,8 @@ refactors:
   - Introduce Maybe
   - Introduce Optional
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Null Check
     regarded_as:
@@ -60,11 +60,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Null Check

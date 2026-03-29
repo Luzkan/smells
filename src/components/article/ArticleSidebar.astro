@@ -1,0 +1,450 @@
+---
+/**
+ * ArticleSidebar — Right sidebar with related smells and quick metadata.
+ *
+ * Contains:
+ * - Related smells from frontmatter `relations.related_smells` with relationship type badges
+ * - Quick metadata (expanse, categories)
+ * Handles articles with no relations gracefully.
+ */
+import type { SmellFrontmatter } from '../../schemas/smell';
+import BookIcon from '../icons/BookIcon.astro';
+import Icon from '../icons/Icon.astro';
+import { ICON_WARNING, ICON_WRENCH, ICON_CHEVRON_RIGHT } from '../../lib/icon-paths';
+import { getObstructionTheme } from '../../lib/category-colors';
+import { RELATION_TYPE_LABELS } from '../../lib/constants';
+import { findOriginOrEarliestEntry } from '../../lib/content/smell-utils';
+
+interface Props {
+  data: SmellFrontmatter;
+}
+
+const { data } = Astro.props;
+const { categories, relations, problems, refactors, history, meta } = data;
+
+const relatedSmells = relations.related_smells;
+
+const SIDEBAR_CARD_THEMES = {
+  classification: { bg: 'var(--green-light)', fg: 'var(--green)' },
+  problems: { bg: 'var(--red-light)', fg: 'var(--red)' },
+  refactoring: { bg: 'var(--green-light)', fg: 'var(--green)' },
+  provenance: { bg: 'var(--yellow-light)', fg: 'var(--yellow)' },
+  related: { bg: 'var(--blue-light)', fg: 'var(--blue)' },
+} as const;
+
+function toCssVars(theme: (typeof SIDEBAR_CARD_THEMES)[keyof typeof SIDEBAR_CARD_THEMES]): string {
+  return `--sidebar-icon-bg: ${theme.bg}; --sidebar-icon-fg: ${theme.fg};`;
+}
+
+// SIDE-01: Provenance - find origin entry
+const originEntry = findOriginOrEarliestEntry(history);
+
+// SIDE-04: Formatted update date
+const formattedDate = new Date(meta.last_update_date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<div class="article-sidebar">
+  {/* Classification Card */}
+  <div class="sidebar-card">
+    <div class="sidebar-card__header">
+      <div class="sidebar-card__icon" style={toCssVars(SIDEBAR_CARD_THEMES.classification)}>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+          <line x1="4" y1="22" x2="4" y2="15"></line>
+        </svg>
+      </div>
+      <span class="sidebar-card__title">Classification</span>
+    </div>
+    <div class="sidebar-card__body">
+      <div class="sidebar-meta-row">
+        <span class="sidebar-meta-row__label">Expanse</span>
+        <span class="sidebar-meta-row__value" style="color: var(--green)">
+          {categories.expanse} Class
+        </span>
+      </div>
+      <div class="sidebar-meta-row">
+        <span class="sidebar-meta-row__label">Obstruction</span>
+        <span
+          class="sidebar-meta-row__value"
+          style={`color: ${getObstructionTheme(categories.obstruction[0]).color}`}
+        >
+          {categories.obstruction.join(', ')}
+        </span>
+      </div>
+      <div class="sidebar-meta-row">
+        <span class="sidebar-meta-row__label">Occurrence</span>
+        <span class="sidebar-meta-row__value" style="color: var(--blue)">
+          {categories.occurrence.join(', ')}
+        </span>
+      </div>
+      {/* SIDE-04: Updated row */}
+      <div class="sidebar-meta-row">
+        <span class="sidebar-meta-row__label">Updated</span>
+        <span class="sidebar-meta-row__value" style="color: var(--text-secondary)">
+          {formattedDate}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {/* SIDE-01: Problems Caused Card */}
+  {
+    problems.general.length > 0 && (
+      <div class="sidebar-card">
+        <div class="sidebar-card__header">
+          <div class="sidebar-card__icon" style={toCssVars(SIDEBAR_CARD_THEMES.problems)}>
+            <Icon icon={ICON_WARNING} size={14} />
+          </div>
+          <span class="sidebar-card__title">Problems Caused</span>
+        </div>
+        <div class="sidebar-card__body">
+          <ul class="sidebar-bullet-list">
+            {problems.general.map((problem) => (
+              <li class="sidebar-bullet-list__item">
+                <span class="sidebar-bullet-list__dot" aria-hidden="true" />
+                {problem}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
+  {/* SIDE-02: Refactoring Card */}
+  {
+    refactors.length > 0 && (
+      <div class="sidebar-card">
+        <div class="sidebar-card__header">
+          <div class="sidebar-card__icon" style={toCssVars(SIDEBAR_CARD_THEMES.refactoring)}>
+            <Icon icon={ICON_WRENCH} size={14} />
+          </div>
+          <span class="sidebar-card__title">Refactoring</span>
+        </div>
+        <div class="sidebar-card__body">
+          <ul class="sidebar-bullet-list">
+            {refactors.map((refactor) => (
+              <li class="sidebar-bullet-list__item">
+                <span class="sidebar-bullet-list__dot" aria-hidden="true" />
+                {refactor}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
+  {/* SIDE-03: Provenance Card */}
+  {
+    originEntry && (
+      <div class="sidebar-card">
+        <div class="sidebar-card__header">
+          <div class="sidebar-card__icon" style={toCssVars(SIDEBAR_CARD_THEMES.provenance)}>
+            <BookIcon class="sidebar-card__icon-svg" size={14} strokeWidth={2} />
+          </div>
+          <span class="sidebar-card__title">Provenance</span>
+        </div>
+        <div class="sidebar-card__body">
+          <div class="sidebar-provenance">
+            <div class="sidebar-provenance__author">
+              <span>{originEntry.author}</span>
+              {originEntry.type && (
+                <span class="sidebar-provenance__badge">{originEntry.type.toUpperCase()}</span>
+              )}
+            </div>
+            <div class="sidebar-provenance__book">{originEntry.source.name}</div>
+            <div class="sidebar-provenance__meta">
+              <span>{originEntry.source.year}</span>
+              {originEntry.source.href?.isbn_13 && (
+                <span class="sidebar-provenance__isbn">ISBN {originEntry.source.href.isbn_13}</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  {/* Related Smells Card — SIDE-05: count badge */}
+  {
+    relatedSmells.length > 0 && (
+      <div class="sidebar-card" id="relations">
+        <div class="sidebar-card__header">
+          <div class="sidebar-card__icon" style={toCssVars(SIDEBAR_CARD_THEMES.related)}>
+            &#8644;
+          </div>
+          <span class="sidebar-card__title">Related Smells</span>
+          <span class="sidebar-card__count">{relatedSmells.length}</span>
+        </div>
+        <div class="sidebar-card__body sidebar-card__body--no-gap">
+          {relatedSmells.map((smell) => (
+            <a href={`/smells/${smell.slug}`} class="related-smell">
+              <div class="related-smell__types">
+                {smell.type.map((t) => {
+                  const info = RELATION_TYPE_LABELS[t];
+                  return (
+                    <span
+                      class="related-smell__badge"
+                      style={`color: color-mix(in srgb, ${info.color} 84%, var(--text-primary)); background: color-mix(in srgb, ${info.color} 6%, transparent);`}
+                    >
+                      {info.label}
+                    </span>
+                  );
+                })}
+              </div>
+              <span class="related-smell__name">{smell.name}</span>
+              <Icon icon={ICON_CHEVRON_RIGHT} class="related-smell__arrow" size={14} />
+            </a>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .article-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: calc(var(--nav-height) + 24px);
+    padding-top: 24px;
+  }
+
+  .sidebar-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    padding: 20px;
+    transition: border-color var(--duration-fast);
+  }
+
+  .sidebar-card:hover {
+    border-color: var(--border);
+  }
+
+  .sidebar-card__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .sidebar-card__icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--sidebar-icon-bg, var(--surface-raised));
+    color: var(--sidebar-icon-fg, var(--text-tertiary));
+  }
+
+  .sidebar-card__title {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* SIDE-05: Count badge */
+  .sidebar-card__count {
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-light);
+    color: var(--accent);
+    border-radius: var(--radius-pill);
+  }
+
+  .sidebar-card__body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-card__body--no-gap {
+    gap: 0;
+  }
+
+  .sidebar-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .sidebar-meta-row:last-child {
+    border-bottom: none;
+  }
+
+  .sidebar-meta-row__label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .sidebar-meta-row__value {
+    font-size: 12px;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .related-smell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    margin: 2px -4px;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-smooth);
+  }
+
+  .related-smell:hover {
+    background: var(--surface-raised);
+    transform: translateX(3px);
+  }
+
+  .related-smell__name {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-primary);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .related-smell__types {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .related-smell__badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* :global() needed — SVG rendered by child Icon.astro component */
+  :global(.related-smell__arrow) {
+    flex-shrink: 0;
+    color: var(--text-tertiary);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity var(--duration-fast),
+      transform var(--duration-fast);
+  }
+
+  .related-smell:hover :global(.related-smell__arrow) {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* SIDE-01 + SIDE-02: Bullet list for sidebar cards */
+  .sidebar-bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidebar-bullet-list__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+  }
+
+  .sidebar-bullet-list__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* SIDE-03: Provenance card */
+  .sidebar-provenance {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar-provenance__author {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .sidebar-provenance__badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: var(--radius-pill);
+    background: var(--accent-light);
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .sidebar-provenance__book {
+    font-size: var(--text-sm);
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .sidebar-provenance__meta {
+    display: flex;
+    gap: 8px;
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+  }
+
+  .sidebar-provenance__isbn {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+</style>

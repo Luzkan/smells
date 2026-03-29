@@ -1,77 +1,135 @@
-<div align="center" style="margin-bottom: 30px;">
-    <img src="./static/logos/logo-gradient-126.png"/>
-    <h2 align="center">Bad Code Smells</h2>
-    <div>
-        <p style="font-style: italic;">A Comprehensive Online Catalog</p>
-        <strong><a href="https://luzkan.github.io/smells/">Visit the Website</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/paper.pdf">Preprint</a></strong> · <strong><a href="https://link.springer.com/chapter/10.1007/978-3-031-25695-0_24">Springer Paper</a></strong> · <strong><a href="https://github.com/Luzkan/smells/tree/main/docs/thesis.pdf">The Thesis</a></strong>
-    </div>
+<div align="center">
+    <img src="./public/favicon-96.png" width="80" alt="Code Smells Catalog logo"/>
+    <h2>Code Smells Catalog</h2>
+    <p><strong>56 code smells</strong> in one place, cross-referenced so you can find the one you're thinking of.</p>
+    <p>
+        <a href="https://codesmells.org"><strong>Browse the Catalog</strong></a> · <a href="https://link.springer.com/chapter/10.1007/978-3-031-25695-0_24">Springer Paper</a> · <a href="https://github.com/Luzkan/smells/tree/main/docs/thesis.pdf">Thesis</a>
+    </p>
+    <p>
+        <a href="https://github.com/Luzkan/smells/actions/workflows/ci.yml"><img src="https://github.com/Luzkan/smells/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+        <a href="https://github.com/Luzkan/smells/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Luzkan/smells" alt="MIT License"/></a>
+        <a href="https://codesmells.org"><img src="https://img.shields.io/website?url=https%3A%2F%2Fcodesmells.org&label=codesmells.org" alt="Website"/></a>
+        <a href="https://github.com/Luzkan/smells/stargazers"><img src="https://img.shields.io/github/stars/Luzkan/smells" alt="GitHub stars"/></a>
+    </p>
 </div>
 
-# Table of Contents
+<br/>
 
-1. [What's this?](#whats-this)
-2. [How can I use this?](#how-can-i-use-this)
-   - [Knowledge Browsing](#website)
-   - [Data Extraction](#data)
-3. [Who is the beneficent?](#who-is-the-beneficent)
-   - [New Programmers](#new-programmers)
-   - [Developers](#developers)
-   - [Researchers](#researchers)
-4. [How can I contribute?](#how-can-i-contribute)
+<p align="center">
+    <a href="https://codesmells.org"><img src="./docs/catalog-preview.png" width="720" alt="Screenshot of the Code Smells Catalog in dark mode, showing the hero section, filter sidebar, and smell cards"/></a>
+</p>
 
 ---
 
-## **What's this?**
+## What's this?
 
-This repository contains the source of the [Code Smell Catalog](https://luzkan.github.io/smells/) website that contains the current list of smells along with their:
+Every named code smell in one place — classified, connected, and fixable.
 
-- attributes
-- categories
-- types
-- relationships between them
-- problems which they cause
-- refactoring methods
-- history
-- examples
+56 code smells, each with its history, related smells, the problems it causes, and how to fix it. It's also a dataset: machine-readable content that researchers can extract with a single command.
+
+Built as a companion to a [Springer Nature publication](https://link.springer.com/chapter/10.1007/978-3-031-25695-0_24) and [Master's thesis](https://github.com/Luzkan/smells/tree/main/docs/thesis.pdf).
 
 ---
 
-## **How can I use this?**
+## Who is this for?
 
-### Website
+### New Programmers
 
-Feel free to visit the [website](https://luzkan.github.io/smells/) and browse around!
+Browse it like a field guide. Each smell has a clear explanation, real code examples, and the refactoring techniques that fix it. You'll build intuition about what "bad code" actually means beyond "it doesn't work."
 
-### Data
+### Developers
 
-If you would like to scrape the data, clone the repository and run [`python /data_scraper/main.py`](./data_scraper/main.py).
+It's much easier to handle a code review discussion when you can drop a link to a well-described, named phenomenon instead of arguing about _why_ something feels off. This catalog gives names to things you intuitively sense but struggle to articulate.
+
+### Researchers
+
+Data on code smells is scattered across decades of literature, and coverage is wildly disproportionate: some smells are studied constantly, others never made it past a single paper. This catalog tries to fix that. Consistent naming, traced origins, one taxonomy you can actually navigate.
+
+The catalog is also a dataset. From the repository root:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r data_scraper/requirements.txt
+python -m data_scraper.main
+```
+
+Use `python -m data_scraper.main -h` to inspect the available flags. It parses the same markdown files into structured JSON, ready for analysis.
 
 ---
 
-## **Who is beneficent?**
+## Have you written any of these?
 
-**Everyone**
+> [**Boolean Blindness**](https://codesmells.org/smells/boolean-blindness) — when `true` and `false` carry meaning only the original author remembers
 
-### **New Programmers**
+> [**Afraid To Fail**](https://codesmells.org/smells/afraid-to-fail). Wrapping everything in try-catch instead of letting errors speak.
 
-New developers can browse the code smell list in a nice, readable form of articles and read about them to get a good intuition of what might be a bad practice or what they should watch out for.
+> [**Fate Over Action**](https://codesmells.org/smells/fate-over-action) — classes that are nouns all the way down, with no verbs in sight
 
-They can find the descriptions of smells, their potential causation example, and table-formatted, higher-abstraction attributes about the particular code smell (like whether it is a smell that happens _within_ a class or _between_ classes). On top of that - the majority of code smells have examples that are often very significant when one is learning about a new thing.
+> [**Fallacious Method Name**](https://codesmells.org/smells/fallacious-method-name). The name promises one thing. The body does another.
 
-### **Developers**
+> [**Clever Code**](https://codesmells.org/smells/clever-code) — you were proud when you wrote it; nobody can read it now
 
-It's much easier to handle a code review discussion when someone can place a link directly to the source of his concerns. This could benefit and accelerate the understanding of code smell among developers.
+There are 51 more. [Browse the full catalog →](https://codesmells.org)
 
-A large proportion of developers may even intuitively know about most of these things without knowing about the issue itself as a named phenomenon. This, again, can improve the overall skills of developers.
+---
 
-### **Researchers**
+## Contributing
 
-The data and information about smells are scattered around and it's hard to collect every single smell to holistically execute research on them. Currently, as of 2022, the researched data about different smells is drastically disproportionate. Some Code Smells are almost always taken into account, some rarely, and some are not covered by the research at all - either because they were lost in the information noise or because they never occurred with the appropriate keyword.
+If you'd like to contribute, you're very welcome. Open an [issue](https://github.com/Luzkan/smells/issues) to start a discussion or submit a [pull request](https://github.com/Luzkan/smells/pulls) directly. I'm deeply convinced that in a pile of stuff this size, I had to make mistakes, even just statistically speaking. 🐈
 
-This catalog is designed to unify the available data, and standardize the nomenclature (synonyms) and the different perspectives (taxonomies) from which this issue can be examined.
+The barrier is intentionally low: **you don't need to know any programming languages.** Found a smell we missed? Know a better example? Spot a typo? Each smell is just a markdown file in [`content/smells/`](./content/smells/). Edit it right on GitHub.
 
-## **How can I contribute?**
+---
 
-If you would like to contribute, you are more than welcome by opening a new discussion in the [issues](https://github.com/Luzkan/smells/issues) or directly adding changes by opening new [merge requests](https://github.com/Luzkan/smells/pulls). I suspect there might be some discussions going _(I am deeply convinced that in such a huge pile of stuff, I had to make mistakes, even just statistically speaking)_. 🐈
+<details>
+<summary><strong>For Contributors</strong></summary>
 
-This is supposed to be as easy as possible for everyone to contribute from the theoretic side - no need to know any programming languages, as the contents of the website can be managed by _markdown-like_ files in the [`content`](./content/) directory. The content is in a standard `markdown` format and the key data in the markdown file header in `YAML` format.
+### Getting Started
+
+```bash
+pnpm install
+pnpm dev          # local dev server
+pnpm build        # production build
+pnpm test         # unit + integration tests
+```
+
+> Note: supported build and release workflows assume a full `pnpm install --frozen-lockfile` before running scripts. `pnpm install --prod` before `pnpm build` is intentionally unsupported; if that requirement changes later, move all build-required packages together instead of changing `gray-matter` alone.
+
+### Project Structure
+
+```
+content/smells/     56 smell articles (Markdown + YAML frontmatter)
+src/                Astro application: layouts, components, pages, stores
+scripts/            Build-time helpers (OG images, redirect generation)
+data_scraper/       Python tool that parses content into JSON for research
+tests/              Unit, integration, and E2E tests
+```
+
+### Tech Stack
+
+- [Astro 5](https://astro.build): content-first, zero JS by default
+- [Preact](https://preactjs.com) for interactive islands (~4 KB)
+- [Tailwind CSS v4](https://tailwindcss.com) for styling
+- [Nano Stores](https://github.com/nanostores/nanostores): shared state across islands
+- TypeScript throughout
+
+</details>
+
+---
+
+## Citation
+
+Jerzyk, M., Madeyski, L. (2023). Code Smells: A Comprehensive Online Catalog and Taxonomy. In: _Studies in Systems, Decision and Control_, vol 462. Springer, Cham. https://doi.org/10.1007/978-3-031-25695-0_24
+
+```bibtex
+@inproceedings{jerzyk2023codesmells,
+  author    = {Jerzyk, Marcel and Madeyski, Lech},
+  title     = {Code Smells: A Comprehensive Online Catalog and Taxonomy},
+  booktitle = {Studies in Systems, Decision and Control},
+  volume    = {462},
+  year      = {2023},
+  publisher = {Springer, Cham},
+  doi       = {10.1007/978-3-031-25695-0_24}
+}
+```

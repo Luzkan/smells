@@ -1,13 +1,13 @@
 ---
-slug: "magic-number"
+slug: 'magic-number'
 meta:
   last_update_date: 2022-04-19
-  title: "Magic Number"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Magic Number'
+  description: 'A bare 86400 in the code — is that seconds in a day, a timeout, or a config limit? Unnamed numbers hide intent, and when the same literal appears in five places, changing one means hunting for the rest.'
   known_as:
     - Uncommunicative Number
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Lexical Abusers
   occurrence:
@@ -54,8 +54,8 @@ refactors:
   - Replace with Symbolic Constant
   - Replace with Parameter
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Remove Magic Numbers
     regarded_as:
@@ -64,11 +64,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Magic Number

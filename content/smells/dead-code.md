@@ -1,13 +1,13 @@
 ---
-slug: "dead-code"
+slug: 'dead-code'
 meta:
   last_update_date: 2022-04-19
-  title: "Dead Code"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Dead Code'
+  description: "You read past it wondering if it's safe to delete. Unreachable branches, commented-out blocks, functions that last ran in 2019. They cost nothing at runtime but tax every developer who encounters them."
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Dispensables
   occurrence:
@@ -34,8 +34,8 @@ problems:
 refactors:
   - Remove It
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Dead Code
     regarded_as:
@@ -44,11 +44,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Dead Code

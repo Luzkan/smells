@@ -1,0 +1,80 @@
+---
+import BookIcon from '../icons/BookIcon.astro';
+---
+
+<div class="engage-cite">
+  <button
+    type="button"
+    class="engage-btn engage-cite__btn"
+    aria-expanded="false"
+    aria-controls="cite-panel"
+  >
+    <BookIcon class="engage-cite__icon" size={14} strokeWidth={2} />
+    Cite
+    <span class="cite-indicator" aria-hidden="true">+</span>
+  </button>
+</div>
+
+<script>
+  import { initOnce } from '../../lib/lifecycle';
+
+  initOnce('.engage-cite', (root) => {
+    const citeButton = root.querySelector('.engage-cite__btn');
+    if (!(citeButton instanceof HTMLButtonElement)) return;
+    const citeIndicator = root.querySelector('.cite-indicator');
+    if (!(citeIndicator instanceof HTMLElement)) return;
+
+    const panelId = citeButton.getAttribute('aria-controls');
+    if (!panelId) return;
+    const citePanelId: string = panelId;
+
+    const syncPanelState = (citePanel: HTMLElement, isOpen: boolean): void => {
+      citePanel.setAttribute('aria-hidden', String(!isOpen));
+      citePanel.toggleAttribute('inert', !isOpen);
+    };
+
+    const setOpenState = (isOpen: boolean): void => {
+      citeButton.classList.toggle('engage-cite__btn--open', isOpen);
+      citeButton.setAttribute('aria-expanded', String(isOpen));
+      citeIndicator.textContent = isOpen ? '\u2212' : '+';
+    };
+
+    const initialPanel = document.getElementById(citePanelId);
+    if (initialPanel instanceof HTMLElement) {
+      const isOpen = initialPanel.getAttribute('aria-hidden') === 'false';
+      setOpenState(isOpen);
+      syncPanelState(initialPanel, isOpen);
+    } else {
+      setOpenState(false);
+    }
+
+    citeButton.addEventListener('click', () => {
+      const citePanel = document.getElementById(citePanelId);
+      if (!(citePanel instanceof HTMLElement)) return;
+      const nextOpen = citePanel.getAttribute('aria-hidden') !== 'false';
+      syncPanelState(citePanel, nextOpen);
+      setOpenState(nextOpen);
+    });
+  });
+</script>
+
+<style>
+  .engage-cite {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .engage-cite__btn--open {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .cite-indicator {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+  }
+</style>

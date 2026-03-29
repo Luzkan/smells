@@ -1,0 +1,173 @@
+---
+/**
+ * AboutSectionDots — Fixed dot-nav for the about page.
+ *
+ * Vertically centered on the right edge, scroll-spy driven.
+ * Appears after the user scrolls past the hero. Each dot
+ * scrolls to its section on click and shows a label on hover.
+ * Hidden on mobile (< 900px) and when prefers-reduced-motion
+ * is set (instant scroll instead of smooth).
+ */
+
+interface DotSection {
+  label: string;
+  target: string;
+}
+
+const sections: DotSection[] = [
+  { label: 'Origin', target: 'sec-origin' },
+  { label: 'Taxonomy', target: 'sec-taxonomy' },
+  { label: 'Inside', target: 'sec-anatomy' },
+  { label: 'Research', target: 'sec-research' },
+];
+---
+
+<nav class="section-dots" id="sectionDots" aria-label="Section navigation">
+  {
+    sections.map((sec, i) => (
+      <button
+        class:list={['section-dot', { active: i === 0 }]}
+        data-target={sec.target}
+        type="button"
+        aria-label={`Scroll to ${sec.label}`}
+      >
+        <span class="section-dot-label">{sec.label}</span>
+      </button>
+    ))
+  }
+</nav>
+
+<script>
+  import { initOnce } from '../../lib/lifecycle';
+
+  initOnce('#sectionDots', (dotsNav) => {
+    const dots = dotsNav.querySelectorAll<HTMLButtonElement>('.section-dot');
+    const sectionIds = Array.from(dots)
+      .map((d) => d.dataset.target)
+      .filter((id): id is string => id != null);
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const targetId = dot.dataset.target;
+        const target = targetId ? document.getElementById(targetId) : null;
+        if (target) {
+          target.scrollIntoView({
+            behavior: prefersReducedMotion ? 'instant' : 'smooth',
+            block: 'center',
+          });
+        }
+      });
+    });
+
+    const heroEl = document.getElementById('sec-hero');
+    let dotsVisible = false;
+
+    function updateDots() {
+      const heroBottom = heroEl ? heroEl.offsetTop + heroEl.offsetHeight : 400;
+      const shouldShow = window.scrollY > heroBottom - 100;
+
+      if (shouldShow !== dotsVisible) {
+        dotsVisible = shouldShow;
+        dotsNav.classList.toggle('visible', shouldShow);
+      }
+
+      let activeIdx = 0;
+      sections.forEach((sec, i) => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.45) activeIdx = i;
+      });
+
+      dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+    }
+
+    window.addEventListener('scroll', updateDots, { passive: true });
+    updateDots();
+
+    return () => window.removeEventListener('scroll', updateDots);
+  });
+</script>
+
+<style>
+  .section-dots {
+    position: fixed;
+    right: clamp(12px, 2vw, 24px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out);
+    pointer-events: none;
+  }
+
+  .section-dots.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .section-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s var(--ease-spring);
+    position: relative;
+    padding: 0;
+  }
+
+  .section-dot:hover {
+    background: var(--text-tertiary);
+    transform: scale(1.4);
+  }
+
+  .section-dot.active {
+    background: var(--accent);
+    transform: scale(1.3);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .section-dot-label {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .section-dot:hover .section-dot-label {
+    opacity: 1;
+  }
+
+  @media (max-width: 900px) {
+    .section-dots {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .section-dots {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+</style>

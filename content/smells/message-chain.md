@@ -1,13 +1,13 @@
 ---
-slug: "message-chain"
+slug: 'message-chain'
 meta:
   last_update_date: 2022-04-19
-  title: "Message Chain"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Message Chain'
+  description: 'object.getA().getB().getC().getD() — the caller knows the entire relationship chain, and every intermediate link becomes a dependency that breaks when any relationship changes.'
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Data Dealers
   occurrence:
@@ -57,8 +57,8 @@ refactors:
   - Extract Method
   - Move Method
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Message Chain
     regarded_as:
@@ -69,11 +69,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Message Chain

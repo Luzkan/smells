@@ -1,13 +1,13 @@
 ---
-slug: "hidden-dependencies"
+slug: 'hidden-dependencies'
 meta:
   last_update_date: 2022-04-19
-  title: "Hidden Dependencies"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Hidden Dependencies'
+  description: "The class works perfectly in the developer's environment and crashes in production. You read the stack trace, search every constructor, and find nothing. The dependency was silently resolved from the environment."
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Data Dealers
   occurrence:
@@ -45,8 +45,8 @@ problems:
 refactors:
   - Inject Dependencies
 history:
-  - author: "Steve Smith"
-    type: "parentage"
+  - author: 'Steve Smith'
+    type: 'parentage'
     named_as:
       - Hidden Dependencies
     regarded_as:
@@ -55,12 +55,12 @@ history:
       year: 2013
       authors:
         - Steve Smith
-      name: "Refactoring Fundamentals"
-      type: "course"
+      name: 'Refactoring Fundamentals'
+      type: 'course'
       href:
-        direct_url: "https://www.pluralsight.com/courses/refactoring-fundamentals"
-  - author: "Zhifeng Yu, Vaclav Rajlich"
-    type: "parentage"
+        direct_url: 'https://www.pluralsight.com/courses/refactoring-fundamentals'
+  - author: 'Zhifeng Yu, Vaclav Rajlich'
+    type: 'parentage'
     named_as:
       - Hidden Dependencies
     regarded_as:
@@ -70,15 +70,15 @@ history:
       authors:
         - Zhifeng Yu
         - Vaclav Rajlich
-      name: "Hidden Dependencies in Program Comprehension and Change Propagation"
-      type: "paper"
+      name: 'Hidden Dependencies in Program Comprehension and Change Propagation'
+      type: 'paper'
       href:
-        doi: "10.1109/WPC.2001.921739"
-        journal: "Proceedings 9th International Workshop on Program Comprehension. IWPC 2001"
-        pages: "293-299"
+        doi: '10.1109/WPC.2001.921739'
+        journal: 'Proceedings 9th International Workshop on Program Comprehension. IWPC 2001'
+        pages: '293-299'
         year: 2001
-        publisher: "IEEE"
-        direct_url: "https://ieeexplore.ieee.org/abstract/document/921739"
+        publisher: 'IEEE'
+        direct_url: 'https://ieeexplore.ieee.org/abstract/document/921739'
 ---
 
 ## Hidden Dependencies
@@ -108,6 +108,8 @@ Changing or removing data might unintentionally break code in unexpected places.
 It is hard to understand the method's behavior without looking up the functions or variables outside its scope.
 
 ### Example
+
+<div class="example-block">
 
 #### Smelly
 
@@ -139,6 +141,8 @@ class Cart:
 cart = Cart(customer)
 ```
 
+</div>
+
 ### Refactoring:
 
 - Inject Dependencies
@@ -147,6 +151,5 @@ cart = Cart(customer)
 
 ##### Sources
 
-- [[1](#sources)] -
-- [Origin] - Steve Smith, _"Refactoring Fundamentals"_ (2013)
-- [Parentage] - Zhifeng Yu, _Hidden Dependencies in Program Comprehension and Change Propagation"_ (2001)
+- [Origin] - Steve Smith, _Refactoring Fundamentals_ (2013)
+- [Parentage] - Zhifeng Yu, Vaclav Rajlich, _Hidden Dependencies in Program Comprehension and Change Propagation_ (2001)

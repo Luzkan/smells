@@ -1,13 +1,13 @@
 ---
-slug: "insider-trading"
+slug: 'insider-trading'
 meta:
   last_update_date: 2022-04-19
-  title: "Insider Trading"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Insider Trading'
+  description: "Two classes exchanging private implementation details they shouldn't have access to — the kind of under-the-table knowledge sharing that makes either one impossible to change without breaking the other."
   known_as:
     - Inappropriate Intimacy
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Data Dealers
   occurrence:
@@ -44,8 +44,8 @@ refactors:
   - Replace Inheritance with Delegation
   - Change Bidirectional Association to Unidirectional
 history:
-  - author: "Martin Fowler"
-    type: "update"
+  - author: 'Martin Fowler'
+    type: 'update'
     named_as:
       - Insider Trading
     regarded_as:
@@ -54,13 +54,13 @@ history:
       year: 2018
       authors:
         - Martin Fowler
-      name: "Refactoring: Improving the Design of Existing Code (3rd Edition)"
-      named_as: "Inappropriate Intimacy"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code (3rd Edition)'
+      named_as: 'Inappropriate Intimacy'
+      type: 'book'
       href:
-        isbn_13: "978-0134757681"
-  - author: "Martin Fowler"
-    type: "origin"
+        isbn_13: '978-0134757681'
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Inappropriate Intimacy
     regarded_as:
@@ -71,11 +71,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Insider Trading

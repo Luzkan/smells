@@ -1,13 +1,13 @@
 ---
-slug: "divergent-change"
+slug: 'divergent-change'
 meta:
   last_update_date: 2022-04-19
-  title: "Divergent Change"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Divergent Change'
+  description: 'A class that changes for database reasons on Monday, calculation reasons on Wednesday, and display reasons on Friday. Same file, different reasons, and the merge conflicts pile up every sprint.'
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Change Preventers
   occurrence:
@@ -38,8 +38,8 @@ refactors:
   - Extract Function
   - Move Function
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Data Clump
     regarded_as:
@@ -50,11 +50,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Divergent Change

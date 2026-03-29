@@ -1,13 +1,13 @@
 ---
-slug: "type-embedded-in-name"
+slug: 'type-embedded-in-name'
 meta:
   last_update_date: 2022-04-19
-  title: "Type Embedded in Name"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Type Embedded in Name'
+  description: "playerName, dateString, userList: the type is already in the annotation, and now it's in the name too. Redundant today, misleading tomorrow when the type changes but the name doesn't."
   known_as:
     - Attribute Name and Attributes Type are Opposite
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Couplers
   occurrence:
@@ -46,8 +46,8 @@ refactors:
   - Rename Method
   - Rename Variable
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Type Embedded in Name
     regarded_as:
@@ -56,11 +56,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Type Embedded in Name

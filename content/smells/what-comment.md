@@ -1,13 +1,13 @@
 ---
-slug: "what-comment"
+slug: 'what-comment'
 meta:
   last_update_date: 2022-04-19
   title: '"What" Comment'
-  cover: "/logos/logo-text-2560x1280.png"
+  description: 'Comments that narrate what the code does instead of why — a deodorant sprayed over smelly code, where extracting a well-named method would eliminate both the smell and the comment.'
   known_as:
     - Comment
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Dispensables
   occurrence:
@@ -60,33 +60,33 @@ refactors:
   - Rename Method
   - Introduce Assertion
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - '"What" Comment'
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
-  - author: "William C. Wake"
-    type: "mention"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
+  - author: 'William C. Wake'
+    type: 'mention'
     source:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
-  - author: "Martin Fowler"
-    type: "parentage"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
+  - author: 'Martin Fowler'
+    type: 'parentage'
     named_as:
       - Comments
     regarded_as:
@@ -97,11 +97,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## "What" Comment

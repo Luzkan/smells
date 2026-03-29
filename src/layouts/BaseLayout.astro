@@ -1,0 +1,291 @@
+---
+/**
+ * Root layout for all pages.
+ *
+ * Blocking inline theme script prevents FOUC. Nav and Footer use
+ * transition:persist to stay stable across View Transitions.
+ */
+import Analytics from '@vercel/analytics/astro';
+import { ClientRouter } from 'astro:transitions';
+import frauncesLatinFontUrl from '@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2';
+import jetbrainsMonoLatinFontUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2';
+import plusJakartaSansLatinFontUrl from '@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2';
+import '../styles/fonts';
+import '../styles/global.css';
+import SkipNav from '../components/shell/SkipNav.astro';
+import Nav from '../components/shell/Nav.astro';
+import AnalyticsConsent from '../components/shell/AnalyticsConsent.astro';
+import Footer from '../components/shell/Footer.astro';
+import SEOHead from '../components/seo/SEOHead.astro';
+import type { SeoMeta } from '../lib/types';
+import {
+  DARK_THEME,
+  LIGHT_THEME,
+  THEME_ATTRIBUTE,
+  THEME_COLOR_DARK,
+  THEME_COLOR_LIGHT,
+  THEME_STORAGE_KEY,
+} from '../lib/theme-contract';
+
+interface Props {
+  seo: SeoMeta;
+  preloadCodeFont?: boolean;
+}
+
+const { seo, preloadCodeFont = false } = Astro.props as Props;
+const gaTrackingId = import.meta.env.PUBLIC_GA_TRACKING_ID;
+const shouldEnableVercelAnalytics = import.meta.env.PROD && process.env.VERCEL_ENV === 'production';
+const analyticsConsentAttribute = 'data-analytics-consent';
+const analyticsConsentDenied = 'denied';
+const analyticsConsentGranted = 'granted';
+const analyticsConsentPending = 'pending';
+const analyticsConsentStorageKey = 'analytics-consent';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {/* Favicon */}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    {/* Theme init — MUST be inline and blocking to prevent FOUC, before any stylesheets */}
+    <script
+      is:inline
+      define:vars={{
+        DARK_THEME,
+        LIGHT_THEME,
+        THEME_ATTRIBUTE,
+        THEME_COLOR_DARK,
+        THEME_COLOR_LIGHT,
+        THEME_STORAGE_KEY,
+      }}
+    >
+      (function () {
+        const initialTransitionLockAttribute = 'data-initial-transitions';
+        const initialTransitionLockValue = 'locked';
+        const managedThemeColorSelector = 'meta[name="theme-color"][data-theme-color="managed"]';
+        const script = document.currentScript;
+
+        document.documentElement.setAttribute(
+          initialTransitionLockAttribute,
+          initialTransitionLockValue,
+        );
+
+        function readStoredTheme() {
+          try {
+            const saved = localStorage.getItem(THEME_STORAGE_KEY);
+            return saved === DARK_THEME || saved === LIGHT_THEME ? saved : null;
+          } catch {
+            return null;
+          }
+        }
+
+        function resolveTheme() {
+          const stored = readStoredTheme();
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? DARK_THEME
+            : LIGHT_THEME;
+        }
+
+        function ensureManagedThemeColorMeta() {
+          const existing = document.head.querySelector(managedThemeColorSelector);
+          const firstThemeColorMeta = document.head.querySelector('meta[name="theme-color"]');
+
+          if (existing instanceof HTMLMetaElement) {
+            if (
+              firstThemeColorMeta &&
+              firstThemeColorMeta !== existing &&
+              firstThemeColorMeta.parentNode
+            ) {
+              firstThemeColorMeta.parentNode.insertBefore(existing, firstThemeColorMeta);
+            }
+            return existing;
+          }
+
+          const meta = document.createElement('meta');
+          meta.setAttribute('name', 'theme-color');
+          meta.setAttribute('data-theme-color', 'managed');
+
+          if (firstThemeColorMeta?.parentNode) {
+            firstThemeColorMeta.parentNode.insertBefore(meta, firstThemeColorMeta);
+            return meta;
+          }
+
+          if (script?.parentNode) {
+            script.parentNode.insertBefore(meta, script);
+            return meta;
+          }
+
+          document.head.append(meta);
+          return meta;
+        }
+
+        function getThemeColor(theme) {
+          return theme === DARK_THEME ? THEME_COLOR_DARK : THEME_COLOR_LIGHT;
+        }
+
+        function syncThemeColor(theme) {
+          const meta = ensureManagedThemeColorMeta();
+          meta.setAttribute('content', getThemeColor(theme));
+        }
+
+        function applyThemeToRoot(root, theme) {
+          root.setAttribute(THEME_ATTRIBUTE, theme);
+          root.style.backgroundColor = getThemeColor(theme);
+          root.style.colorScheme = theme;
+        }
+
+        function applyTheme() {
+          const resolved = resolveTheme();
+          applyThemeToRoot(document.documentElement, resolved);
+          syncThemeColor(resolved);
+        }
+
+        function releaseInitialTransitions() {
+          if (!document.documentElement.hasAttribute(initialTransitionLockAttribute)) return;
+
+          document.documentElement.removeAttribute(initialTransitionLockAttribute);
+        }
+
+        applyTheme();
+        document.addEventListener('astro:before-swap', function (event) {
+          const newRoot = event.newDocument?.documentElement;
+          if (!newRoot) return;
+
+          const resolved = resolveTheme();
+          applyThemeToRoot(newRoot, resolved);
+          newRoot.setAttribute(initialTransitionLockAttribute, initialTransitionLockValue);
+
+          const themeTransitions = document.documentElement.getAttribute('data-theme-transitions');
+          if (themeTransitions) {
+            newRoot.setAttribute('data-theme-transitions', themeTransitions);
+          } else {
+            newRoot.removeAttribute('data-theme-transitions');
+          }
+        });
+        if (document.readyState === 'complete') {
+          window.requestAnimationFrame(releaseInitialTransitions);
+        } else {
+          window.addEventListener('load', releaseInitialTransitions, { once: true });
+        }
+        // Re-apply after head swap, then again after the new page finishes loading.
+        document.addEventListener('astro:after-swap', applyTheme);
+        document.addEventListener('astro:page-load', releaseInitialTransitions);
+        document.addEventListener('astro:page-load', applyTheme);
+      })();
+    </script>
+    <meta
+      name="theme-color"
+      content="#FAF9F6"
+      media="(prefers-color-scheme: light)"
+      data-theme-color-fallback="light"
+    />
+    <meta
+      name="theme-color"
+      content="#171412"
+      media="(prefers-color-scheme: dark)"
+      data-theme-color-fallback="dark"
+    />
+
+    <link rel="preload" href={frauncesLatinFontUrl} as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href={plusJakartaSansLatinFontUrl}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {
+      preloadCodeFont && (
+        <link
+          rel="preload"
+          href={jetbrainsMonoLatinFontUrl}
+          as="font"
+          type="font/woff2"
+          crossorigin
+        />
+      )
+    }
+
+    {/* Keep the tag unconditional for Astro/Prettier, but gate all consent work on GA ID. */}
+    <script
+      is:inline
+      define:vars={{
+        HAS_GA_TRACKING_ID: Boolean(gaTrackingId),
+        ANALYTICS_CONSENT_ATTRIBUTE: analyticsConsentAttribute,
+        ANALYTICS_CONSENT_DENIED: analyticsConsentDenied,
+        ANALYTICS_CONSENT_GRANTED: analyticsConsentGranted,
+        ANALYTICS_CONSENT_PENDING: analyticsConsentPending,
+        ANALYTICS_CONSENT_STORAGE_KEY: analyticsConsentStorageKey,
+      }}
+    >
+      (function () {
+        if (!HAS_GA_TRACKING_ID) return;
+
+        function readStoredConsent() {
+          try {
+            const stored = localStorage.getItem(ANALYTICS_CONSENT_STORAGE_KEY);
+            return stored === ANALYTICS_CONSENT_GRANTED || stored === ANALYTICS_CONSENT_DENIED
+              ? stored
+              : ANALYTICS_CONSENT_PENDING;
+          } catch {
+            return ANALYTICS_CONSENT_PENDING;
+          }
+        }
+
+        document.documentElement.setAttribute(ANALYTICS_CONSENT_ATTRIBUTE, readStoredConsent());
+      })();
+    </script>
+
+    <script>
+      import { initAnalyticsBridge } from '../lib/analytics/bridge';
+      initAnalyticsBridge();
+    </script>
+
+    {
+      /*
+      GA4 Analytics consent bootstrap — IMPORTANT View Transition constraint:
+      Inline scripts in the head run ONCE and persist across VT navigations.
+      Inline scripts in the body (components) re-run on each swap.
+      GA4 bootstrap/listener scripts MUST stay in head — moving them to body
+      would cause duplicate listeners and duplicate page_view events.
+    */
+    }
+    {
+      gaTrackingId && (
+        <script>
+          import {initAnalyticsConsentManager} from '../lib/analytics/consent';
+          initAnalyticsConsentManager();
+        </script>
+      )
+    }
+
+    {
+      /*
+      Vercel Web Analytics — use the Astro integration for route support with
+      View Transitions, and keep it in <head> so it behaves like a singleton.
+    */
+    }
+    {shouldEnableVercelAnalytics && <Analytics mode="production" />}
+
+    <SEOHead seo={seo} />
+    <link rel="alternate" type="application/rss+xml" title="Code Smells Catalog" href="/rss.xml" />
+
+    <ClientRouter />
+  </head>
+  <body>
+    <SkipNav />
+    <Nav />
+    <main id="main-content">
+      <slot />
+    </main>
+    {gaTrackingId && <AnalyticsConsent />}
+    <Footer showAnalyticsPreferenceControl={Boolean(gaTrackingId)} />
+  </body>
+</html>

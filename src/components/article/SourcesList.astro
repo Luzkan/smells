@@ -1,0 +1,164 @@
+---
+import type { HistoryEntry } from '../../lib/content/smell-utils';
+
+interface Props {
+  history: HistoryEntry[];
+}
+
+const { history } = Astro.props;
+
+function presentSource(entry: HistoryEntry) {
+  const href = entry.source.href;
+
+  let url: string | undefined;
+  if (href) {
+    if (href.direct_url && !href.direct_url.includes('TBA')) url = href.direct_url;
+    else if (href.isbn_13)
+      url = `https://www.google.com/search?q=ISBN+${href.isbn_13.replace(/-/g, '')}`;
+    else if (href.isbn_10) url = `https://www.google.com/search?q=ISBN+${href.isbn_10}`;
+  }
+
+  return {
+    url,
+    badge: entry.type ? entry.type.toUpperCase() : 'SOURCE',
+    isbn: href?.isbn_13 || href?.isbn_10 || undefined,
+  };
+}
+---
+
+{
+  history.length > 0 && (
+    <section class="sources-list">
+      <h3 id="sources" class="sources-list__title">
+        Sources
+      </h3>
+      <ul class="sources-list__items">
+        {history.map((entry) => {
+          const { url, badge, isbn } = presentSource(entry);
+          const origin = entry.type === 'origin';
+          return (
+            <li class="source-item">
+              <span class:list={['source-badge', { 'source-badge--origin': origin }]}>{badge}</span>
+              <div class="source-item__details">
+                <div class="source-item__author">{entry.author}</div>
+                <div class="source-item__title-row">
+                  {url ? (
+                    <a
+                      href={url}
+                      class="source-item__name"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {entry.source.name}
+                    </a>
+                  ) : (
+                    <span class="source-item__name">{entry.source.name}</span>
+                  )}
+                </div>
+                <div class="source-item__year">
+                  {entry.source.year}
+                  {isbn && <Fragment> &middot; ISBN {isbn}</Fragment>}
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .sources-list {
+    margin: 2rem 0;
+  }
+
+  .sources-list__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 0 0 1rem;
+  }
+
+  .sources-list__items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .source-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .source-item:last-child {
+    border-bottom: none;
+  }
+
+  .source-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--surface-raised);
+    color: var(--text-tertiary);
+    width: 88px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .source-badge--origin {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .source-item__details {
+    min-width: 0;
+  }
+
+  .source-item__author {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: var(--text-sm);
+  }
+
+  .source-item__title-row {
+    margin-top: 2px;
+  }
+
+  .source-item__name {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: var(--text-sm);
+  }
+
+  a.source-item__name {
+    color: var(--accent);
+    font-style: italic;
+    text-decoration: none;
+    transition: color var(--duration-fast);
+  }
+
+  a.source-item__name:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+  }
+
+  .source-item__year {
+    color: var(--text-tertiary);
+    font-size: var(--text-xs);
+    margin-top: 2px;
+  }
+</style>
