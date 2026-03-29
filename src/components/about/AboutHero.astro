@@ -1,0 +1,374 @@
+---
+/**
+ * About page hero. Count-up stats are IntersectionObserver-driven
+ * (no Preact island needed).
+ */
+import BookIcon from '../icons/BookIcon.astro';
+import { SPRINGER_PAPER_URL, THESIS_URL } from '../../lib/constants';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  allSmells: CollectionEntry<'smells'>[];
+}
+
+const { allSmells } = Astro.props;
+const sortedSmells = [...allSmells].sort((a, b) => a.data.slug.localeCompare(b.data.slug));
+const epochDay = Math.floor(Date.now() / 86_400_000);
+const dailySmell = sortedSmells[epochDay % sortedSmells.length];
+---
+
+<section class="about-hero" id="sec-hero">
+  <svg
+    class="about-hero__constellation"
+    viewBox="0 0 800 400"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+  >
+    <line x1="120" y1="80" x2="300" y2="150"></line>
+    <line x1="300" y1="150" x2="480" y2="100"></line>
+    <line x1="480" y1="100" x2="650" y2="180"></line>
+    <line x1="300" y1="150" x2="350" y2="280"></line>
+    <line x1="480" y1="100" x2="520" y2="240"></line>
+    <line x1="150" y1="300" x2="300" y2="150"></line>
+    <line x1="650" y1="180" x2="700" y2="320"></line>
+    <circle cx="120" cy="80" r="3"></circle>
+    <circle cx="300" cy="150" r="4"></circle>
+    <circle cx="480" cy="100" r="3"></circle>
+    <circle cx="650" cy="180" r="3"></circle>
+    <circle cx="350" cy="280" r="2.5"></circle>
+    <circle cx="520" cy="240" r="2.5"></circle>
+    <circle cx="150" cy="300" r="2"></circle>
+    <circle cx="700" cy="320" r="2"></circle>
+  </svg>
+
+  <h1>The catalog that <em>names</em><br />what&rsquo;s wrong with your code</h1>
+
+  <p class="about-hero__subtitle">
+    Built for the developer who knows something&rsquo;s wrong with the code but can&rsquo;t name it
+    yet. {allSmells.length} smells, five dimensions, every relationship mapped.
+  </p>
+
+  <div class="about-hero__authority">
+    <a class="about-hero__badge" href={SPRINGER_PAPER_URL} target="_blank" rel="noopener">
+      <BookIcon class="about-hero__badge-icon" size={12} strokeWidth={2} />
+      Published in Springer Nature
+    </a>
+  </div>
+
+  <div class="about-hero__cta">
+    <a href="/" class="cta-button">Explore the Catalog &rarr;</a>
+    <a href={THESIS_URL} class="ghost-button" target="_blank" rel="noopener"> Read the Thesis </a>
+  </div>
+
+  <div class="about-hero__stats">
+    <div class="about-hero__stat">
+      <div class="about-hero__stat-num" data-target={String(allSmells.length)}>0</div>
+      <div class="about-hero__stat-label">Code Smells</div>
+    </div>
+    <div class="about-hero__stat">
+      <div class="about-hero__stat-num" data-target="5">0</div>
+      <div class="about-hero__stat-label">Dimensions</div>
+    </div>
+    <div class="about-hero__stat">
+      <div class="about-hero__stat-num" data-target="40" data-suffix="+">0</div>
+      <div class="about-hero__stat-label">Sources</div>
+    </div>
+    <div class="about-hero__stat">
+      <div class="about-hero__stat-num" data-prefix="#" data-target="1">0</div>
+      <div class="about-hero__stat-label">on Google</div>
+    </div>
+  </div>
+
+  <div class="about-hero__daily">
+    Today&rsquo;s smell:
+    <a href={`/smells/${dailySmell.data.slug}`}>{dailySmell.data.meta.title} &rarr;</a>
+  </div>
+</section>
+
+<script>
+  import { initOnce } from '../../lib/lifecycle';
+  import { animateCountUp } from '../../lib/count-up';
+  import { observeReveal } from '../../lib/observe-reveal';
+
+  initOnce('.about-hero__stats', (stats) => {
+    let cancelCountUp = () => {};
+
+    const observer = observeReveal(
+      stats,
+      () => {
+        cancelCountUp = animateCountUp(stats, { baseDelay: 200, stagger: 120 });
+      },
+      { threshold: 0.3 },
+    );
+
+    return () => {
+      observer.disconnect();
+      cancelCountUp();
+    };
+  });
+</script>
+
+<style>
+  .about-hero {
+    text-align: center;
+    padding: clamp(80px, 12vw, 160px) 32px clamp(72px, 10vw, 140px);
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: var(--nav-height);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 100%;
+    background: radial-gradient(
+      ellipse at 50% 30%,
+      color-mix(in srgb, var(--accent) 4%, transparent) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  :global([data-theme='dark']) .about-hero::before {
+    background: radial-gradient(
+      ellipse at 50% 30%,
+      color-mix(in srgb, var(--accent) 6%, transparent) 0%,
+      transparent 70%
+    );
+  }
+
+  /* Constellation — decorative node graph */
+  .about-hero__constellation {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+    opacity: 0.35;
+  }
+
+  :global([data-theme='dark']) .about-hero__constellation {
+    opacity: 0.18;
+  }
+
+  .about-hero__constellation :global(circle) {
+    fill: var(--accent);
+    opacity: 0;
+    animation: constellationNodeFade 0.5s var(--ease-out) forwards;
+  }
+
+  .about-hero__constellation :global(circle:nth-child(n + 9)) {
+    animation-delay: 1.8s;
+  }
+  .about-hero__constellation :global(circle:nth-child(10)) {
+    animation-delay: 2s;
+  }
+  .about-hero__constellation :global(circle:nth-child(11)) {
+    animation-delay: 2.1s;
+  }
+  .about-hero__constellation :global(circle:nth-child(12)) {
+    animation-delay: 2.2s;
+  }
+  .about-hero__constellation :global(circle:nth-child(13)) {
+    animation-delay: 2.3s;
+  }
+  .about-hero__constellation :global(circle:nth-child(14)) {
+    animation-delay: 2.4s;
+  }
+  .about-hero__constellation :global(circle:nth-child(15)) {
+    animation-delay: 2.5s;
+  }
+  .about-hero__constellation :global(circle:nth-child(16)) {
+    animation-delay: 2.6s;
+  }
+
+  .about-hero__constellation :global(line) {
+    stroke: var(--accent);
+    stroke-width: 0.5;
+    opacity: 0.5;
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: constellationDraw 2s var(--ease-out) 0.8s forwards;
+  }
+
+  @keyframes constellationDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes constellationNodeFade {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Title */
+  .about-hero h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-bottom: 20px;
+    font-variation-settings: 'opsz' 72;
+    text-wrap: balance;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.08s both;
+  }
+
+  .about-hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 300;
+  }
+
+  /* Subtitle */
+  .about-hero__subtitle {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.75;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    text-wrap: pretty;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.18s both;
+  }
+
+  /* Authority badge row */
+  .about-hero__authority {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--text-tertiary);
+    margin-top: 14px;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.24s both;
+    letter-spacing: 0.02em;
+  }
+
+  .about-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--duration-fast) var(--ease-smooth);
+  }
+
+  .about-hero__badge:hover {
+    border-color: var(--accent);
+    color: var(--accent-hover);
+  }
+
+  .about-hero__badge-icon {
+    flex-shrink: 0;
+  }
+
+  /* CTA buttons */
+  .about-hero__cta {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.28s both;
+  }
+
+  /* Stats row */
+  .about-hero__stats {
+    display: flex;
+    justify-content: center;
+    gap: clamp(24px, 4vw, 56px);
+    margin-top: clamp(28px, 4vw, 44px);
+    animation: heroBlurIn 0.9s var(--ease-out) 0.34s both;
+    flex-wrap: wrap;
+  }
+
+  .about-hero__stat {
+    text-align: center;
+    min-width: 80px;
+  }
+
+  .about-hero__stat-num {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    color: var(--text-primary);
+    line-height: 1.2;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 48;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  .about-hero__stat-label {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+
+  /* Daily smell nudge */
+  .about-hero__daily {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    margin-top: 20px;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.42s both;
+    letter-spacing: 0.02em;
+  }
+
+  .about-hero__daily a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s;
+  }
+
+  .about-hero__daily a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .about-hero {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .about-hero__cta {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .about-hero__cta :global(.ghost-button) {
+      min-height: 44px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-hero__constellation :global(circle),
+    .about-hero__constellation :global(line) {
+      animation: none;
+      opacity: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

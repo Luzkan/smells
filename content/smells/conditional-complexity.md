@@ -1,16 +1,16 @@
 ---
-slug: "conditional-complexity"
+slug: 'conditional-complexity'
 meta:
   last_update_date: 2022-04-19
-  title: "Conditional Complexity"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Conditional Complexity'
+  description: "The if/else chain that grows a new branch with every feature. First it's readable. Then it's manageable. Then it's a 200-line switch statement, and suddenly the polymorphism refactor everyone avoided is the only option left."
   known_as:
     - Repeated Switching
     - Switch Statement
     - Conditional Complexity
     - Prefer Polymorphism to if/else or switch/case
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Object Oriented Abusers
   occurrence:
@@ -66,8 +66,8 @@ refactors:
   - Use Null Object
   - Use Functional Programming Based Solution
 history:
-  - author: "Steve Smith"
-    type: "origin"
+  - author: 'Steve Smith'
+    type: 'origin'
     named_as:
       - Conditional Complexity
     regarded_as:
@@ -76,12 +76,12 @@ history:
       year: 2013
       authors:
         - Steve Smith
-      name: "Refactoring Fundamentals"
-      type: "course"
+      name: 'Refactoring Fundamentals'
+      type: 'course'
       href:
-        direct_url: "https://www.pluralsight.com/courses/refactoring-fundamentals"
-  - author: "Martin Fowler"
-    type: "update"
+        direct_url: 'https://www.pluralsight.com/courses/refactoring-fundamentals'
+  - author: 'Martin Fowler'
+    type: 'update'
     named_as:
       - Repeated Switching
     regarded_as:
@@ -90,12 +90,12 @@ history:
       year: 2018
       authors:
         - Martin Fowler
-      name: "Refactoring: Improving the Design of Existing Code (3rd Edition)"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code (3rd Edition)'
+      type: 'book'
       href:
-        isbn_13: "978-0134757681"
-  - author: "Martin Fowler"
-    type: "parentage"
+        isbn_13: '978-0134757681'
+  - author: 'Martin Fowler'
+    type: 'parentage'
     named_as:
       - Switch Statement
     regarded_as:
@@ -106,11 +106,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Conditional Complexity

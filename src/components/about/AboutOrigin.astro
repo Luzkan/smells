@@ -1,0 +1,187 @@
+---
+/**
+ * "Why This Catalog Exists" section. Relies on shared section styles
+ * from about.astro.
+ */
+import { SPRINGER_PAPER_URL, THESIS_URL } from '../../lib/constants';
+---
+
+<div class="about-section reveal-left" id="sec-origin">
+  <div class="section-label">Origin</div>
+  <h2>Why This Catalog Exists</h2>
+
+  <p>
+    I spent the better part of a year reading every academic paper I could find on code smells. What
+    I found was frustrating:
+  </p>
+
+  <ul class="origin-struck">
+    <li>
+      <span class="origin-struck__text">
+        <strong>Papers</strong> buried them in academic prose nobody had time to parse.
+      </span>
+    </li>
+    <li>
+      <span class="origin-struck__text">
+        <strong>Books</strong> scattered them across chapters with no unified view.
+      </span>
+    </li>
+    <li>
+      <span class="origin-struck__text">
+        <strong>Blog posts</strong> covered the same handful &mdash; always Long Method, always God Class.
+      </span>
+    </li>
+  </ul>
+
+  <p class="origin-verdict">Nowhere had all of them in one place.</p>
+
+  <p class="origin-pivot">So I built one.</p>
+
+  <p>
+    I turned it into my <a href={THESIS_URL} target="_blank" rel="noopener"
+      ><strong>Master&rsquo;s thesis</strong></a
+    > at Wroclaw University of Science and Technology, published alongside a <a
+      href={SPRINGER_PAPER_URL}
+      target="_blank"
+      rel="noopener"><strong>Springer Nature research paper</strong></a
+    >. One goal:
+    <em class="origin-goal">read everything, classify everything, and make it all browsable.</em>
+  </p>
+
+  <p>
+    Every entry has a paper trail. Who named it, when, where. Which smells it causes and which cause
+    it. What it breaks, and how to fix it.
+  </p>
+
+  <p class="origin-bridge">
+    What I wished existed &mdash; five ways to look at every smell, and a map of how they&rsquo;re
+    all connected.
+  </p>
+</div>
+
+<style>
+  /* Struck manuscript — each frustration has a hand-drawn strikethrough */
+  .origin-struck {
+    margin: 24px 0 20px;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .origin-struck li {
+    position: relative;
+    line-height: 1.65;
+    padding-left: 18px;
+  }
+
+  .origin-struck li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 11px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.45;
+  }
+
+  .origin-struck__text {
+    font-size: var(--text-lg);
+    color: var(--text-tertiary);
+    position: relative;
+    display: inline;
+  }
+
+  .origin-struck__text::after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    right: -2px;
+    top: 52%;
+    height: 1.5px;
+    background: var(--accent);
+    opacity: 0.45;
+    transform: rotate(-0.4deg);
+    border-radius: 1px;
+    pointer-events: none;
+  }
+
+  .origin-struck li:nth-child(2) .origin-struck__text::after {
+    transform: rotate(0.3deg);
+    top: 54%;
+  }
+
+  .origin-struck li:nth-child(3) .origin-struck__text::after {
+    transform: rotate(-0.2deg);
+    top: 50%;
+  }
+
+  .origin-struck :global(strong) {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  /* Verdict — quiet, factual */
+  .origin-verdict {
+    color: var(--text-tertiary);
+    font-size: var(--text-base);
+    letter-spacing: 0.01em;
+    margin-top: -4px;
+  }
+
+  /* Pivot — the turn; clean, no strikethrough, accent color */
+  .origin-pivot {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: var(--accent);
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-variation-settings: 'opsz' 28;
+    letter-spacing: -0.01em;
+  }
+
+  /* Inline links — match article-prose pattern */
+  #sec-origin a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    text-underline-offset: 3px;
+    transition:
+      color var(--duration-fast),
+      text-decoration-color var(--duration-fast);
+  }
+
+  #sec-origin a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: var(--accent-hover);
+  }
+
+  /* Goal — subtle inline emphasis */
+  .origin-goal {
+    font-style: italic;
+    color: var(--text-primary);
+  }
+
+  /* Bridge — earned silence via whitespace, then display italic */
+  .origin-bridge {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 350;
+    font-style: italic;
+    color: var(--text-primary);
+    margin-top: 40px;
+    font-variation-settings: 'opsz' 24;
+    letter-spacing: -0.005em;
+    line-height: 1.7;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .origin-struck__text::after {
+      transform: none;
+    }
+  }
+</style>

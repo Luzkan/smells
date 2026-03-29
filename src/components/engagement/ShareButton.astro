@@ -1,0 +1,247 @@
+---
+import Icon from '../icons/Icon.astro';
+import { ICON_SHARE, ICON_LINK } from '../../lib/icon-paths';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const shareDropdownId = `share-dropdown-${slug}`;
+---
+
+<div class="engage-share" data-slug={slug}>
+  <button
+    type="button"
+    class="engage-btn engage-share__btn"
+    title="Share this smell"
+    aria-label="Share"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls={shareDropdownId}
+  >
+    <Icon icon={ICON_SHARE} size={14} />
+    Share
+  </button>
+  <div class="share-dropdown" id={shareDropdownId} aria-hidden="true" inert>
+    <button class="share-dropdown__item" data-action="copy">
+      <Icon icon={ICON_LINK} size={15} />
+      Copy link
+    </button>
+    <button class="share-dropdown__item" data-action="twitter">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+        ><path
+          d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+        ></path></svg
+      >
+      Share on X
+    </button>
+    <button class="share-dropdown__item" data-action="linkedin">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+        ><path
+          d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.728-2.004 1.431-.103.249-.129.597-.129.946v5.428h-3.553s.05-8.8 0-9.714h3.553v1.373c.43-.664 1.199-1.61 2.92-1.61 2.135 0 3.733 1.39 3.733 4.384v5.567zM5.337 8.855c-1.144 0-1.915-.758-1.915-1.706 0-.955.765-1.708 1.959-1.708 1.188 0 1.914.75 1.939 1.708 0 .948-.751 1.706-1.983 1.706zm1.581 11.597H3.715V9.538h3.203v10.914zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"
+        ></path></svg
+      >
+      Share on LinkedIn
+    </button>
+  </div>
+</div>
+
+<script>
+  import { trackEvent } from '../../lib/analytics/tracker';
+  import { copyToClipboardWithFeedback } from '../../lib/copy-code';
+  import { initOnce } from '../../lib/lifecycle';
+
+  initOnce('.engage-share', (root) => {
+    const slug = root.getAttribute('data-slug') || '';
+    const shareButton = root.querySelector('.engage-share__btn');
+    const shareDropdown = root.querySelector('.share-dropdown');
+    if (!(shareButton instanceof HTMLButtonElement) || !(shareDropdown instanceof HTMLElement))
+      return;
+
+    const shareItems = Array.from(root.querySelectorAll('.share-dropdown__item')).filter(
+      (item): item is HTMLButtonElement => item instanceof HTMLButtonElement,
+    );
+
+    const setOpenState = (isOpen: boolean, focusFirstItem = false): void => {
+      shareDropdown.classList.toggle('share-dropdown--open', isOpen);
+      shareButton.setAttribute('aria-expanded', String(isOpen));
+      shareDropdown.setAttribute('aria-hidden', String(!isOpen));
+      shareDropdown.toggleAttribute('inert', !isOpen);
+      if (isOpen && focusFirstItem) {
+        shareItems[0]?.focus();
+      }
+    };
+
+    const isOpen = (): boolean => {
+      return shareDropdown.classList.contains('share-dropdown--open');
+    };
+
+    const closeAllShareDropdowns = (): void => {
+      document
+        .querySelectorAll('.engage-share .share-dropdown.share-dropdown--open')
+        .forEach((menu) => {
+          menu.classList.remove('share-dropdown--open');
+          if (menu instanceof HTMLElement) {
+            menu.setAttribute('aria-hidden', 'true');
+            menu.setAttribute('inert', '');
+          }
+          const menuRoot = menu.closest('.engage-share');
+          const menuButton = menuRoot?.querySelector('.engage-share__btn');
+          if (menuButton instanceof HTMLButtonElement) {
+            menuButton.setAttribute('aria-expanded', 'false');
+          }
+        });
+    };
+
+    const onShareClick = (event: Event): void => {
+      event.stopPropagation();
+      const nextState = !isOpen();
+      if (nextState) {
+        closeAllShareDropdowns();
+      }
+      setOpenState(nextState);
+    };
+    shareButton.addEventListener('click', onShareClick);
+
+    const onShareKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        if (!isOpen()) {
+          closeAllShareDropdowns();
+          setOpenState(true, true);
+          return;
+        }
+        shareItems[0]?.focus();
+      }
+    };
+    shareButton.addEventListener('keydown', onShareKeyDown);
+
+    const onDocumentKeyDown = (event: KeyboardEvent): void => {
+      if (event.key !== 'Escape' || !isOpen()) return;
+      event.preventDefault();
+      setOpenState(false);
+      shareButton.focus();
+    };
+    document.addEventListener('keydown', onDocumentKeyDown);
+
+    const itemHandlers = new Map<HTMLButtonElement, () => Promise<void>>();
+    shareItems.forEach((item) => {
+      const handler = async () => {
+        const action = item.getAttribute('data-action');
+        if (action !== 'copy' && action !== 'twitter' && action !== 'linkedin') return;
+
+        const pageUrl = window.location.href;
+        const pageTitle = document.title;
+
+        if (action === 'copy') {
+          await copyToClipboardWithFeedback(pageUrl, shareButton, {
+            feedbackClass: 'engage-share__btn--copied',
+          });
+        } else if (action === 'twitter') {
+          window.open(
+            `https://x.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`,
+            '_blank',
+          );
+        } else {
+          window.open(
+            `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`,
+            '_blank',
+          );
+        }
+
+        trackEvent({ name: 'share', params: { method: action, smell: slug } });
+        setOpenState(false);
+      };
+      itemHandlers.set(item, handler);
+      item.addEventListener('click', handler);
+    });
+
+    document.addEventListener('click', closeAllShareDropdowns);
+    return () => {
+      shareButton.removeEventListener('click', onShareClick);
+      shareButton.removeEventListener('keydown', onShareKeyDown);
+      itemHandlers.forEach((handler, item) => {
+        item.removeEventListener('click', handler);
+      });
+      document.removeEventListener('click', closeAllShareDropdowns);
+      document.removeEventListener('keydown', onDocumentKeyDown);
+    };
+  });
+</script>
+
+<style>
+  .engage-share {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .engage-share__btn--copied {
+    color: var(--green);
+    border-color: var(--green);
+  }
+
+  .share-dropdown {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px) scale(0.96);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 6px;
+    min-width: 200px;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s var(--ease-out);
+  }
+
+  .share-dropdown--open {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .share-dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    font-family: inherit;
+    transition: all var(--duration-fast);
+    text-align: left;
+  }
+
+  .share-dropdown__item:hover {
+    background: var(--surface-raised);
+    color: var(--text-primary);
+  }
+
+  /* :global() needed — SVG rendered by child Icon.astro component */
+  .share-dropdown__item:hover :global(svg) {
+    color: var(--accent);
+  }
+
+  .share-dropdown__item :global(svg) {
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .share-dropdown {
+      bottom: auto;
+      top: calc(100% + 8px);
+    }
+  }
+</style>

@@ -1,0 +1,88 @@
+name: E2E Smoke on Preview
+
+on:
+  deployment_status:
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '10'
+
+jobs:
+  e2e-smoke:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      (
+        contains(fromJSON('["preview","Preview"]'), github.event.deployment.environment) ||
+        contains(fromJSON('["preview","Preview"]'), github.event.deployment_status.environment)
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Resolve preview URL
+        shell: bash
+        env:
+          DEPLOYMENT_ENVIRONMENT: ${{ github.event.deployment.environment }}
+          STATUS_ENVIRONMENT: ${{ github.event.deployment_status.environment }}
+          ENVIRONMENT_URL: ${{ github.event.deployment_status.environment_url }}
+          TARGET_URL: ${{ github.event.deployment_status.target_url }}
+        run: |
+          echo "deployment.environment=${DEPLOYMENT_ENVIRONMENT}"
+          echo "deployment_status.environment=${STATUS_ENVIRONMENT}"
+
+          base_url="${ENVIRONMENT_URL:-$TARGET_URL}"
+
+          if [[ -z "$base_url" ]]; then
+            echo "No preview URL found in deployment_status.environment_url or deployment_status.target_url" >&2
+            exit 1
+          fi
+
+          case "$base_url" in
+            http://*|https://*)
+              ;;
+            *)
+              echo "Preview URL must be absolute, got: $base_url" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "BASE_URL=$base_url" >> "$GITHUB_ENV"
+
+      - name: Wait for preview readiness
+        shell: bash
+        run: |
+          for attempt in {1..10}; do
+            if curl --fail --silent --show-error --location --max-time 10 --output /dev/null "$BASE_URL"; then
+              exit 0
+            fi
+
+            echo "Preview not ready yet (attempt ${attempt}/10)"
+            sleep 3
+          done
+
+          echo "Preview URL did not become ready: $BASE_URL" >&2
+          exit 1
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run smoke E2E against preview
+        run: pnpm test:e2e --project=chromium --grep @smoke
+        env:
+          CI: true

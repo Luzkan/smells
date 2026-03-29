@@ -1,0 +1,1337 @@
+---
+/**
+ * Site-wide footer (transition:persist). Random Smell link is resolved at
+ * build time. All interactivity via inline script — no JS island.
+ */
+import { getCollection } from 'astro:content';
+import BookIcon from '../icons/BookIcon.astro';
+import ExternalLinkIcon from '../icons/ExternalLinkIcon.astro';
+import GridIcon from '../icons/GridIcon.astro';
+import ShuffleIcon from '../icons/ShuffleIcon.astro';
+import ChevronDownIcon from '../icons/ChevronDownIcon.astro';
+import Icon from '../icons/Icon.astro';
+import { ICON_COPY, ICON_CODE_BRACKETS } from '../../lib/icon-paths';
+import Logo from './Logo.astro';
+import { COPY_FEEDBACK_MS } from '../../lib/copy-code';
+import {
+  AUTHOR_PROFILE_URL,
+  SPRINGER_PAPER_URL,
+  CITATION,
+  GITHUB_ISSUES_URL,
+  GITHUB_REPO_URL,
+} from '../../lib/constants';
+
+const allSmells = await getCollection('smells');
+const randomIndex = Math.floor(Math.random() * allSmells.length);
+const randomSmellSlug = allSmells[randomIndex].data.slug;
+const currentYear = new Date().getFullYear();
+const showAnalyticsPreferenceControl = Astro.props.showAnalyticsPreferenceControl ?? false;
+
+const mobileAccordions = [
+  {
+    title: 'Navigate',
+    links: [
+      { label: 'About', href: '/about', external: false },
+      {
+        label: 'Random Smell',
+        href: `/smells/${randomSmellSlug}`,
+        external: false,
+        icon: 'shuffle',
+      },
+      { label: 'RSS', href: '/rss.xml', external: false },
+    ],
+  },
+  {
+    title: 'Connect',
+    links: [
+      { label: 'Report Issue', href: GITHUB_ISSUES_URL, external: true },
+      { label: 'Marcel Jerzyk', href: AUTHOR_PROFILE_URL, external: true },
+      { label: 'GitHub', href: GITHUB_REPO_URL, external: true },
+    ],
+  },
+];
+---
+
+<footer class="site-footer" role="contentinfo" transition:persist>
+  <div class="footer-inner">
+    {/* ===== DESKTOP: Editorial layout ===== */}
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <div class="footer-header">
+        <div class="footer-brand">
+          <Logo class="footer-logo" ariaLabel="Code Smells Catalog — Home" />
+          <p class="footer-desc">
+            {allSmells.length} code smells, cataloged and cross-referenced. Based on peer-reviewed research
+            published by Springer Nature.
+          </p>
+        </div>
+        <div class="footer-badges">
+          <a class="trust-item" href="/" title={`Browse all ${allSmells.length} smells`}>
+            <div class="trust-icon">
+              <GridIcon class="trust-icon-svg" size={15} strokeWidth={1.8} />
+            </div>
+            <div class="trust-label">
+              <strong>{allSmells.length} Smells</strong>
+              <span>Classified across 10 categories</span>
+            </div>
+          </a>
+          <a
+            class="trust-item trust-item--accent"
+            href={SPRINGER_PAPER_URL}
+            target="_blank"
+            rel="noopener"
+            title="Read the research paper"
+          >
+            <div class="trust-icon">
+              <BookIcon class="trust-icon-svg" size={15} strokeWidth={1.8} />
+            </div>
+            <div class="trust-label">
+              <strong>Published in Springer Nature</strong>
+              <span>Peer-reviewed research</span>
+            </div>
+          </a>
+          <a
+            class="trust-item"
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="nofollow noopener"
+            title="View source on GitHub"
+          >
+            <div class="trust-icon">
+              <Icon icon={ICON_CODE_BRACKETS} class="trust-icon-svg" size={15} strokeWidth={1.8} />
+            </div>
+            <div class="trust-label">
+              <strong>Free &amp; Open Source</strong>
+              <span>MIT License</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-col footer-col--cite">
+          <div class="footer-cite-label">
+            <BookIcon class="footer-cite-label-icon" size={12} strokeWidth={2} />
+            Cite This Research
+          </div>
+          <cite class="footer-cite-text" id="citeTextEl" set:html={CITATION.apaHtml} />
+          <div class="footer-cite-actions">
+            <button
+              type="button"
+              class="footer-cite-btn"
+              id="citeCopyBtn"
+              title="Copy citation text"
+            >
+              <Icon icon={ICON_COPY} size={10} strokeWidth={2.5} />
+              <span id="citeCopyLabel">Copy</span>
+            </button>
+            <span class="footer-cite-sep"></span>
+            <button
+              type="button"
+              class="footer-cite-btn"
+              id="citeFormatBtn"
+              title="Switch to BibTeX format"
+            >
+              BibTeX
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h3 class="footer-col-title">Navigate</h3>
+          <ul class="footer-col-links">
+            <li><a href="/about">About</a></li>
+            <li>
+              <a href={`/smells/${randomSmellSlug}`}>
+                <ShuffleIcon class="random-icon" />
+                Random Smell
+              </a>
+            </li>
+            <li><a href="/rss.xml">RSS</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3 class="footer-col-title">Connect</h3>
+          <ul class="footer-col-links">
+            <li>
+              <a
+                href={GITHUB_ISSUES_URL}
+                target="_blank"
+                rel="noopener"
+                aria-label="Report Issue (opens in new tab)"
+              >
+                Report Issue
+                <ExternalLinkIcon class="ext-icon" size={10} />
+              </a>
+            </li>
+            <li>
+              <a
+                href={AUTHOR_PROFILE_URL}
+                target="_blank"
+                rel="noopener"
+                aria-label="Marcel Jerzyk (opens in new tab)"
+              >
+                Marcel Jerzyk
+                <ExternalLinkIcon class="ext-icon" size={10} />
+              </a>
+            </li>
+            <li>
+              <a
+                href={GITHUB_REPO_URL}
+                target="_blank"
+                rel="noopener"
+                aria-label="GitHub (opens in new tab)"
+              >
+                GitHub
+                <ExternalLinkIcon class="ext-icon" size={10} />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {/* ===== MOBILE: Accordion layout (shown < 600px) ===== */}
+    <div class="footer-mobile">
+      <div class="footer-mobile-brand">
+        <Logo class="footer-logo" ariaLabel="Code Smells Catalog — Home" />
+        <p class="footer-desc">
+          {allSmells.length} code smells, cataloged and cross-referenced. Based on peer-reviewed research
+          published by Springer Nature.
+        </p>
+      </div>
+
+      <div class="footer-trust-strip">
+        <a class="trust-chip" href="/" title={`Browse all ${allSmells.length} smells`}>
+          <div class="trust-chip-icon">
+            <GridIcon class="trust-chip-icon-svg" size={14} strokeWidth={1.8} />
+          </div>
+          <span class="trust-chip-title">{allSmells.length} Smells</span>
+        </a>
+        <a
+          class="trust-chip trust-chip--accent"
+          href={SPRINGER_PAPER_URL}
+          target="_blank"
+          rel="noopener"
+          title="Read the paper"
+        >
+          <div class="trust-chip-icon">
+            <BookIcon class="trust-chip-icon-svg" size={14} strokeWidth={1.8} />
+          </div>
+          <span class="trust-chip-title">Springer</span>
+        </a>
+        <a
+          class="trust-chip"
+          href={GITHUB_REPO_URL}
+          target="_blank"
+          rel="noopener"
+          title="Star on GitHub"
+        >
+          <div class="trust-chip-icon">
+            <Icon
+              icon={ICON_CODE_BRACKETS}
+              class="trust-chip-icon-svg"
+              size={14}
+              strokeWidth={1.8}
+            />
+          </div>
+          <span class="trust-chip-title">GitHub</span>
+        </a>
+      </div>
+
+      <div class="footer-mobile-cite">
+        <button
+          type="button"
+          class="footer-mobile-cite-toggle"
+          id="mobileCiteToggle"
+          aria-expanded="false"
+          aria-controls="mobileCiteBody"
+        >
+          <span class="footer-mobile-cite-toggle-label">
+            <BookIcon class="footer-mobile-cite-icon" size={12} strokeWidth={2} />
+            Cite This Research
+          </span>
+          <ChevronDownIcon class="footer-mobile-cite-chevron" />
+        </button>
+        <div class="footer-mobile-cite-body" id="mobileCiteBody" aria-hidden="true" inert>
+          <div class="footer-mobile-cite-body-inner">
+            <p class="footer-mobile-cite-text" id="mobileCiteText" set:html={CITATION.apaHtml} />
+            <div class="footer-mobile-cite-actions">
+              <button class="footer-mobile-cite-copy" id="mobileCiteCopyBtn" type="button">
+                <Icon icon={ICON_COPY} size={10} strokeWidth={2.5} />
+                <span id="mobileCiteCopyLabel">Copy</span>
+              </button>
+              <span class="footer-mobile-cite-sep"></span>
+              <button
+                class="footer-mobile-cite-copy"
+                id="mobileCiteFormatBtn"
+                type="button"
+                title="Switch citation format"
+              >
+                BibTeX
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-nav-accordions">
+        {
+          mobileAccordions.map((section, index) => {
+            const accordionBodyId = `footer-accordion-body-${index}`;
+
+            return (
+              <div class="footer-accordion" data-accordion>
+                <button
+                  type="button"
+                  class="footer-accordion-header"
+                  aria-expanded="false"
+                  aria-controls={accordionBodyId}
+                >
+                  <span class="footer-accordion-title">{section.title}</span>
+                  <ChevronDownIcon class="acc-chevron" />
+                </button>
+                <div class="footer-accordion-body" id={accordionBodyId} aria-hidden="true" inert>
+                  <div class="footer-accordion-body-inner">
+                    <ul>
+                      {section.links.map((link) => (
+                        <li>
+                          <a
+                            href={link.href}
+                            {...(link.external
+                              ? {
+                                  target: '_blank',
+                                  rel: 'noopener',
+                                  'aria-label': `${link.label} (opens in new tab)`,
+                                }
+                              : {})}
+                          >
+                            {link.icon === 'shuffle' && <ShuffleIcon class="random-icon" />}
+                            {link.label}
+                            {link.external && <ExternalLinkIcon class="ext-icon" size={10} />}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+
+    {/* Bottom bar */}
+    <div class="footer-bottom">
+      <span class="footer-copyright">
+        &copy; 2022&ndash;{currentYear} Marcel Jerzyk
+        <span class="footer-dot"></span>
+        <span class="footer-built"
+          >Built with <em class="footer-heart">&hearts;</em> and questionable code</span
+        >
+      </span>
+
+      <button
+        type="button"
+        class="footer-quip-wrap"
+        id="footerQuipWrap"
+        title="Show another footer quip"
+      >
+        <span class="footer-quip-text" id="footerQuip"></span>
+      </button>
+
+      <div class="footer-bottom-right">
+        <button type="button" class="footer-top-btn" id="footerTopLink">
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg
+          >
+          Top
+        </button>
+        <span class="footer-sep">&middot;</span>
+        <a href={`${GITHUB_REPO_URL}/blob/main/LICENSE`} target="_blank" rel="nofollow noopener"
+          >License</a
+        >
+        {
+          showAnalyticsPreferenceControl && (
+            <>
+              <span class="footer-sep footer-analytics-sep">&middot;</span>
+              <button
+                type="button"
+                class="footer-analytics-link"
+                id="footer-analytics-preference-trigger"
+                aria-label="Reset analytics preference"
+                title="Reset analytics preference"
+              >
+                Analytics
+              </button>
+            </>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 4vw, 32px);
+  }
+
+  /* ---- Header: Brand + Trust Badges ---- */
+  .footer-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: clamp(32px, 5vw, 56px);
+    align-items: center;
+    padding: clamp(32px, 4vw, 44px) 0 0;
+  }
+
+  .footer-brand {
+    grid-column: 1;
+  }
+
+  .footer-logo {
+    margin-bottom: 10px;
+  }
+  .footer-logo :global(.logo__primary),
+  .footer-logo :global(.logo__secondary) {
+    font-size: 18px;
+  }
+  .footer-logo :global(.logo__waft) {
+    width: 14px;
+    height: 10px;
+  }
+
+  .footer-desc {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    line-height: 1.6;
+    max-width: 440px;
+  }
+
+  /* Trust badge cards */
+  .footer-badges {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    padding: clamp(10px, 1.5vw, 14px) clamp(12px, 1.5vw, 18px);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.25s var(--ease-spring),
+      transform 0.25s var(--ease-spring);
+  }
+  .trust-item:hover {
+    color: var(--text-primary);
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px var(--accent-glow);
+    transform: translateY(-2px);
+  }
+  .trust-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-raised);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+    transition: all 0.25s var(--ease-spring);
+  }
+  .trust-item:hover .trust-icon {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+  .trust-item--accent .trust-icon {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+  .trust-label :global(strong) {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    transition: color 0.2s ease;
+  }
+  .trust-item:hover .trust-label :global(strong) {
+    color: var(--accent);
+  }
+  .trust-label span {
+    display: block;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    line-height: 1.3;
+    margin-top: 1px;
+  }
+
+  /* ---- 3-Column Nav ---- */
+  .footer-columns {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: clamp(32px, 5vw, 64px);
+    padding: clamp(24px, 3vw, 32px) 0;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: clamp(20px, 3vw, 28px);
+  }
+
+  .footer-col-title {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    margin-bottom: 14px;
+  }
+
+  .footer-col-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .footer-col-links a {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 0;
+    transition: color var(--duration-fast);
+  }
+  .footer-col-links a:hover {
+    color: var(--accent);
+  }
+  .footer-col-links :global(.ext-icon) {
+    opacity: 0;
+    transform: translateX(-3px);
+    transition: all 0.2s var(--ease-out);
+    flex-shrink: 0;
+  }
+  .footer-col-links a:hover :global(.ext-icon) {
+    opacity: 0.5;
+    transform: translateX(0);
+  }
+
+  :global(.random-icon) {
+    flex-shrink: 0;
+  }
+  .footer-col-links a:hover :global(.random-icon) {
+    animation: diceShake 0.5s ease-in-out;
+  }
+
+  /* ---- Citation column (always visible) ---- */
+  .footer-cite-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .footer-cite-text {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.55;
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 10px;
+    max-width: 480px;
+  }
+  .footer-cite-text :global(strong) {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .footer-cite-text :global(code) {
+    font-family: var(--font-mono);
+    font-size: calc(var(--text-xs) - 1px);
+    font-style: normal;
+    letter-spacing: -0.02em;
+  }
+
+  .footer-cite-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-cite-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: inherit;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+  .footer-cite-btn:hover {
+    color: var(--text-secondary);
+    background: var(--surface-hover);
+  }
+  .footer-cite-btn.copied {
+    color: var(--green);
+  }
+  .footer-cite-btn.active-format {
+    color: var(--accent);
+  }
+  .footer-cite-sep {
+    width: 1px;
+    height: 10px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  /* ---- Bottom bar ---- */
+  .footer-bottom {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: clamp(16px, 2vw, 22px) 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .footer-copyright {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    white-space: nowrap;
+  }
+  .footer-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .footer-built {
+    color: var(--text-secondary);
+  }
+  .footer-heart {
+    display: inline-block;
+    color: var(--accent);
+    font-style: normal;
+    animation: heartbeat 4s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    14% {
+      transform: scale(1.12);
+    }
+    28% {
+      transform: scale(1);
+    }
+    42% {
+      transform: scale(1.08);
+    }
+    56% {
+      transform: scale(1);
+    }
+  }
+
+  /* Quip (integrated into bottom bar) */
+  .footer-quip-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: center;
+    min-width: 0;
+  }
+  .footer-quip-wrap:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+  .footer-quip-text {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text-tertiary);
+    font-variation-settings: 'opsz' 12;
+    letter-spacing: 0.005em;
+    line-height: 1.5;
+    text-decoration: underline transparent;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition:
+      text-decoration-color 0.2s ease,
+      color 0.2s ease,
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+  .footer-quip-wrap:hover .footer-quip-text {
+    text-decoration-color: var(--border);
+    color: var(--text-primary);
+  }
+  .footer-quip-text.fading {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  /* Right side of bottom bar */
+  .footer-bottom-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-xs);
+    justify-content: flex-end;
+  }
+  .footer-bottom-right a {
+    color: var(--text-tertiary);
+    text-decoration: none;
+    transition: color var(--duration-fast);
+  }
+  .footer-bottom-right a:hover {
+    color: var(--text-secondary);
+  }
+  .footer-sep {
+    color: var(--border);
+  }
+
+  /* Back-to-top pill */
+  .footer-top-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    font-size: var(--text-xs);
+    font-family: inherit;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition:
+      color 0.2s ease,
+      background 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.25s var(--ease-spring);
+  }
+  .footer-top-btn:hover {
+    color: var(--text-secondary);
+    border-color: var(--border);
+    background: var(--surface-raised);
+    transform: translateY(-1px);
+  }
+  .footer-top-btn svg {
+    transition: transform 0.25s var(--ease-spring);
+  }
+  .footer-top-btn:hover svg {
+    transform: translateY(-2px);
+  }
+
+  /* Analytics preference */
+  .footer-analytics-link {
+    display: none;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    transition: color var(--duration-fast);
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+  }
+  .footer-analytics-link:hover {
+    color: var(--text-secondary);
+  }
+  .footer-analytics-sep {
+    display: none;
+  }
+
+  :global(html[data-analytics-consent='granted']) .footer-analytics-link,
+  :global(html[data-analytics-consent='denied']) .footer-analytics-link,
+  :global(html[data-analytics-consent='granted']) .footer-analytics-sep,
+  :global(html[data-analytics-consent='denied']) .footer-analytics-sep {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* ============================================
+     MOBILE LAYOUT (< 600px)
+     ============================================ */
+  .footer-mobile {
+    display: none;
+  }
+  .footer-mobile-brand {
+    padding: 24px 0 0;
+  }
+
+  .footer-trust-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .trust-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 6px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    transition: all 0.25s var(--ease-spring);
+    cursor: pointer;
+  }
+  .trust-chip:hover,
+  .trust-chip:active {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+  .trust-chip-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    background: var(--surface-raised);
+    transition: all 0.25s var(--ease-spring);
+  }
+  .trust-chip:hover .trust-chip-icon,
+  .trust-chip:active .trust-chip-icon {
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+  .trust-chip--accent .trust-chip-icon {
+    color: var(--accent);
+    background: var(--accent-light);
+    border: 1px solid rgba(180, 83, 9, 0.15);
+  }
+  .trust-chip-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  /* Mobile citation */
+  .footer-mobile-cite {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .footer-mobile-cite-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .footer-mobile-cite-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+  .footer-mobile-cite-chevron {
+    color: var(--text-tertiary);
+    transition:
+      transform 0.3s var(--ease-spring),
+      color 0.15s ease;
+    flex-shrink: 0;
+  }
+  .footer-mobile-cite-toggle:hover .footer-mobile-cite-chevron {
+    color: var(--text-secondary);
+  }
+  .footer-mobile-cite.open .footer-mobile-cite-chevron {
+    transform: rotate(180deg);
+  }
+  .footer-mobile-cite-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--ease-out);
+  }
+  .footer-mobile-cite.open .footer-mobile-cite-body {
+    grid-template-rows: 1fr;
+  }
+  .footer-mobile-cite-body-inner {
+    overflow: hidden;
+    padding: 0;
+  }
+  .footer-mobile-cite.open .footer-mobile-cite-body-inner {
+    padding: 0 0 14px;
+  }
+  .footer-mobile-cite-text {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+  }
+  .footer-mobile-cite-text :global(strong) {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .footer-mobile-cite-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-mobile-cite-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .footer-mobile-cite-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text-tertiary);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .footer-mobile-cite-copy:hover {
+    color: var(--text-secondary);
+    background: var(--surface-hover);
+    border-color: var(--border);
+  }
+  .footer-mobile-cite-copy.copied {
+    color: var(--green);
+    border-color: color-mix(in srgb, var(--green) 30%, transparent);
+    background: var(--green-light);
+  }
+  .footer-mobile-cite-copy.active-format {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* Mobile nav accordions */
+  .footer-nav-accordions {
+    display: flex;
+    flex-direction: column;
+  }
+  .footer-accordion {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .footer-accordion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .footer-accordion-title {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    transition: color 0.15s ease;
+  }
+  .footer-accordion-header:hover .footer-accordion-title {
+    color: var(--text-secondary);
+  }
+  .footer-accordion-header :global(.acc-chevron) {
+    color: var(--text-tertiary);
+    transition:
+      transform 0.3s var(--ease-spring),
+      color 0.15s ease;
+    flex-shrink: 0;
+  }
+  .footer-accordion-header:hover :global(.acc-chevron) {
+    color: var(--text-secondary);
+  }
+  .footer-accordion.open .footer-accordion-header :global(.acc-chevron) {
+    transform: rotate(180deg);
+  }
+
+  .footer-accordion-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--ease-out);
+  }
+  .footer-accordion.open .footer-accordion-body {
+    grid-template-rows: 1fr;
+  }
+  .footer-accordion-body-inner {
+    overflow: hidden;
+  }
+  .footer-accordion-body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 12px;
+  }
+  .footer-accordion-body li a {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 4px 0;
+    width: fit-content;
+    transition: color var(--duration-fast);
+  }
+  .footer-accordion-body li a:hover {
+    color: var(--accent);
+  }
+  .footer-accordion-body :global(.ext-icon) {
+    opacity: 0;
+    transform: translateX(-3px);
+    transition: all 0.2s var(--ease-out);
+    flex-shrink: 0;
+  }
+  .footer-accordion-body li a:hover :global(.ext-icon) {
+    opacity: 0.5;
+    transform: translateX(0);
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 900px) {
+    .footer-header {
+      grid-template-columns: 1fr;
+      row-gap: 20px;
+    }
+    .footer-brand,
+    .footer-badges {
+      grid-column: 1;
+    }
+    .footer-badges {
+      grid-template-columns: repeat(3, auto);
+      justify-content: start;
+    }
+    .footer-columns {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(24px, 4vw, 40px);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-nav {
+      display: none;
+    }
+    .footer-mobile {
+      display: block;
+    }
+    .footer-bottom {
+      grid-template-columns: 1fr;
+      gap: 4px;
+      text-align: center;
+    }
+    .footer-copyright {
+      white-space: normal;
+    }
+    .footer-bottom-right {
+      justify-content: center;
+    }
+    .footer-bottom-right a,
+    .footer-bottom-right button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 2px;
+    }
+    .footer-quip-wrap {
+      order: 3;
+      border-top: 1px dashed var(--border-subtle);
+      padding-top: 8px;
+      margin-top: 4px;
+    }
+    .footer-quip-text {
+      white-space: normal;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-quip-text {
+      transition: none;
+    }
+    .footer-heart {
+      animation: none;
+    }
+  }
+
+  @media print {
+    .footer-trust-strip {
+      display: none;
+    }
+  }
+</style>
+
+<script
+  is:inline
+  define:vars={{
+    COPY_FEEDBACK_MS,
+    CITATION_APA: CITATION.apaText,
+    CITATION_APA_HTML: CITATION.apaHtml,
+    CITATION_BIBTEX: CITATION.bibtex,
+  }}
+>
+  (function initFooter() {
+    /* ---- Quips ---- */
+    var quips = [
+      'The only code smell worse than Dead Code is the one you haven\u2019t named yet.',
+      'Behind every God Class is a developer who thought \u201cjust one more method.\u201d',
+      'A Magic Number walks into a bar. Nobody knows why it ordered 42 drinks.',
+      'Shotgun Surgery: when one bug fix turns into a world tour of your codebase.',
+      'Feature Envy is just a method that wishes it lived somewhere else.',
+      'Speculative Generality: building an airport when you only needed a bike lane.',
+      'Middle Man: the class equivalent of \u201cI\u2019ll just forward this email.\u201d',
+      'Primitive Obsession: because everything is a string if you believe hard enough.',
+      'A Long Parameter List is just a function\u2019s way of saying \u201cI have trust issues.\u201d',
+      'Refused Bequest: inheriting a mansion and sleeping in the shed.',
+    ];
+    var quipIdx = Math.floor(Math.random() * quips.length);
+    var quipEl = document.getElementById('footerQuip');
+    var quipWrap = document.getElementById('footerQuipWrap');
+    if (quipEl) {
+      quipEl.textContent = quips[quipIdx];
+    }
+    if (quipWrap) {
+      quipWrap.addEventListener('click', function () {
+        quipIdx = (quipIdx + 1) % quips.length;
+        quipEl.classList.add('fading');
+        setTimeout(function () {
+          quipEl.textContent = quips[quipIdx];
+          quipEl.classList.remove('fading');
+        }, 250);
+      });
+    }
+
+    /* ---- Back to top ---- */
+    var topBtn = document.getElementById('footerTopLink');
+    if (topBtn) {
+      topBtn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    /* ---- Citation state ---- */
+    var apa = CITATION_APA;
+    var bibtex = CITATION_BIBTEX;
+    var apaHtml = CITATION_APA_HTML;
+    var isBibtex = false;
+
+    var citeText = document.getElementById('citeTextEl');
+    var citeCopyBtn = document.getElementById('citeCopyBtn');
+    var citeCopyLabel = document.getElementById('citeCopyLabel');
+    var citeFormatBtn = document.getElementById('citeFormatBtn');
+
+    var mobileCiteToggle = document.getElementById('mobileCiteToggle');
+    var mobileCiteSection = mobileCiteToggle
+      ? mobileCiteToggle.closest('.footer-mobile-cite')
+      : null;
+    var mobileCiteBody = document.getElementById('mobileCiteBody');
+    var mobileCiteText = document.getElementById('mobileCiteText');
+    var mobileCiteCopyBtn = document.getElementById('mobileCiteCopyBtn');
+    var mobileCiteCopyLabel = document.getElementById('mobileCiteCopyLabel');
+    var mobileCiteFormatBtn = document.getElementById('mobileCiteFormatBtn');
+
+    function writeToClipboard(text) {
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(text).catch(function (error) {
+        console.error('[footer] clipboard write failed', error);
+      });
+    }
+
+    function setPanelState(panel, isOpen) {
+      if (!panel) return;
+      panel.setAttribute('aria-hidden', String(!isOpen));
+      if (isOpen) {
+        panel.removeAttribute('inert');
+      } else {
+        panel.setAttribute('inert', '');
+      }
+    }
+
+    function getCitationHtml() {
+      return isBibtex ? '<code>' + bibtex.replace(/\n/g, '<br>') + '</code>' : apaHtml;
+    }
+
+    /* Desktop citation copy */
+    if (citeCopyBtn) {
+      citeCopyBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var text = isBibtex ? bibtex : apa;
+        writeToClipboard(text);
+        citeCopyBtn.classList.add('copied');
+        if (citeCopyLabel) citeCopyLabel.textContent = 'Copied!';
+        setTimeout(function () {
+          citeCopyBtn.classList.remove('copied');
+          if (citeCopyLabel) citeCopyLabel.textContent = 'Copy';
+        }, COPY_FEEDBACK_MS);
+      });
+    }
+
+    /* Citation format toggle (syncs desktop + mobile) */
+    function toggleFormat() {
+      isBibtex = !isBibtex;
+      var html = getCitationHtml();
+      var label = isBibtex ? 'APA' : 'BibTeX';
+      if (citeText) citeText.innerHTML = html;
+      if (citeFormatBtn) {
+        citeFormatBtn.textContent = label;
+        citeFormatBtn.classList.toggle('active-format', isBibtex);
+      }
+      if (mobileCiteText) mobileCiteText.innerHTML = html;
+      if (mobileCiteFormatBtn) {
+        mobileCiteFormatBtn.textContent = label;
+        mobileCiteFormatBtn.classList.toggle('active-format', isBibtex);
+      }
+    }
+
+    if (citeFormatBtn) {
+      citeFormatBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleFormat();
+      });
+    }
+
+    /* ---- Mobile citation toggle ---- */
+    function setMobileCiteState(isOpen) {
+      if (!mobileCiteToggle || !mobileCiteSection || !mobileCiteBody) return;
+      mobileCiteSection.classList.toggle('open', isOpen);
+      mobileCiteToggle.setAttribute('aria-expanded', String(isOpen));
+      setPanelState(mobileCiteBody, isOpen);
+    }
+
+    setMobileCiteState(Boolean(mobileCiteSection && mobileCiteSection.classList.contains('open')));
+
+    if (mobileCiteToggle && mobileCiteSection) {
+      mobileCiteToggle.addEventListener('click', function () {
+        setMobileCiteState(!mobileCiteSection.classList.contains('open'));
+      });
+    }
+
+    /* Mobile citation copy + format */
+    if (mobileCiteCopyBtn) {
+      mobileCiteCopyBtn.addEventListener('click', function () {
+        var text = isBibtex ? bibtex : apa;
+        writeToClipboard(text);
+        mobileCiteCopyBtn.classList.add('copied');
+        if (mobileCiteCopyLabel) mobileCiteCopyLabel.textContent = 'Copied!';
+        setTimeout(function () {
+          mobileCiteCopyBtn.classList.remove('copied');
+          if (mobileCiteCopyLabel) mobileCiteCopyLabel.textContent = 'Copy';
+        }, COPY_FEEDBACK_MS);
+      });
+    }
+
+    if (mobileCiteFormatBtn) {
+      mobileCiteFormatBtn.addEventListener('click', function () {
+        toggleFormat();
+      });
+    }
+
+    /* ---- Mobile nav accordions ---- */
+    function setAccordionState(acc, header, body, isOpen) {
+      acc.classList.toggle('open', isOpen);
+      header.setAttribute('aria-expanded', String(isOpen));
+      setPanelState(body, isOpen);
+    }
+
+    document.querySelectorAll('[data-accordion]').forEach(function (acc) {
+      var header = acc.querySelector('.footer-accordion-header');
+      var body = acc.querySelector('.footer-accordion-body');
+
+      if (header && body) {
+        setAccordionState(acc, header, body, acc.classList.contains('open'));
+
+        header.addEventListener('click', function () {
+          setAccordionState(acc, header, body, !acc.classList.contains('open'));
+        });
+      }
+    });
+  })();
+</script>

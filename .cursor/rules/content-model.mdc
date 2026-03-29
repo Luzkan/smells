@@ -1,0 +1,178 @@
+---
+description: Full frontmatter schema and taxonomy for code smell content files
+globs: content/**
+alwaysApply: false
+---
+
+# Content Model — Code Smell Articles
+
+Each smell is a Markdown file in `content/smells/` with YAML frontmatter followed by a structured body. There are 56 files total. The filename matches the `slug` field (kebab-case).
+
+## Frontmatter Schema
+
+```yaml
+slug: "kebab-case-name"                    # matches filename, used as URL path
+meta:
+  last_update_date: 2022-04-19             # YYYY-MM-DD format
+  title: "Human Readable Name"
+  description: "Optional short authored blurb" # used by hero/cards/SEO/RSS; falls back to body if absent
+  cover: "/path/to/image.png"              # optional, not yet used — schema accepts it for future use
+  known_as:                                # aliases, or ["---"] if none
+    - "Alternate Name"
+categories:
+  expanse: "Within"                        # exactly one of: Within | Between
+  obstruction:                             # one or more from Obstruction enum
+    - "Bloaters"
+  occurrence:                              # one or more from Occurrence enum
+    - "Names"
+  tags:                                    # Major | Minor, or ["---"] if untagged
+    - "---"
+  smell_hierarchies:                       # one or more from SmellHierarchy enum
+    - "Code Smell"
+    - "Implementation Smell"
+relations:
+  related_smells:
+    - name: "Human Readable Name"
+      slug: kebab-case-name
+      type:                                # one or more of: causes | caused | co-exist | family | antagonistic
+        - "causes"
+problems:
+  general:                                 # string array, or ["---"] if none
+    - "Readability"
+  violation:
+    principles:                            # string array, or ["---"] if none
+      - "Single Responsibility"
+    patterns:                              # string array, or ["---"] if none
+      - "---"
+refactors:                                 # string array
+  - "Extract Method"
+  - "Replace with Symbolic Constant"
+history:
+  - author: "Martin Fowler"
+    type: "origin"                         # origin | parentage | mention | update
+    named_as:
+      - "Duplicated Code"
+    regarded_as:
+      - "Code Smell"
+    source:
+      year: 1999
+      authors:
+        - "Martin Fowler"
+      name: "Refactoring: Improving the Design of Existing Code"
+      type: "book"                         # book | thesis | paper | course | cheatsheet
+      href:
+        isbn_13: "978-0201485677"          # optional
+        isbn_10: "0201485672"              # optional
+        direct_url: "https://..."          # optional
+        journal: "..."                     # optional (for articles)
+        pages: "..."                       # optional
+        publisher: "..."                   # optional
+        volume: "..."                      # optional
+        number: "..."                      # optional
+```
+
+## Taxonomy Enums (valid values)
+
+### Expanse
+- Within
+- Between
+
+### Obstruction
+- Bloaters
+- Change Preventers
+- Couplers
+- Data Dealers
+- Dispensables
+- Functional Abusers
+- Lexical Abusers
+- Obfuscators
+- Object Oriented Abusers
+- Other
+
+### Occurrence
+- Duplication
+- Responsibility
+- Measured Smells
+- Data
+- Unnecessary Complexity
+- Interfaces
+- Names
+- Message Calls
+- Conditional Logic
+
+### Smell Hierarchies
+- Antipattern
+- Architecture Smell
+- Code Smell
+- Design Smell
+- Implementation Smell
+- Linguistic Antipattern
+- Linguistic Smell
+
+### Tags
+- Major
+- Minor
+
+### Relation Types
+- **causes** — this smell leads to the related smell
+- **caused** — this smell is caused by the related smell
+- **co-exist** — these smells tend to appear together
+- **family** — these smells are conceptually related / variations of each other
+- **antagonistic** — these smells are opposites or mutually exclusive
+
+## Conventions
+
+- `---` is the null/empty placeholder in YAML arrays (not `null`, not omitted)
+- `meta.description` is optional authored copy for the article hero, catalog cards, structured data, and RSS; when missing, the site falls back to the first overview paragraph extracted from the body
+- Internal links between smells use relative markdown links: `[Name](./slug.md)`
+- These links are transformed at build time to proper URLs by a remark plugin
+- `problems` are rendered via `src/components/article/ProblemCards.astro`; `refactors` via `src/components/article/RefactoringList.astro`
+
+## Body Structure
+
+```markdown
+## Smell Title
+
+Prose explanation of the smell...
+
+### Problems:
+
+#### Problem Name
+
+Explanation...
+
+### Example
+
+<div class="example-block">
+
+#### Smelly:
+
+Description of the bad pattern
+
+\`\`\`language
+// bad code
+\`\`\`
+
+#### Solution:
+
+Description of the fix
+
+\`\`\`language
+// good code
+\`\`\`
+
+</div>
+
+### Refactoring:
+
+- Technique 1
+- Technique 2
+
+---
+
+##### Sources
+
+- [[1](#sources)] - Author, "Title" (Year)
+```
+
+Not all articles follow this structure exactly — some are shorter (e.g., `duplicated-code.md` has minimal body). The frontmatter is consistent across all 56 files.

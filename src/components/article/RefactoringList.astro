@@ -1,0 +1,113 @@
+---
+interface Props {
+  refactors: string[];
+}
+
+const { refactors } = Astro.props;
+---
+
+{
+  refactors.length > 0 && (
+    <section class="refactoring-list">
+      <h3 id="refactoring" class="refactoring-list__title">
+        Refactoring
+      </h3>
+      <ul class="refactoring-list__items">
+        {refactors.map((refactor) => (
+          <li class="refactoring-item">
+            <span class="refactoring-item__dot" aria-hidden="true" />
+            <span class="refactoring-item__text">{refactor}</span>
+            <span class="refactoring-item__arrow" aria-hidden="true">
+              &rarr;
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .refactoring-list {
+    margin: 2rem 0;
+  }
+
+  .refactoring-list__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    color: var(--text-primary);
+    margin: 0 0 1rem;
+  }
+
+  .refactoring-list__items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .refactoring-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    transition:
+      background var(--duration-fast),
+      border-color var(--duration-fast),
+      transform var(--duration-fast) var(--ease-out);
+    cursor: default;
+  }
+
+  @media (hover: hover) {
+    .refactoring-item:hover {
+      background: var(--green-light);
+      border-color: color-mix(in srgb, var(--green) 20%, transparent);
+      transform: translateX(4px);
+    }
+
+    .refactoring-item:hover .refactoring-item__dot {
+      transform: scale(1.4);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 15%, transparent);
+    }
+
+    .refactoring-item:hover .refactoring-item__arrow {
+      opacity: 1;
+      transform: translateX(0);
+      color: var(--green);
+    }
+  }
+
+  .refactoring-item__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    transition:
+      transform var(--duration-fast) var(--ease-spring),
+      box-shadow var(--duration-fast);
+  }
+
+  .refactoring-item__text {
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  .refactoring-item__arrow {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity var(--duration-fast),
+      transform var(--duration-fast),
+      color var(--duration-fast);
+  }
+</style>

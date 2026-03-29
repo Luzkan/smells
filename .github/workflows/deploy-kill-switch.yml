@@ -1,0 +1,41 @@
+name: Deploy GH-Pages Kill Switch
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_preserve_legacy_site:
+        description: 'Deploy only /smells/sw.js while preserving the existing gh-pages site.'
+        required: true
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-kill-switch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Require rollout acknowledgement
+        if: ${{ github.event.inputs.confirm_preserve_legacy_site != 'true' }}
+        run: |
+          echo "::error::This workflow only updates the legacy service worker kill switch."
+          echo "::error::Re-run it with the acknowledgement checked to preserve the existing gh-pages site."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Stage kill switch artifact
+        run: |
+          mkdir -p gh-pages-kill-switch
+          cp public/sw.js gh-pages-kill-switch/sw.js
+
+      - name: Deploy kill switch without replacing gh-pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./gh-pages-kill-switch
+          publish_branch: gh-pages
+          keep_files: true
+          commit_message: 'Deploy GH Pages service worker kill switch'

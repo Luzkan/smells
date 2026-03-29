@@ -1,9 +1,9 @@
 ---
-slug: "duplicated-code"
+slug: 'duplicated-code'
 meta:
   last_update_date: 2022-04-19
-  title: "Duplicated Code"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Duplicated Code'
+  description: 'The same logic in five places. Change one, miss another, and watch the behavior quietly diverge. According to Fowler, this is the single worst smell in a codebase.'
   known_as:
     - Clones
     - Code Clone
@@ -11,7 +11,7 @@ meta:
     - Common Methods in Sibling Class
     - External Duplication
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Dispensables
   occurrence:
@@ -51,7 +51,6 @@ relations:
 problems:
   general:
     - ---
-    - ---
   violation:
     principles:
       - ---
@@ -64,8 +63,8 @@ refactors:
   - Slide Statement
   - Form Template Method
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Duplicated Code
     regarded_as:
@@ -76,11 +75,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Duplicated Code

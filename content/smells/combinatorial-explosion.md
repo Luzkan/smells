@@ -1,13 +1,13 @@
 ---
-slug: "combinatorial-explosion"
+slug: 'combinatorial-explosion'
 meta:
   last_update_date: 2022-04-19
-  title: "Combinatorial Explosion"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Combinatorial Explosion'
+  description: 'Dozens of methods that do almost the same thing, each differing by one small detail. Add a new feature and the count multiplies again. Good luck remembering which variant handles which edge case.'
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Bloaters
   occurrence:
@@ -20,7 +20,7 @@ categories:
 relations:
   related_smells:
     - name: Conditional Complexity
-      slug: combinatorial-explosion
+      slug: conditional-complexity
       type:
         - family
     - name: Parallel Inheritance Hierarchies
@@ -42,8 +42,8 @@ refactors:
   - Replace Inheritance with Delegation
   - Tease Apart Inheritance
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Combinatorial Explosion
     regarded_as:
@@ -52,11 +52,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Combinatorial Explosion

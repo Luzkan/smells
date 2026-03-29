@@ -1,13 +1,13 @@
 ---
-slug: "clever-code"
+slug: 'clever-code'
 meta:
   last_update_date: 2022-04-19
-  title: "Clever Code"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Clever Code'
+  description: 'Code that works but makes you feel stupid for not understanding it. Reinvented built-ins, abused language quirks, logic compacted into one-liners that nobody else can maintain.'
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Obfuscators
   occurrence:
@@ -43,22 +43,22 @@ refactors:
   - Replace with Built-In
   - Replace with Library
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Clever Code
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
-  - author: "Robert C. Martin"
-    type: "parentage"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
+  - author: 'Robert C. Martin'
+    type: 'parentage'
     named_as:
       - Obscured Intent
     regarded_as:
@@ -67,11 +67,11 @@ history:
       year: 2008
       authors:
         - Robert C. Martin
-      name: "Clean Code: A Handbook of Agile Software Craftsmanship"
-      type: "book"
+      name: 'Clean Code: A Handbook of Agile Software Craftsmanship'
+      type: 'book'
       href:
-        isbn_13: "978-0132350884"
-        isbn_10: "9780132350884"
+        isbn_13: '978-0132350884'
+        isbn_10: '9780132350884'
 ---
 
 ## Clever Code

@@ -1,13 +1,13 @@
 ---
-slug: "alternative-classes-with-different-interfaces"
+slug: 'alternative-classes-with-different-interfaces'
 meta:
   last_update_date: 2022-04-19
-  title: "Alternative Classes with Different Interfaces"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Alternative Classes with Different Interfaces'
+  description: "Two classes. Same job. Different spelling. One says hug_zombie(), the other says hug_snowman(), and neither realizes they're duplicating logic behind method names that could share a single interface."
   known_as:
     - Duplicate Abstraction
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Object Oriented Abusers
   occurrence:
@@ -24,7 +24,7 @@ relations:
       type:
         - family
     - name: Duplicated Code
-      slug: duplicate-code
+      slug: duplicated-code
       type:
         - co-exist
 problems:
@@ -38,8 +38,8 @@ problems:
 refactors:
   - Move Method
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Alternative Classes with Different Interfaces
     regarded_as:
@@ -50,11 +50,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Alternative Classes with Different Interfaces

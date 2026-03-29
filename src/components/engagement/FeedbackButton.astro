@@ -1,0 +1,222 @@
+---
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<div class="engage-feedback" data-slug={slug}>
+  <span class="engage-feedback__label">Was this helpful?</span>
+  <button
+    class="feedback-btn feedback-btn--up"
+    data-vote="up"
+    title="Yes, helpful"
+    aria-label="Yes, helpful"
+  >
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      ><path
+        d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+      ></path></svg
+    >
+  </button>
+  <button
+    class="feedback-btn feedback-btn--down"
+    data-vote="down"
+    title="Not helpful"
+    aria-label="Not helpful"
+  >
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      ><path
+        d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"
+      ></path></svg
+    >
+  </button>
+  <span class="engage-feedback__followup engage-feedback__followup--positive"
+    >Thanks for the feedback!</span
+  >
+  <span class="engage-feedback__followup engage-feedback__followup--negative"
+    >Thanks &mdash; <a href="https://github.com/luzkan/smells/issues" target="_blank" rel="noopener"
+      >help us improve</a
+    ></span
+  >
+</div>
+
+<script>
+  import { trackEvent } from '../../lib/analytics/tracker';
+  import { initOnce } from '../../lib/lifecycle';
+
+  type Vote = 'up' | 'down';
+
+  initOnce('.engage-feedback', (feedbackWrap) => {
+    const slug = feedbackWrap.getAttribute('data-slug') || '';
+    const storageKey = `feedback_${slug}`;
+
+    const savedVote = (() => {
+      try {
+        return localStorage.getItem(storageKey);
+      } catch {
+        return null;
+      }
+    })();
+
+    if (savedVote === 'up' || savedVote === 'down') {
+      applyVotedState(savedVote);
+    }
+
+    const voteButtons = feedbackWrap.querySelectorAll('.feedback-btn');
+    const buttonHandlers = new Map<Element, () => void>();
+    voteButtons.forEach((btn) => {
+      const handler = () => {
+        const voteAttr = btn.getAttribute('data-vote');
+        if (voteAttr !== 'up' && voteAttr !== 'down') return;
+        const vote: Vote = voteAttr;
+
+        try {
+          localStorage.setItem(storageKey, vote);
+        } catch {
+          // Ignore storage failures in private browsing/security-restricted contexts.
+        }
+
+        applyVotedState(vote);
+        trackEvent({ name: 'article_feedback', params: { smell: slug, vote } });
+      };
+      buttonHandlers.set(btn, handler);
+      btn.addEventListener('click', handler);
+    });
+
+    function applyVotedState(vote: Vote): void {
+      feedbackWrap.classList.add('submitted');
+
+      feedbackWrap.querySelectorAll('.feedback-btn').forEach((button) => {
+        button.classList.remove('voted');
+      });
+
+      const activeButton = feedbackWrap.querySelector(`[data-vote="${vote}"]`);
+      if (activeButton) activeButton.classList.add('voted');
+
+      feedbackWrap.querySelectorAll('.engage-feedback__followup').forEach((followup) => {
+        followup.classList.remove('active');
+      });
+
+      const activeFollowup = feedbackWrap.querySelector(
+        `.engage-feedback__followup--${vote === 'up' ? 'positive' : 'negative'}`,
+      );
+      if (activeFollowup) activeFollowup.classList.add('active');
+    }
+
+    return () => {
+      buttonHandlers.forEach((handler, button) => {
+        button.removeEventListener('click', handler);
+      });
+    };
+  });
+</script>
+
+<style>
+  .engage-feedback {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .engage-feedback__label {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .feedback-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    transition: all 0.2s var(--ease-spring);
+  }
+
+  .feedback-btn:hover {
+    transform: scale(1.12);
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .feedback-btn.voted {
+    transform: scale(1.06);
+  }
+
+  .feedback-btn--up.voted {
+    color: var(--green);
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+
+  .feedback-btn--down.voted {
+    color: var(--red);
+    border-color: var(--red);
+    background: var(--red-light);
+  }
+
+  .engage-feedback__followup {
+    display: none;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .engage-feedback__followup a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--duration-fast);
+  }
+
+  .engage-feedback__followup a:hover {
+    color: var(--accent-hover);
+  }
+
+  .engage-feedback.submitted .feedback-btn:not(.voted) {
+    display: none;
+  }
+
+  .engage-feedback.submitted .engage-feedback__label {
+    display: none;
+  }
+
+  .engage-feedback.submitted .engage-feedback__followup.active {
+    display: inline-flex;
+  }
+
+  @media (max-width: 640px) {
+    .engage-feedback {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

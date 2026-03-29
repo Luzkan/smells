@@ -1,9 +1,9 @@
 ---
-slug: "large-class"
+slug: 'large-class'
 meta:
   last_update_date: 2022-04-19
-  title: "Large Class"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Large Class'
+  description: 'The God Class. Too many methods, too many fields, too many reasons to exist. Reading it takes a morning, testing it takes a sprint, and changing it is a gamble that affects everything it touches.'
   known_as:
     - Blob
     - Brain Class
@@ -13,7 +13,7 @@ meta:
     - Schizophrenic Class
     - Ice Berg Class
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Bloaters
   occurrence:
@@ -60,8 +60,8 @@ refactors:
   - Extract Domain Object
   - Replace Data Value with object
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Large Class
     regarded_as:
@@ -72,11 +72,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Large Class

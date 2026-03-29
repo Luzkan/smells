@@ -1,13 +1,13 @@
 ---
-slug: "required-setup-or-teardown-code"
+slug: 'required-setup-or-teardown-code'
 meta:
   last_update_date: 2022-04-19
-  title: "Required Setup or Teardown Code"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Required Setup or Teardown Code'
+  description: "Close the socket when you're done. Check the environment variables before you start. Reset the state after every call. The object could handle all of this internally. Instead, it made it your problem."
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Bloaters
   occurrence:
@@ -46,8 +46,8 @@ refactors:
   - Replace Constructor with Factory Method
   - Introduce Parameter Object
 history:
-  - author: "Steve Smith"
-    type: "origin"
+  - author: 'Steve Smith'
+    type: 'origin'
     named_as:
       - Required Setup or Teardown Code
     regarded_as:
@@ -56,10 +56,10 @@ history:
       year: 2013
       authors:
         - Steve Smith
-      name: "Refactoring Fundamentals"
-      type: "course"
+      name: 'Refactoring Fundamentals'
+      type: 'course'
       href:
-        direct_url: "https://www.pluralsight.com/courses/refactoring-fundamentals"
+        direct_url: 'https://www.pluralsight.com/courses/refactoring-fundamentals'
 ---
 
 ## Required Setup or Teardown Code

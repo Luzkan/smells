@@ -1,13 +1,13 @@
 ---
-slug: "data-clump"
+slug: 'data-clump'
 meta:
   last_update_date: 2022-04-19
-  title: "Data Clump"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Data Clump'
+  description: "red, green, and blue passed separately to every function that needs a color. The same variables travel together everywhere, never packaged into the object they're quietly begging to become."
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Bloaters
   occurrence:
@@ -19,8 +19,8 @@ categories:
     - Design Smell
 relations:
   related_smells:
-    - name: Mutable Data Class
-      slug: mutable-data-class
+    - name: Mutable Data
+      slug: mutable-data
       type:
         - antagonistic
 problems:
@@ -36,8 +36,8 @@ refactors:
   - Extract Class
   - Introduce Parameter Object
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Data Clump
     regarded_as:
@@ -48,11 +48,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Data Clump

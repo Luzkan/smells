@@ -1,13 +1,13 @@
 ---
-slug: "boolean-blindness"
+slug: 'boolean-blindness'
 meta:
   last_update_date: 2022-04-19
-  title: "Boolean Blindness"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Boolean Blindness'
+  description: "Does filter(true) mean take or drop? When a function operates on raw booleans, it destroys the information about what those values represent. The type system knows; the reader doesn't."
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Lexical Abusers
   occurrence:
@@ -27,7 +27,7 @@ relations:
       type:
         - family
     - name: '"What" Comments'
-      slug: what-comments
+      slug: what-comment
       type:
         - causes
 problems:
@@ -41,20 +41,20 @@ problems:
 refactors:
   - Introduce New Type
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Boolean Blindness
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
 ---
 
 ## Boolean Blindness

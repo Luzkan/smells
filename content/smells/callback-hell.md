@@ -1,14 +1,14 @@
 ---
-slug: "callback-hell"
+slug: 'callback-hell'
 meta:
   last_update_date: 2022-04-19
-  title: "Callback Hell"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Callback Hell'
+  description: 'Nested callbacks indented so deep the closing brackets cascade like a staircase to nowhere. The actual logic hides somewhere around indent level five.'
   known_as:
     - Hierarchy of Callbacks
     - Pyramid of Doom
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Change Preventers
   occurrence:
@@ -36,20 +36,20 @@ refactors:
   - Use Asynchronous Functions
   - Use Promises
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Callback Hell
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
 ---
 
 ## Callback Hell
@@ -112,7 +112,7 @@ const sliceBread = doNext => {
 const makeSandwich = () => {
   return getBread()
     .then(bread => sliceBread(bread))
-    .then(jam => getJam(beef))
+    .then(jam => getJam(jam))
     .then(slicedBread, jam => brushBread(slicedBread, jam));
 };
 ```

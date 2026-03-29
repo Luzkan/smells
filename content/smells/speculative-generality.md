@@ -1,13 +1,13 @@
 ---
-slug: "speculative-generality"
+slug: 'speculative-generality'
 meta:
   last_update_date: 2022-04-19
-  title: "Speculative Generality"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Speculative Generality'
+  description: 'An abstract base class for a hierarchy that never grew. Three extra parameters for a feature you were sure someone would request. Abstractions built for a future that never arrived, cluttering the code with unused generality.'
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Dispensables
   occurrence:
@@ -46,8 +46,8 @@ refactors:
   - Inline Class
   - Rename Method
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Speculative Generality
     regarded_as:
@@ -58,11 +58,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Speculative Generality

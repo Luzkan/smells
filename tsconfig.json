@@ -1,23 +1,16 @@
 {
+  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "jsx": "react",
-    "module": "es6",
-    "target": "es5",
-    "allowJs": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "moduleResolution": "node",
-    "baseUrl": "./src",
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "baseUrl": ".",
     "paths": {
-      "src/*": ["./src/*"]
-    },
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@lib/*": ["src/lib/*"],
+      "@stores/*": ["src/stores/*"],
+      "@styles/*": ["src/styles/*"]
+    }
   },
-  "include": ["src"]
+  "exclude": ["dist", "vitest.config.mjs", "vitest.build-output.config.mjs"]
 }

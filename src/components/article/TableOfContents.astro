@@ -1,0 +1,291 @@
+---
+/**
+ * TableOfContents — Sticky sidebar with heading links and scroll spy.
+ *
+ * Uses IntersectionObserver via inline script for active heading tracking.
+ * Registers cleanup via astro:before-swap for View Transition navigation.
+ * Only renders if there are headings to show.
+ */
+import type { MarkdownHeading } from 'astro';
+import Icon from '../icons/Icon.astro';
+import { ICON_CHEVRON_LEFT, ICON_CHEVRON_RIGHT } from '../../lib/icon-paths';
+import type { SmellLink } from '../../lib/types';
+
+interface Props {
+  headings: MarkdownHeading[];
+  prev: SmellLink;
+  next: SmellLink;
+}
+
+const { headings, prev, next } = Astro.props;
+
+// Filter to h2 and h3 only
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{
+  tocHeadings.length > 0 && (
+    <nav class="toc" aria-label="Table of Contents">
+      <p class="toc__label">On this page</p>
+      <div class="toc__list-wrapper">
+        <div class="toc__indicator" data-toc-indicator />
+        <ul class="toc__list">
+          {tocHeadings.map((heading) => (
+            <li class:list={['toc__item', { 'toc__item--nested': heading.depth === 3 }]}>
+              <a href={`#${heading.slug}`} class="toc__link" data-toc-link>
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Navigate section */}
+      {(prev || next) && (
+        <div class="toc__navigate">
+          <p class="toc__label toc__label--navigate">Navigate</p>
+          <div class="toc__nav-links">
+            {prev && (
+              <a href={prev.href} class="toc__nav-link" title={prev.title}>
+                <Icon icon={ICON_CHEVRON_LEFT} size={12} />
+                <span class="toc__nav-text">{prev.title}</span>
+              </a>
+            )}
+            {next && (
+              <a href={next.href} class="toc__nav-link toc__nav-link--next" title={next.title}>
+                <span class="toc__nav-text">{next.title}</span>
+                <Icon icon={ICON_CHEVRON_RIGHT} size={12} />
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    position: sticky;
+    top: calc(var(--nav-height) + 24px);
+    padding-top: 24px;
+    max-height: calc(100vh - var(--nav-height) - 4rem);
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  .toc__label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-tertiary);
+    margin: 0 0 14px;
+    padding-left: 16px;
+  }
+
+  .toc__list-wrapper {
+    position: relative;
+  }
+
+  .toc__indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 32px;
+    background: var(--accent);
+    border-radius: 1px;
+    transition:
+      top 0.35s var(--ease-spring),
+      height 0.25s var(--ease-out);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .toc__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .toc__item {
+    margin: 0;
+  }
+
+  .toc__item--nested {
+    padding-left: 12px;
+  }
+
+  .toc__link {
+    display: block;
+    padding: 7px 14px 7px 16px;
+    font-size: 13px;
+    font-weight: 450;
+    letter-spacing: 0.01em;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    position: relative;
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-smooth),
+      background var(--duration-fast) var(--ease-smooth);
+    line-height: 1.4;
+  }
+
+  .toc__link:hover {
+    color: var(--text-primary);
+    background: var(--surface-raised);
+  }
+
+  .toc__link--active {
+    color: var(--accent);
+    font-weight: 600;
+    border-left-color: transparent;
+  }
+
+  .toc__link--read {
+    color: var(--text-secondary);
+  }
+
+  .toc__link--read::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    opacity: 0.5;
+    transform: translateY(-50%) scale(0);
+    animation: tocReadDot 0.4s var(--ease-spring) forwards;
+  }
+
+  .toc__link--active.toc__link--read::after {
+    display: none;
+  }
+
+  @keyframes tocReadDot {
+    from {
+      transform: translateY(-50%) scale(0);
+    }
+    to {
+      transform: translateY(-50%) scale(1);
+    }
+  }
+
+  /* Navigate section */
+  .toc__navigate {
+    margin-top: 36px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .toc__label--navigate {
+    margin-top: 0;
+  }
+
+  .toc__nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .toc__nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition:
+      color var(--duration-fast),
+      background var(--duration-fast);
+    line-height: 1.3;
+  }
+
+  .toc__nav-link:hover {
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .toc__nav-link--next {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .toc__nav-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  /* :global() needed — SVG rendered by child Icon.astro component */
+  .toc__nav-link :global(svg) {
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    const SCROLL_SPY_OFFSET_PX = 120; // nav height + breathing room
+    const links = Array.from(document.querySelectorAll('[data-toc-link]'));
+    if (!links.length) return;
+
+    const indicator = document.querySelector('[data-toc-indicator]');
+    let prevActiveLink = null;
+
+    function updateToc() {
+      const scrollY = window.scrollY + SCROLL_SPY_OFFSET_PX;
+      let activeLink = links[0];
+
+      links.forEach(function (link) {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const section = document.getElementById(href.slice(1));
+        if (section && scrollY >= section.offsetTop) activeLink = link;
+      });
+
+      if (activeLink === prevActiveLink) return;
+      prevActiveLink = activeLink;
+
+      links.forEach(function (link) {
+        link.classList.toggle('toc__link--active', link === activeLink);
+      });
+
+      const activeIdx = links.indexOf(activeLink);
+      for (let i = 0; i < activeIdx; i++) {
+        if (!links[i].classList.contains('toc__link--read')) {
+          links[i].classList.add('toc__link--read');
+        }
+      }
+
+      if (indicator && activeLink) {
+        indicator.style.top = activeLink.offsetTop + 'px';
+        indicator.style.height = activeLink.offsetHeight + 'px';
+      }
+    }
+
+    updateToc();
+    window.addEventListener('scroll', updateToc, { passive: true });
+
+    document.addEventListener(
+      'astro:before-swap',
+      function () {
+        window.removeEventListener('scroll', updateToc);
+      },
+      { once: true },
+    );
+  })();
+</script>

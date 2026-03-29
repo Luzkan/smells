@@ -1,13 +1,13 @@
 ---
-slug: "shotgun-surgery"
+slug: 'shotgun-surgery'
 meta:
   last_update_date: 2022-04-19
-  title: "Shotgun Surgery"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Shotgun Surgery'
+  description: 'One small feature change. A dozen files to edit. You submit the PR, then find two more files you missed.'
   known_as:
     - Solution Sprawl
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Change Preventers
   occurrence:
@@ -51,8 +51,8 @@ refactors:
   - Move Method and Move Field
   - Inline Function/Class
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Shotgun Surgery
     regarded_as:
@@ -63,11 +63,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Shotgun Surgery

@@ -1,13 +1,13 @@
 ---
-slug: "inappropriate-static"
+slug: 'inappropriate-static'
 meta:
   last_update_date: 2022-04-19
-  title: "Inappropriate Static"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Inappropriate Static'
+  description: "Impossible to override. Painful to mock. Silently coupling everything that calls them. Static methods are convenient right up until the behavior needs to vary: then they're a dead end."
   known_as:
     - Static Cling
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Object Oriented Abusers
   occurrence:
@@ -35,8 +35,8 @@ problems:
 refactors:
   - Inject Dependencies
 history:
-  - author: "Robert Martin"
-    type: "origin"
+  - author: 'Robert Martin'
+    type: 'origin'
     named_as:
       - Inappropriate Static
     regarded_as:
@@ -45,11 +45,11 @@ history:
       year: 2008
       authors:
         - Robert C. Martin
-      name: "Clean Code: A Handbook of Agile Software Craftsmanship"
-      type: "book"
+      name: 'Clean Code: A Handbook of Agile Software Craftsmanship'
+      type: 'book'
       href:
-        isbn_13: "978-0132350884"
-        isbn_10: "9780132350884"
+        isbn_13: '978-0132350884'
+        isbn_10: '9780132350884'
 ---
 
 ## Inappropriate Static

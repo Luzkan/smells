@@ -1,13 +1,13 @@
 ---
-slug: "feature-envy"
+slug: 'feature-envy'
 meta:
   last_update_date: 2022-04-19
-  title: "Feature Envy"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Feature Envy'
+  description: "A method that touches another class's fields more than its own. It was written in the wrong place and belongs closer to the data it can't stop reaching for."
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Couplers
   occurrence:
@@ -42,8 +42,8 @@ refactors:
   - Move Field
   - Extract Method
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Feature Envy
     regarded_as:
@@ -54,11 +54,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Feature Envy
@@ -82,6 +82,8 @@ Difficult to create proper test or tests in separation. Mocking is required.
 Coupled objects have to be used together. This can cause lousy duplication issues if one tries to reuse applicable code by extracting and cutting off what he does not need.
 
 #### **Bijection Problems**
+
+Real-world domain concepts and their code representations drift apart when behavior lives far from the data it operates on.
 
 ### Example
 

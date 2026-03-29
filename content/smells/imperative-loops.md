@@ -1,15 +1,15 @@
 ---
-slug: "imperative-loops"
+slug: 'imperative-loops'
 meta:
   last_update_date: 2022-04-19
-  title: "Imperative Loops"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Imperative Loops'
+  description: 'for(i=0; i<len; i++) — the ceremony of manually tracking indexes, accumulating results, and handling off-by-one errors, when a map, filter, or built-in says the same thing in one line.'
   known_as:
     - Explicitly Indexed Loops
     - Indexed Loops
     - Loops
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Functional Abusers
   occurrence:
@@ -53,22 +53,22 @@ refactors:
   - Replace Loop with Pipeline
   - Replace Loop with built-in
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Imperative Loops
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
-  - author: "Martin Fowler"
-    type: "parentage"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
+  - author: 'Martin Fowler'
+    type: 'parentage'
     named_as:
       - Loops
     regarded_as:
@@ -77,13 +77,13 @@ history:
       year: 2018
       authors:
         - Martin Fowler
-      name: "Refactoring: Improving the Design of Existing Code"
-      named_as: "Loops"
-      regarded_as: "Code Smell"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      named_as: 'Loops'
+      regarded_as: 'Code Smell'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Imperative Loops
@@ -115,9 +115,9 @@ In contrast to pipelines, loops don't provide declarative readability of what is
 Explicitly Indexed Loop
 
 ```js
-const examples = ["foo", "bar", "baz"]
+const examples = ['foo', 'bar', 'baz'];
 for (let idx = 0; idx < examples.length; idx++) {
-  console.log(examples[idx])
+  console.log(examples[idx]);
 }
 ```
 
@@ -126,8 +126,8 @@ for (let idx = 0; idx < examples.length; idx++) {
 Handsome `forEach` Loop ("`For-In Loop`" / "`For-Of Loop`")
 
 ```js
-const examples = ["foo", "bar", "baz"]
-examples.forEach((example) => console.log(example))
+const examples = ['foo', 'bar', 'baz'];
+examples.forEach((example) => console.log(example));
 ```
 
 </div>
@@ -139,14 +139,14 @@ examples.forEach((example) => console.log(example))
 [Clever Code](./clever-code.md), [Flag](./flag-argument.md) and Explicit Iterator Loop
 
 ```js
-const examples = ["foo", "bar", "baz"]
-let bar_in_examples = false
+const examples = ['foo', 'bar', 'baz'];
+let bar_in_examples = false;
 for (let idx = 0; idx < examples.length; idx++) {
-  if (examples[idx] == "bar") {
-    bar_in_examples = true
+  if (examples[idx] == 'bar') {
+    bar_in_examples = true;
   }
 }
-console.log(bar_in_examples) // true
+console.log(bar_in_examples); // true
 ```
 
 #### Solution
@@ -154,8 +154,8 @@ console.log(bar_in_examples) // true
 Built-In function instead
 
 ```js
-const examples = ["foo", "bar", "baz"]
-console.log(examples.includes("foo")) // true
+const examples = ['foo', 'bar', 'baz'];
+console.log(examples.includes('foo')); // true
 ```
 
 </div>

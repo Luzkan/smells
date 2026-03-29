@@ -1,0 +1,8 @@
+[
+  {
+    "name": "Total client JS",
+    "path": "dist/_astro/*.js",
+    "limit": "43 KB",
+    "gzip": true
+  }
+]

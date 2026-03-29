@@ -1,0 +1,112 @@
+---
+description: Astro architecture, component patterns, island strategy, styling approach
+globs: src/**,astro.config.mjs
+alwaysApply: false
+---
+
+# Architecture
+
+## Stack
+
+| Layer | Technology | Version | Notes |
+|-------|-----------|---------|-------|
+| Framework | Astro | 5.x | Content collections via glob loader |
+| Islands | Preact | 10.x | Via `@astrojs/preact`. Only FilterSidebar and CodeExample |
+| Shared State | Nano Stores | latest | `@nanostores/preact` for islands, vanilla subscriber for static HTML |
+| Styling | Tailwind CSS | 4.x | Via `@tailwindcss/vite` plugin (not `@astrojs/tailwind`) |
+| Fonts | Fontsource | latest | Self-hosted Fraunces, Plus Jakarta Sans, JetBrains Mono |
+| Syntax Highlighting | Shiki | built-in | Dual-theme: github-light / github-dark |
+| View Transitions | Astro `<ClientRouter />` | — | Crossfade default |
+| Testing | Vitest + Playwright | latest | Unit, integration, E2E (6-browser matrix on main) |
+
+## Content Collections
+
+Defined in `src/content.config.ts` using Astro 5 glob loader:
+
+```ts
+defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './content/smells' }),
+  schema: smellSchema,
+})
+```
+
+`base` resolves relative to the project root (where `astro.config.mjs` lives), NOT relative to `src/content.config.ts`. Content files stay at `content/smells/` — no move, no symlinks.
+
+The `---` null placeholder in YAML arrays is handled via Zod `.transform(arr => arr.filter(v => v !== '---'))` in `src/schemas/smell.ts`.
+
+## Routing
+
+| Route | File | Description |
+|-------|------|-------------|
+| `/` | `src/pages/index.astro` | Catalog with hero, filter sidebar, card grid |
+| `/smells/[slug]` | `src/pages/smells/[slug].astro` | Individual smell article (56 pages) |
+| `/about` | `src/pages/about.astro` | About page |
+| `/rss.xml` | `src/pages/rss.xml.ts` | RSS feed |
+| Custom 404 | `src/pages/404.astro` | 404 with fuzzy matching and diagnoses |
+
+Uses `[slug].astro` (not `[...slug].astro`) because all 56 slugs are flat — rest params would let `/smells/foo/bar` match instead of 404ing.
+
+## Internal Links
+
+Remark plugin `src/plugins/remark-smell-links.ts` rewrites `[Name](./slug.md)` to `<a href="/smells/slug">Name</a>` at build time. Keeps content files portable.
+
+## Remark Plugin Pipeline
+
+Configured in `astro.config.mjs`. Ordering is load-bearing:
+
+1. `remark-smell-links` — rewrite `./slug.md` links while headings are still original
+2. `remark-overview-heading` — normalize first H2 to "Overview"
+3. `remark-strip-sections` — strip sections rendered by Astro components (Problems, Example, Refactoring, Sources)
+4. `remark-callout-sections` — wrap remaining callout sections
+
+## Islands Architecture
+
+Most pages ship **zero framework JavaScript**. Preact is used only for two interactive components:
+
+| Component | Hydration | Location |
+|-----------|-----------|----------|
+| FilterSidebar | `client:load` | Catalog — includes search input, dimension filters, active pills, mobile bottom sheet |
+| CodeExample | `client:visible` | Article pages — smelly/solution code toggle with copy button |
+
+**Everything else uses inline `<script>` tags** in Astro components:
+- ThemeToggle — DOM read + CSS write
+- Nav scroll behavior and active link tracking
+- ToC scroll spy — IntersectionObserver
+- Card visibility — Nano Store subscriber toggling CSS classes
+- Catalog toolbar (view toggle, sort)
+- Footer citation copy, 404 fuzzy search, analytics consent
+
+### Nano Stores
+
+FilterSidebar (Preact) must show/hide static HTML cards. Nano Stores (~1KB, framework-agnostic) bridges the gap:
+- Filter state lives in stores (`src/stores/filters.ts`, `src/stores/search.ts`)
+- Derived stores compute filtered results (`src/stores/derived/filtered-smells.ts`, `filter-counts.ts`, `active-count.ts`)
+- FilterSidebar writes to the stores
+- Inline `<script>` on the catalog page subscribes and toggles CSS classes on cards
+
+### Error Boundaries
+
+Every Preact island has an error boundary with graceful degradation:
+- FilterSidebar error -> show all cards unfiltered
+- CodeExample error -> show "Smelly" panel as static HTML
+- Site must work without JS
+
+## Theme
+
+Blocking inline `<script>` in `<head>` reads `localStorage` / `prefers-color-scheme` and sets `data-theme` before first paint. Prevents flash. Theme toggle is an inline script, not Preact.
+
+## View Transitions
+
+Uses `astro:page-load` and `astro:before-swap` events for lifecycle management. Components register via `src/lib/lifecycle.ts`:
+- `initOnce(selector, setup)` — finds the first element matching `selector`, runs `setup` once per DOM node (WeakSet dedup). If `setup` returns a cleanup function, it runs on `astro:before-swap`. Re-runs on each `astro:page-load`.
+- `initAll(selector, setup)` — same pattern but for `querySelectorAll` (multiple roots).
+
+## What NOT to Add
+
+- No Redux / global state library — Nano Stores only
+- No GraphQL — Astro content collections provide typed data directly
+- No MUI / component library — Tailwind + custom components
+- No Partytown — GA4 reliability issues not worth the complexity for one script
+- No Pagefind / server-side search — 56 items searched client-side
+- No service worker — the old one caused caching headaches; kill switch deployed
+- No `@astrojs/vercel` adapter — static output only, Vercel auto-detects Astro

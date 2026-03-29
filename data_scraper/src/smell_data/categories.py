@@ -1,6 +1,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
+from data_scraper.src.smell_data.normalization import normalize_string_array
+
 
 @dataclass(frozen=True)
 class Categories:
@@ -14,8 +16,8 @@ class Categories:
     def init(categories: dict) -> 'Categories':
         return Categories(
             expanse=categories['expanse'],
-            obstruction=categories['obstruction'],
-            occurrence=categories['occurrence'],
-            tags=categories['tags'],
-            smell_hierarchies=categories['smell_hierarchies'],
+            obstruction=list(categories['obstruction']),
+            occurrence=list(categories['occurrence']),
+            tags=normalize_string_array(categories.get('tags')),
+            smell_hierarchies=list(categories['smell_hierarchies']),
         )

@@ -1,13 +1,13 @@
 ---
-slug: "flag-argument"
+slug: 'flag-argument'
 meta:
   last_update_date: 2022-04-19
-  title: "Flag Argument"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Flag Argument'
+  description: 'A boolean parameter that forces the caller to write book(marcel, false) — and everyone who reads it to wonder: false what?'
   known_as:
     - Boolean in Method Parameter
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Change Preventers
   occurrence:
@@ -59,8 +59,8 @@ refactors:
   - Remove Flag Argument
   - Extract Method
 history:
-  - author: "Robert C. Martin"
-    type: "origin"
+  - author: 'Robert C. Martin'
+    type: 'origin'
     named_as:
       - Flag Arguments
     regarded_as:
@@ -69,13 +69,13 @@ history:
       year: 2008
       authors:
         - Robert C. Martin
-      name: "Clean Code: A Handbook of Agile Software Craftsmanship"
-      type: "book"
+      name: 'Clean Code: A Handbook of Agile Software Craftsmanship'
+      type: 'book'
       href:
-        isbn_13: "978-0132350884"
-        isbn_10: "9780132350884"
-  - author: "Martin Fowler"
-    type: "parentage"
+        isbn_13: '978-0132350884'
+        isbn_10: '9780132350884'
+  - author: 'Martin Fowler'
+    type: 'parentage'
     named_as:
       - Remove Flag Argument
     regarded_as:
@@ -86,16 +86,16 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Flag Argument
 
-Martin Fowler defines Flag Arguments as a "kind of function argument that tells the function to carry out a different operation depending on its value." [[1](#sources)] There are two reasons why this is smelly. First of all - it can be a candidate for [Boolean Blindness](./boolean-blindness.md) Code Smell. Fowler gives a great example with _Concert_ class and the` book(customer: Customer, is_premium: bool)` method. While reading the code, without knowing much more context, one will be stopped by invocation of this method: `book(marcel, false)` - excuse me, but precisely what "`false`"? The situation is clear if the method is divided into two separate parts instead of using a flag argument. Then, calling a method that provides more meaning through a name like `regularBook(marcel)` is much better in terms of comprehensibility.
+Martin Fowler defines Flag Arguments as a "kind of function argument that tells the function to carry out a different operation depending on its value." [[1](#sources)] There are two reasons why this is smelly. First of all - it can be a candidate for [Boolean Blindness](./boolean-blindness.md) Code Smell. Fowler gives a great example with _Concert_ class and the `book(customer: Customer, is_premium: bool)` method. While reading the code, without knowing much more context, one will be stopped by invocation of this method: `book(marcel, false)` - excuse me, but precisely what "`false`"? The situation is clear if the method is divided into two separate parts instead of using a flag argument. Then, calling a method that provides more meaning through a name like `regularBook(marcel)` is much better in terms of comprehensibility.
 
 The second problem is that it might be a cocoon phase before it develops into a beautiful full-fledged [Conditional Complexity](./conditional-complexity.md). First, what you see is `is_premium: bool`. The second time you come by, it is already transformed to `ticket_type: str,` switching through different options based on the value and the smell of the [Primitive Obsession](./primitive-obsession.md) on top.
 
@@ -114,6 +114,8 @@ In most cases, you will not know what `false` or what `true` is going on until y
 Boolean as a flag argument implies that a method has two ways of working.
 
 ### Example
+
+<div class="example-block">
 
 #### Smelly
 
@@ -140,6 +142,8 @@ class Concert:
 
 book_regular(marcel)
 ```
+
+</div>
 
 ### Refactoring:
 

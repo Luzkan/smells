@@ -1,13 +1,13 @@
 ---
-slug: "lazy-element"
+slug: 'lazy-element'
 meta:
   last_update_date: 2022-04-19
-  title: "Lazy Element"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Lazy Element'
+  description: "The meeting that could have been an email — except it's a class. One field, one method that just delegates to another, an abstraction that costs more in complexity than it ever returns in clarity."
   known_as:
     - Lazy Class
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Dispensables
   occurrence:
@@ -45,8 +45,8 @@ refactors:
   - Inline Function
   - Collapse Hierarchy
 history:
-  - author: "Martin Fowler"
-    type: "update"
+  - author: 'Martin Fowler'
+    type: 'update'
     named_as:
       - Lazy Element
     regarded_as:
@@ -55,13 +55,13 @@ history:
       year: 2018
       authors:
         - Martin Fowler
-      name: "Refactoring: Improving the Design of Existing Code (3rd Edition)"
-      named_as: "Lazy Element"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code (3rd Edition)'
+      named_as: 'Lazy Element'
+      type: 'book'
       href:
-        isbn_13: "978-0134757681"
-  - author: "Martin Fowler"
-    type: "origin"
+        isbn_13: '978-0134757681'
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Lazy Class
     regarded_as:
@@ -72,11 +72,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Lazy Element

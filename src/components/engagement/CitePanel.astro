@@ -1,0 +1,200 @@
+---
+import type { CitationData } from '../../lib/types';
+interface Props {
+  citation: CitationData;
+}
+
+import Icon from '../icons/Icon.astro';
+import { ICON_COPY } from '../../lib/icon-paths';
+import { SITE_URL } from '../../lib/constants';
+
+const { citation } = Astro.props;
+const { slug, title, author, year } = citation;
+const url = `${SITE_URL}/smells/${slug}`;
+---
+
+<div class="cite-panel" id="cite-panel" data-slug={slug} aria-hidden="true" inert>
+  <div class="cite-panel__inner">
+    <div class="cite-panel__header">
+      <span class="cite-panel__title">Cite this smell</span>
+      <div class="cite-tabs">
+        <button class="cite-tab cite-tab--active" data-format="bibtex">BibTeX</button>
+        <button class="cite-tab" data-format="apa">APA</button>
+        <button class="cite-tab" data-format="markdown">Markdown</button>
+      </div>
+    </div>
+    <div class="cite-block">
+      <pre
+        class="cite-block__code"
+        data-bibtex={`@misc{jerzyk${year}${slug.replace(/-/g, '')},\n  title  = {${title} — Code Smells Catalog},\n  author = {${author}},\n  year   = {${year}},\n  url    = {${url}}\n}`}
+        data-apa={`${author} (${year}). ${title} — Code Smells Catalog. ${url}`}
+        data-markdown={`[${title}](${url}) — *Code Smells Catalog* by ${author} (${year})`}>
+      </pre>
+      <button class="cite-copy-btn" title="Copy citation" aria-label="Copy citation">
+        <Icon icon={ICON_COPY} size={12} />
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { trackEvent } from '../../lib/analytics/tracker';
+  import { copyToClipboardWithFeedback } from '../../lib/copy-code';
+  import { initOnce } from '../../lib/lifecycle';
+
+  function toCiteFormat(value: string | null): 'bibtex' | 'apa' | 'markdown' {
+    if (value === 'apa' || value === 'markdown') return value;
+    return 'bibtex';
+  }
+
+  initOnce('.cite-panel', (citePanel) => {
+    const slug = citePanel.getAttribute('data-slug') || '';
+    const citeBlock = citePanel.querySelector('.cite-block__code');
+    if (!(citeBlock instanceof HTMLElement)) return;
+
+    citeBlock.textContent = citeBlock.getAttribute('data-bibtex') || '';
+
+    const tabs = citePanel.querySelectorAll('.cite-tab');
+    tabs.forEach((tab) => {
+      if (!(tab instanceof HTMLButtonElement)) return;
+      tab.addEventListener('click', () => {
+        tabs.forEach((candidate) => candidate.classList.remove('cite-tab--active'));
+        tab.classList.add('cite-tab--active');
+        const format = toCiteFormat(tab.getAttribute('data-format'));
+        citeBlock.textContent = citeBlock.getAttribute(`data-${format}`) || '';
+      });
+    });
+
+    const copyButton = citePanel.querySelector('.cite-copy-btn');
+    if (!(copyButton instanceof HTMLButtonElement)) return;
+
+    copyButton.addEventListener('click', async () => {
+      const copied = await copyToClipboardWithFeedback(citeBlock.textContent || '', copyButton, {
+        feedbackClass: 'cite-copy-btn--copied',
+      });
+      if (!copied) return;
+
+      const activeTab = citePanel.querySelector('.cite-tab--active');
+      const format = toCiteFormat(
+        activeTab instanceof HTMLElement ? activeTab.getAttribute('data-format') : null,
+      );
+      trackEvent({ name: 'cite_copy', params: { format, smell: slug } });
+    });
+  });
+</script>
+
+<style>
+  .cite-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    margin-bottom: 0;
+  }
+
+  .cite-panel[aria-hidden='false'] {
+    max-height: 300px;
+    margin-bottom: 4px;
+  }
+
+  .cite-panel__inner {
+    background: var(--surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 16px 28px 20px;
+  }
+
+  .cite-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .cite-panel__title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .cite-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .cite-tab {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-subtle);
+    background: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all var(--duration-fast);
+  }
+
+  .cite-tab--active {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .cite-tab:hover:not(.cite-tab--active) {
+    background: var(--surface-hover);
+  }
+
+  .cite-block {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 14px 44px 14px 14px;
+  }
+
+  .cite-block__code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+    /* Override global <pre> styles: keep citation text on the white cite-block surface. */
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .cite-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    transition: all var(--duration-fast);
+  }
+
+  .cite-copy-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .cite-copy-btn--copied {
+    color: var(--green);
+    border-color: var(--green);
+  }
+</style>

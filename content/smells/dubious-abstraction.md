@@ -1,16 +1,16 @@
 ---
-slug: "dubious-abstraction"
+slug: 'dubious-abstraction'
 meta:
   last_update_date: 2022-04-19
-  title: "Dubious Abstraction"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Dubious Abstraction'
+  description: "A method that orchestrates a business workflow but also opens its own database connection, mixing strategy with plumbing until you can't tell what level of abstraction you're reading."
   known_as:
     - Inconsistent Abstraction Levels
     - Functions Should Descend Only One Level of Abstraction
     - Code at Wrong Level of Abstraction
     - Choose Names at the Appropriate Level of Abstraction
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Change Preventers
   occurrence:
@@ -68,22 +68,22 @@ refactors:
   - Extract Subclass
   - Extract Class
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Dubious Abstraction
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
-  - author: "Steve Smith"
-    type: "parentage"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
+  - author: 'Steve Smith'
+    type: 'parentage'
     named_as:
       - Inconsistent Abstraction Levels
     regarded_as:
@@ -92,12 +92,12 @@ history:
       year: 2013
       authors:
         - Steve Smith
-      name: "Refactoring Fundamentals"
-      type: "course"
+      name: 'Refactoring Fundamentals'
+      type: 'course'
       href:
-        direct_url: "https://www.pluralsight.com/courses/refactoring-fundamentals"
-  - author: "Robert C. Martin"
-    type: "parentage"
+        direct_url: 'https://www.pluralsight.com/courses/refactoring-fundamentals'
+  - author: 'Robert C. Martin'
+    type: 'parentage'
     named_as:
       - Obscured Intent
     regarded_as:
@@ -106,11 +106,11 @@ history:
       year: 2008
       authors:
         - Robert C. Martin
-      name: "Clean Code: A Handbook of Agile Software Craftsmanship"
-      type: "book"
+      name: 'Clean Code: A Handbook of Agile Software Craftsmanship'
+      type: 'book'
       href:
-        isbn_13: "978-0132350884"
-        isbn_10: "9780132350884"
+        isbn_13: '978-0132350884'
+        isbn_10: '9780132350884'
 ---
 
 ## Dubious Abstraction

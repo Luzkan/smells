@@ -1,13 +1,13 @@
 ---
-slug: "incomplete-library-class"
+slug: 'incomplete-library-class'
 meta:
   last_update_date: 2022-04-19
-  title: "Incomplete Library Class"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Incomplete Library Class'
+  description: 'A third-party library that does 95% of what you need. The missing 5% means building workarounds that duplicate effort, drift from the original, and never feel like first-class code.'
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Other
   occurrence:
@@ -38,8 +38,8 @@ refactors:
   - Introduce Foreign Method
   - Introduce Local Extension
 history:
-  - author: "Martin Fowler"
-    type: "origin"
+  - author: 'Martin Fowler'
+    type: 'origin'
     named_as:
       - Incomplete Library Class
     regarded_as:
@@ -50,11 +50,11 @@ history:
         - Martin Fowler
         - Kent Beck (contributor)
         - Don Roberts (contributor)
-      name: "Refactoring: Improving the Design of Existing Code"
-      type: "book"
+      name: 'Refactoring: Improving the Design of Existing Code'
+      type: 'book'
       href:
-        isbn_13: "978-0201485677"
-        isbn_10: "0201485672"
+        isbn_13: '978-0201485677'
+        isbn_10: '0201485672'
 ---
 
 ## Incomplete Library Class

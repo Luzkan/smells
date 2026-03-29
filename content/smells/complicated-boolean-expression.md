@@ -1,13 +1,13 @@
 ---
-slug: "complicated-boolean-expression"
+slug: 'complicated-boolean-expression'
 meta:
   last_update_date: 2022-04-19
-  title: "Complicated Boolean Expression"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Complicated Boolean Expression'
+  description: "Reading it feels like solving a discrete math problem. The if-statement just checks whether a timer expired, but between the negations and conjunctions, you'd never guess that at a glance."
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Obfuscators
   occurrence:
@@ -31,7 +31,7 @@ relations:
       type:
         - caused
     - name: '"What" Comments'
-      slug: what-comments
+      slug: what-comment
       type:
         - causes
 problems:
@@ -47,8 +47,8 @@ refactors:
   - Use Guard Clauses
   - Simplify Conditional
 history:
-  - author: "William C. Wake"
-    type: "origin"
+  - author: 'William C. Wake'
+    type: 'origin'
     named_as:
       - Complicated Boolean Expression
     regarded_as:
@@ -57,11 +57,11 @@ history:
       year: 2004
       authors:
         - William C. Wake
-      name: "Refactoring Workbook"
-      type: "book"
+      name: 'Refactoring Workbook'
+      type: 'book'
       href:
-        isbn_13: "978-0321109293"
-        isbn_10: "0321109295"
+        isbn_13: '978-0321109293'
+        isbn_10: '0321109295'
 ---
 
 ## Complicated Boolean Expression
@@ -80,7 +80,7 @@ Similar to [Conditional Complexity](./conditional-complexity.md) - developers in
 
 #### Comprehensibility
 
-It's easier to read declarative words than to computate logic statements.
+It's easier to read declarative words than to compute logic statements.
 
 ### Example
 
@@ -99,6 +99,8 @@ if (timer.has_expired() and not timer.is_recurrent()):
 if (should_be_deleted(timer)):
     ...
 ```
+
+</div>
 
 <div class="example-block">
 

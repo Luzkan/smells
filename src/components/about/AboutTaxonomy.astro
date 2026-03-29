@@ -1,0 +1,641 @@
+---
+/**
+ * "Five Ways to Look at Every Smell" section — dimension cards with
+ * stretched-link pattern and "+N more" popover for overflow categories.
+ * Relies on shared section styles from about.astro.
+ */
+import Icon from '../icons/Icon.astro';
+import { ICON_ARROW_RIGHT } from '../../lib/icon-paths';
+import { getDimension, getDisplayLabel } from '../../lib/catalog/dimensions';
+import type { DimensionKey } from '../../lib/catalog/dimensions';
+
+interface ChipItem {
+  label: string;
+  value: string;
+}
+
+interface ChipInput {
+  value: string;
+  label?: string;
+}
+
+interface DimensionCardShared {
+  name: string;
+  dim: string;
+  color: string;
+  lightColor: string;
+  href: string;
+  iconSvg: string;
+  description: string;
+}
+
+interface FilterableDimensionCard extends DimensionCardShared {
+  dimensionKey: DimensionKey;
+  chips: ChipItem[];
+  moreChips?: ChipItem[];
+}
+
+interface StaticDimensionCard extends DimensionCardShared {
+  chips: readonly string[];
+  dimensionKey?: never;
+  moreChips?: never;
+}
+
+type DimensionCard = FilterableDimensionCard | StaticDimensionCard;
+
+function isFilterableDimensionCard(card: DimensionCard): card is FilterableDimensionCard {
+  return card.dimensionKey != null;
+}
+
+function toCssVar(token: string): string {
+  return `var(${token})`;
+}
+
+function toChip(dimensionKey: DimensionKey, chip: ChipInput): ChipItem {
+  return {
+    value: chip.value,
+    label: chip.label ?? getDisplayLabel(chip.value, dimensionKey),
+  };
+}
+
+function buildFilterableCard(input: {
+  dimensionKey: DimensionKey;
+  href: string;
+  iconSvg: string;
+  description: string;
+  chips: ChipInput[];
+  moreChips?: ChipInput[];
+}): FilterableDimensionCard {
+  const dimension = getDimension(input.dimensionKey);
+
+  return {
+    name: dimension.label,
+    dim: dimension.urlParam,
+    color: toCssVar(dimension.color),
+    lightColor: toCssVar(dimension.lightColor),
+    href: input.href,
+    iconSvg: input.iconSvg,
+    description: input.description,
+    dimensionKey: input.dimensionKey,
+    chips: input.chips.map((chip) => toChip(input.dimensionKey, chip)),
+    moreChips: input.moreChips?.map((chip) => toChip(input.dimensionKey, chip)),
+  };
+}
+
+const dimensions: DimensionCard[] = [
+  buildFilterableCard({
+    dimensionKey: 'expanse',
+    href: '/#expanse=Within',
+    iconSvg:
+      '<path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />',
+    description: 'How far it spreads. One class, or leaking across many.',
+    chips: [{ value: 'Within' }, { value: 'Between' }],
+  }),
+  {
+    name: 'Severity',
+    dim: 'severity',
+    color: 'var(--yellow)',
+    lightColor: 'var(--yellow-light)',
+    href: '/',
+    iconSvg:
+      '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />',
+    description: 'How bad is it? A quick triage call.',
+    chips: ['Major', 'Minor'],
+  },
+  buildFilterableCard({
+    dimensionKey: 'smell_hierarchies',
+    href: '/#hierarchy=Code+Smell',
+    iconSvg:
+      '<path d="M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm14 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />',
+    description: 'How deep it runs \u2014 from a single line to the whole architecture.',
+    chips: [{ value: 'Code Smell' }],
+    moreChips: [
+      { value: 'Design Smell' },
+      { value: 'Antipattern' },
+      { value: 'Architecture Smell', label: 'Architecture Smell' },
+      { value: 'Implementation Smell', label: 'Implementation Smell' },
+      { value: 'Linguistic Antipattern' },
+      { value: 'Linguistic Smell', label: 'Linguistic Smell' },
+    ],
+  }),
+  buildFilterableCard({
+    dimensionKey: 'obstruction',
+    href: '/#obstruction=Bloaters',
+    iconSvg: '<path d="M12 9v4m0 4h.01M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0z" />',
+    description: 'What it blocks. Why your code fights back.',
+    chips: [{ value: 'Bloaters' }, { value: 'Couplers' }, { value: 'Dispensables' }],
+    moreChips: [
+      { value: 'Change Preventers' },
+      { value: 'Data Dealers' },
+      { value: 'Functional Abusers' },
+      { value: 'Lexical Abusers' },
+      { value: 'Obfuscators' },
+      { value: 'Object Oriented Abusers' },
+      { value: 'Other' },
+    ],
+  }),
+  buildFilterableCard({
+    dimensionKey: 'occurrence',
+    href: '/#occurrence=Data',
+    iconSvg:
+      '<circle cx="12" cy="12" r="3" /><path d="M12 1v4m0 14v4m-9.5-9.5h4m14 0h4m-2.6-7.4-2.8 2.8m-9.2 9.2-2.8 2.8m0-14.8 2.8 2.8m9.2 9.2 2.8 2.8" />',
+    description: 'Where it shows up: data, names, interfaces, conditional logic.',
+    chips: [{ value: 'Data' }, { value: 'Names' }, { value: 'Interfaces' }],
+    moreChips: [
+      { value: 'Duplication' },
+      { value: 'Responsibility' },
+      { value: 'Measured Smells' },
+      { value: 'Unnecessary Complexity' },
+      { value: 'Message Calls', label: 'Message Calls' },
+      { value: 'Conditional Logic' },
+    ],
+  }),
+];
+
+function chipHref(card: FilterableDimensionCard, chip: ChipItem): string {
+  return `/#${getDimension(card.dimensionKey).urlParam}=${encodeURIComponent(chip.value)}`;
+}
+---
+
+<div class="about-section section-wide" id="sec-taxonomy">
+  <div class="section-label">Taxonomy</div>
+  <h2>Five Ways to Look at Every Smell</h2>
+  <p>
+    <strong>Most lists give you a name and move on.</strong> This catalog classifies each smell across
+    <strong>five independent dimensions</strong> &mdash; start from what&rsquo;s blocking you, where it
+    shows up, or how deep it goes.
+  </p>
+
+  <div class="taxonomy-grid">
+    {
+      dimensions.map((d) => (
+        <div
+          class="dim-card"
+          data-dim={d.dim}
+          style={`--dim-color: ${d.color}; --dim-light: ${d.lightColor}`}
+        >
+          <a class="dim-card__stretch" href={d.href} tabindex="-1" aria-hidden="true" />
+          <Icon icon={ICON_ARROW_RIGHT} class="dim-card__arrow" size={14} />
+          <div class="dim-card__header">
+            <div class="dim-card__icon">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+                set:html={d.iconSvg}
+              />
+            </div>
+            <a class="dim-card__name" href={d.href}>
+              {d.name}
+            </a>
+          </div>
+          <div class="dim-card__desc">{d.description}</div>
+          <div class="dim-card__values">
+            {isFilterableDimensionCard(d)
+              ? d.chips.map((chip) => (
+                  <a class="dim-card__chip" href={chipHref(d, chip)}>
+                    {chip.label}
+                  </a>
+                ))
+              : d.chips.map((chip) => <span class="dim-card__chip">{chip}</span>)}
+            {d.moreChips?.length && (
+              <button
+                class="dim-card__chip dim-card__chip--more"
+                type="button"
+                aria-expanded="false"
+                aria-label={`Show ${d.moreChips.length} more ${d.name} categories`}
+              >
+                +{d.moreChips.length} more
+              </button>
+            )}
+          </div>
+          {isFilterableDimensionCard(d) && d.moreChips?.length && (
+            <div class="dim-card__popover" role="group" aria-label={`All ${d.name} categories`}>
+              {d.moreChips.map((chip) => (
+                <a class="dim-card__popover-chip" href={chipHref(d, chip)}>
+                  {chip.label}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="taxonomy-aside">
+    <p class="taxonomy-aside__text">
+      &ldquo;Yes, classifying code smells along five dimensions is perhaps a bit obsessive.&rdquo;
+    </p>
+  </div>
+</div>
+
+<script>
+  import { initOnce } from '../../lib/lifecycle';
+
+  initOnce('#sec-taxonomy', (root) => {
+    function closeAllPopovers() {
+      root.querySelectorAll('.dim-card__popover.open').forEach((p) => {
+        p.classList.remove('open');
+        p.closest('.dim-card')?.classList.remove('has-popover');
+      });
+      root
+        .querySelectorAll<HTMLButtonElement>('.dim-card__chip--more[aria-expanded="true"]')
+        .forEach((btn) => {
+          btn.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    root.querySelectorAll<HTMLButtonElement>('.dim-card__chip--more').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        const card = btn.closest('.dim-card');
+        const popover = card?.querySelector('.dim-card__popover');
+        if (!popover || !card) return;
+
+        const isOpen = popover.classList.contains('open');
+        closeAllPopovers();
+
+        if (!isOpen) {
+          popover.classList.add('open');
+          card.classList.add('has-popover');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    function handleDocClick(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.dim-card__popover') && !target.closest('.dim-card__chip--more')) {
+        closeAllPopovers();
+      }
+    }
+
+    function handleDocKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape') closeAllPopovers();
+    }
+
+    document.addEventListener('click', handleDocClick);
+    document.addEventListener('keydown', handleDocKeydown);
+
+    return () => {
+      document.removeEventListener('click', handleDocClick);
+      document.removeEventListener('keydown', handleDocKeydown);
+    };
+  });
+</script>
+
+<style>
+  /* Grid — 6-column, 3 top + 2 bottom */
+  .taxonomy-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .taxonomy-grid :global(.dim-card:nth-child(1)),
+  .taxonomy-grid :global(.dim-card:nth-child(2)),
+  .taxonomy-grid :global(.dim-card:nth-child(3)) {
+    grid-column: span 2;
+  }
+
+  .taxonomy-grid :global(.dim-card:nth-child(4)) {
+    grid-column: 1 / span 3;
+  }
+
+  .taxonomy-grid :global(.dim-card:nth-child(5)) {
+    grid-column: 4 / span 3;
+  }
+
+  /* Dimension card — stretched-link pattern */
+  .dim-card {
+    position: relative;
+    background: color-mix(in srgb, var(--dim-color) 3%, var(--surface));
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    overflow: visible;
+    cursor: pointer;
+    color: inherit;
+    display: block;
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      transform 0.3s var(--ease-spring),
+      box-shadow 0.3s var(--ease-out),
+      border-color 0.3s;
+  }
+
+  /* Invisible link covering the whole card for click-anywhere navigation */
+  .dim-card__stretch {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: var(--radius-md);
+  }
+
+  .dim-card:global(.has-popover) {
+    z-index: 5;
+  }
+
+  :global(.about-section.revealed) .dim-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.5s var(--ease-spring),
+      box-shadow 0.3s var(--ease-out),
+      border-color 0.3s;
+  }
+
+  :global(.about-section.revealed) .dim-card:nth-child(1) {
+    transition-delay: 0s;
+  }
+  :global(.about-section.revealed) .dim-card:nth-child(2) {
+    transition-delay: 0.06s;
+  }
+  :global(.about-section.revealed) .dim-card:nth-child(3) {
+    transition-delay: 0.12s;
+  }
+  :global(.about-section.revealed) .dim-card:nth-child(4) {
+    transition-delay: 0.2s;
+  }
+  :global(.about-section.revealed) .dim-card:nth-child(5) {
+    transition-delay: 0.26s;
+  }
+
+  .dim-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--dim-color);
+    opacity: 0.6;
+    transition: opacity 0.3s;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .dim-card :global(.dim-card__arrow) {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.25s var(--ease-out);
+    color: var(--text-tertiary);
+  }
+
+  @media (hover: hover) {
+    .dim-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: color-mix(in srgb, var(--dim-color) 40%, var(--border));
+    }
+
+    .dim-card:hover::before {
+      opacity: 1;
+    }
+
+    .dim-card:hover .dim-card__icon {
+      transform: scale(1.1);
+    }
+
+    .dim-card:hover :global(.dim-card__arrow) {
+      opacity: 0.6;
+      transform: translateX(0);
+    }
+  }
+
+  .dim-card:active {
+    transform: translateY(-1px) scale(0.99);
+  }
+
+  /* Card internals */
+  .dim-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .dim-card__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--dim-light);
+    color: var(--dim-color);
+    transition: transform 0.3s var(--ease-spring);
+  }
+
+  .dim-card__name {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    font-variation-settings: 'opsz' 32;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .dim-card__desc {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  /* Chip row — elevated above stretched link for independent click targets */
+  .dim-card__values {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .dim-card__chip {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: var(--surface-raised);
+    text-decoration: none;
+    transition: all 0.2s var(--ease-smooth);
+  }
+
+  a.dim-card__chip:hover {
+    border-color: var(--dim-color);
+    color: var(--dim-color);
+    background: var(--dim-light);
+  }
+
+  .dim-card__chip--more {
+    color: var(--dim-color);
+    font-style: italic;
+    font-family: inherit;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    border-color: color-mix(in srgb, var(--dim-color) 30%, var(--border));
+    cursor: pointer;
+  }
+
+  .dim-card__chip--more:hover {
+    background: var(--dim-light);
+  }
+
+  /* Popover — drops below the card, animated via visibility + opacity */
+  .dim-card__popover {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    margin-top: 6px;
+    padding: 12px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    z-index: 10;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      visibility 0s 0.15s;
+  }
+
+  .dim-card__popover:global(.open) {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      visibility 0s;
+  }
+
+  .dim-card__popover-chip {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: var(--surface);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .dim-card__popover-chip:hover {
+    border-color: var(--dim-color);
+    color: var(--dim-color);
+    background: var(--dim-light);
+  }
+
+  /* Quip aside */
+  .taxonomy-aside {
+    text-align: center;
+    margin-top: 36px;
+    padding: 24px;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 0.6s var(--ease-out) 0.6s,
+      transform 0.5s var(--ease-out) 0.6s;
+  }
+
+  :global(.about-section.revealed) .taxonomy-aside {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .taxonomy-aside::before,
+  .taxonomy-aside::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto;
+  }
+
+  .taxonomy-aside::before {
+    margin-bottom: 20px;
+  }
+
+  .taxonomy-aside::after {
+    margin-top: 20px;
+  }
+
+  .taxonomy-aside__text {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-style: italic;
+    font-weight: 350;
+    color: var(--text-primary);
+    font-variation-settings: 'opsz' 20;
+    letter-spacing: 0.005em;
+    line-height: 1.6;
+    transform: rotate(-0.4deg);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) and (min-width: 701px) {
+    .taxonomy-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .taxonomy-grid :global(.dim-card:nth-child(n)) {
+      grid-column: auto;
+    }
+
+    .taxonomy-grid :global(.dim-card:nth-child(5)) {
+      grid-column: 1 / -1;
+      max-width: 50%;
+      margin: 0 auto;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .taxonomy-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .taxonomy-grid :global(.dim-card:nth-child(n)) {
+      grid-column: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dim-card {
+      opacity: 1;
+      transform: none;
+    }
+
+    .taxonomy-aside {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

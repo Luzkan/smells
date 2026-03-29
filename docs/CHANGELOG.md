@@ -2,7 +2,54 @@
 
 All notable changes to this project will be documented in this file.
 
-[Git Versioniser](https://github.com/Luzkan/GitVersioniser) automatically versions this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [`2.0.0`] - 2026-03-23
+
+**Complete rewrite — Gatsby → Astro 5.** New architecture, new design, same 56 smells.
+
+### Architecture
+
+- Migrated from Gatsby (React, Material UI) to **Astro 5** with static output
+- Adopted **Preact islands** for interactive components (FilterSidebar, CodeExample) — most pages ship zero framework JS
+- Replaced client-side state with **Nano Stores** (shared between islands and vanilla scripts)
+- Switched styling from Material UI to **Tailwind CSS v4** (via `@tailwindcss/vite`)
+- Self-hosted fonts via **Fontsource** (Fraunces, Plus Jakarta Sans, JetBrains Mono)
+- Content collections powered by Astro's glob loader with **Zod schema validation**
+- Custom **remark plugin pipeline** for smell cross-links, callout sections, and section extraction
+- View Transitions via Astro `<ClientRouter />` with lifecycle cleanup helpers
+
+### Added
+
+- **Catalog page**: filterable/searchable card grid with 5-dimension faceted filtering, URL hash state persistence, and keyboard navigation
+- **Article pages**: structured layout with table of contents, scroll spy, problem cards, refactoring list, code examples (smelly/clean toggle with compare mode), engagement bar (share, cite, feedback), prev/next navigation, and related smells
+- **Dark mode**: system-preference-aware with manual toggle, no FOUC (blocking inline script)
+- **SEO**: per-page Open Graph images, Twitter Cards, JSON-LD structured data for catalog, article, and about pages, canonical URLs, XML sitemap with CI verification, RSS feed
+- **Custom 404**: fuzzy slug matching with Levenshtein distance, humorous diagnoses, and suggested navigation
+- **About page**: origin story, taxonomy breakdown, anatomy walkthrough, research citations, and contributor acknowledgements
+- **Accessibility**: skip navigation, semantic landmarks, `aria-expanded`/`aria-hidden`/`inert` on interactive panels, axe-core E2E tests, keyboard navigation tests, reduced-motion support, print styles
+- **Analytics**: GA4 (consent-gated) and Vercel Web Analytics (production-only)
+- **Service worker kill switch** to unregister legacy Gatsby SW on returning visitors
+- **GitHub Pages redirect layer**: HTML meta-refresh redirects from `luzkan.github.io/smells` to `codesmells.org`
+- **CI pipeline**: ESLint + Prettier, Astro type-check, Vitest (unit + integration), build verification (56 pages, RSS, sitemap), bundle size budget (see `.size-limit.json`), Playwright E2E (6-browser matrix on main)
+- **OG image generation** script for all 56 smell articles
+- **Dependabot** for automated dependency updates
+
+### Changed
+
+- Deployment target moved from GitHub Pages to **Vercel** (static)
+- Domain changed from `luzkan.github.io/smells` to **`codesmells.org`** (with 301 redirects)
+- URL structure changed from `/smells/{slug}` hash-based to clean `/smells/{slug}` paths
+- Content frontmatter schema extended with `smell_hierarchies` dimension, typed relations, and structured `history` entries
+- All 56 smell articles updated with enriched metadata and consistent formatting
+
+### Removed
+
+- Gatsby, React, Material UI, and all associated dependencies
+- Client-side-only routing (replaced with static HTML + View Transitions)
+- GitVersioniser workflow (replaced with standard CI)
 
 ---
 
@@ -11,8 +58,6 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Create LICENSE (#19)
-
-
 
 ## [[`1.0.22`]] - 2023-03-28
 
@@ -25,8 +70,6 @@ All notable changes to this project will be documented in this file.
 
 - Added link to Springer Paper in footer and header
 
-
-
 ## [[`1.0.21`]] - 2022-09-02
 
 ### Typo
@@ -37,15 +80,11 @@ All notable changes to this project will be documented in this file.
 
 - Links to "Imperative Loops" article were adjusted
 
-
-
 ## [[`1.0.20`]] - 2022-09-02
 
 ### Typo
 
 - Added missing source to MF1999 for Global Data (#13) #patch
-
-
 
 ## [[`1.0.19`]] - 2022-09-02
 
@@ -57,23 +96,17 @@ All notable changes to this project will be documented in this file.
 
 - Updated Example of retrieving Foos in Fallacious Method Name
 
-
-
 ## [[`1.0.18`]] - 2022-09-02
 
 ### Typo
 
 - Martin Fowler's name (Marin - Martin) #patch
 
-
-
 ## [[`1.0.17`]] - 2022-08-28
 
 ### Documentation
 
 - Correct spelling of link to Martin Fowler's article. #patch
-
-
 
 ## [[`1.0.16-alpha.1`]] - 2022-08-28
 
@@ -85,8 +118,6 @@ All notable changes to this project will be documented in this file.
 ### Merge Branches
 
 - request #7 from Luzkan/ci/gitversioniser-preview-changes
-
-
 
 ## [[`1.0.14`]] - 2022-08-22
 
@@ -219,7 +250,7 @@ All notable changes to this project will be documented in this file.
   - [Callback Hell](../content/smells/callback-hell.md)
   - [Clever Code](../content/smells/clever-code.md)
   - [Combinatorial Explosion](../content/smells/combinatorial-explosion.md)
-  - [Complicated Boolean Expression](../content/smells/combinatorial-explosion.md)
+  - [Complicated Boolean Expression](../content/smells/complicated-boolean-expression.md)
   - [Complicated Regex Expression](../content/smells/complicated-regex-expression.md)
   - [Conditional Complexity](../content/smells/conditional-complexity.md)
   - [Data Clump](../content/smells/data-clump.md)
@@ -296,4 +327,5 @@ All notable changes to this project will be documented in this file.
 [`1.0.20`]: https://github.com/Luzkan/smells/releases/tag/1.0.20
 [`1.0.21`]: https://github.com/Luzkan/smells/releases/tag/1.0.21
 [`1.0.22`]: https://github.com/Luzkan/smells/releases/tag/1.0.22
+[`2.0.0`]: https://github.com/Luzkan/smells/releases/tag/2.0.0
 [`1.0.23-alpha.1`]: https://github.com/Luzkan/smells/releases/tag/1.0.23-alpha.1

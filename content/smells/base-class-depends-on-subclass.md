@@ -1,13 +1,13 @@
 ---
-slug: "base-class-depends-on-subclass"
+slug: 'base-class-depends-on-subclass'
 meta:
   last_update_date: 2022-04-19
-  title: "Base Class depends on Subclass"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Base Class depends on Subclass'
+  description: 'When a parent class reaches down to reference its own children, the inheritance tree grows upside down. Change a leaf, redeploy the trunk.'
   known_as:
     - Base Classes Depending on Their Derivatives
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Object Oriented Abusers
   occurrence:
@@ -35,8 +35,8 @@ problems:
 refactors:
   - ---
 history:
-  - author: "Robert C. Martin"
-    type: "origin"
+  - author: 'Robert C. Martin'
+    type: 'origin'
     named_as:
       - Base Classes Depending on Their Derivatives
     regarded_as:
@@ -45,11 +45,11 @@ history:
       year: 2008
       authors:
         - Robert C. Martin
-      name: "Clean Code: A Handbook of Agile Software Craftsmanship"
-      type: "book"
+      name: 'Clean Code: A Handbook of Agile Software Craftsmanship'
+      type: 'book'
       href:
-        isbn_13: "978-0132350884"
-        isbn_10: "9780132350884"
+        isbn_13: '978-0132350884'
+        isbn_10: '9780132350884'
 ---
 
 ## Base Class depends on Subclass

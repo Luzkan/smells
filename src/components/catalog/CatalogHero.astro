@@ -1,0 +1,208 @@
+---
+import BookIcon from '../icons/BookIcon.astro';
+import { SPRINGER_PAPER_URL } from '../../lib/constants';
+
+interface Props {
+  totalCount: number;
+  categoryCount: number;
+  hierarchyCount: number;
+}
+
+const { totalCount, categoryCount, hierarchyCount } = Astro.props;
+---
+
+<section class="catalog-hero">
+  {/* HERO-01: Fixed hero title */}
+  <h1>
+    A Curated Catalog of <em>Code Smells</em>
+  </h1>
+
+  {/* HERO-02: Fixed tagline */}
+  <p class="catalog-hero__tagline">
+    Every named code smell in one place — classified, connected, and fixable.
+  </p>
+
+  {/* HERO-03 + HERO-04: Interactive stats with corrected labels */}
+  <div class="catalog-hero__stats">
+    <a class="catalog-hero__stat" href="#grid" aria-label={`Browse all ${totalCount} code smells`}>
+      <div class="catalog-hero__stat-num">{totalCount}</div>
+      <div class="catalog-hero__stat-label">Code Smells</div>
+    </a>
+    <a
+      class="catalog-hero__stat"
+      href="#grid"
+      aria-label={`View ${categoryCount} obstruction types`}
+    >
+      <div class="catalog-hero__stat-num">{categoryCount}</div>
+      <div class="catalog-hero__stat-label">Obstruction Types</div>
+    </a>
+    <a class="catalog-hero__stat" href="#grid" aria-label={`Explore ${hierarchyCount} hierarchies`}>
+      <div class="catalog-hero__stat-num">{hierarchyCount}</div>
+      <div class="catalog-hero__stat-label">Hierarchies</div>
+    </a>
+  </div>
+
+  {/* HERO-05: Springer Nature trust badge */}
+  <a class="catalog-hero__trust" href={SPRINGER_PAPER_URL} target="_blank" rel="noopener">
+    <BookIcon class="catalog-hero__trust-icon" size={14} strokeWidth={2} />
+    Companion to peer-reviewed research published by <strong>Springer Nature</strong>
+  </a>
+</section>
+
+<style>
+  .catalog-hero {
+    text-align: center;
+    padding: clamp(32px, 4vw, 48px) 32px clamp(20px, 2.5vw, 32px);
+    max-width: 1400px;
+    margin: 0 auto;
+    margin-top: var(--nav-height);
+    position: relative;
+  }
+
+  .catalog-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -100vw;
+    right: -100vw;
+    background: radial-gradient(
+      ellipse 60% 80% at 50% 30%,
+      rgba(180, 83, 9, 0.04) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  :global([data-theme='dark']) .catalog-hero::before {
+    background: radial-gradient(
+      ellipse 60% 80% at 50% 30%,
+      rgba(217, 119, 6, 0.06) 0%,
+      transparent 70%
+    );
+  }
+
+  /* HERO-01: Title with italic amber "Code Smells" */
+  .catalog-hero h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-hero);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin-bottom: 14px;
+    font-variation-settings: 'opsz' 72;
+    text-wrap: balance;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.1s both;
+  }
+
+  .catalog-hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 300;
+  }
+
+  /* HERO-02: Tagline */
+  .catalog-hero__tagline {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    text-wrap: pretty;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.25s both;
+  }
+
+  /* Stats container */
+  .catalog-hero__stats {
+    display: flex;
+    justify-content: center;
+    gap: clamp(24px, 3vw, 48px);
+    margin-top: clamp(18px, 2.5vw, 28px);
+    animation: heroBlurIn 0.9s var(--ease-out) 0.4s both;
+  }
+
+  /* HERO-04: Interactive stats — clickable with hover lift */
+  .catalog-hero__stat {
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    margin: -8px -16px;
+    transition: all 0.25s var(--ease-smooth);
+  }
+
+  .catalog-hero__stat:hover {
+    background: var(--surface-raised);
+    transform: translateY(-2px);
+  }
+
+  .catalog-hero__stat:hover .catalog-hero__stat-label {
+    color: var(--accent);
+  }
+
+  .catalog-hero__stat:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.08s;
+  }
+
+  .catalog-hero__stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 1.5rem + 1.8vw, 3rem);
+    color: var(--text-primary);
+    line-height: 1.15;
+    font-weight: 300;
+    font-variation-settings: 'opsz' 48;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* HERO-03: Corrected stat labels */
+  .catalog-hero__stat-label {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    font-weight: 600;
+    transition: color var(--duration-fast) var(--ease-smooth);
+  }
+
+  /* HERO-05: Springer Nature trust badge */
+  .catalog-hero__trust {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    letter-spacing: 0.02em;
+    margin-top: clamp(16px, 2vw, 24px);
+    font-weight: 500;
+    animation: heroBlurIn 0.9s var(--ease-out) 0.55s both;
+    padding: 6px 14px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    transition: all 0.25s var(--ease-smooth);
+    text-decoration: none;
+  }
+
+  .catalog-hero__trust:hover {
+    border-color: var(--border);
+    color: var(--text-secondary);
+  }
+
+  .catalog-hero__trust strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .catalog-hero__trust-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+</style>

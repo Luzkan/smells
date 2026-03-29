@@ -1,0 +1,689 @@
+@import 'tailwindcss';
+
+/* ============================================
+   THEME BLOCK — Tailwind CSS v4
+   Registers fonts, easings, radii, breakpoints,
+   and semantic color aliases as design tokens.
+   ============================================ */
+@theme {
+  /* Font families */
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'Fira Code', monospace;
+
+  /* Easings */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Durations */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.5s;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 100px;
+
+  /* Breakpoints */
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1100px;
+  --breakpoint-xl: 1200px;
+
+  /* Fluid type scale */
+  --text-xs: clamp(0.625rem, 0.59rem + 0.18vw, 0.75rem);
+  --text-sm: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-base: clamp(0.875rem, 0.83rem + 0.22vw, 1rem);
+  --text-lg: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.2rem + 1.5vw, 1.875rem);
+  --text-3xl: clamp(1.75rem, 1.3rem + 2.25vw, 2.75rem);
+  --text-hero: clamp(2.5rem, 2rem + 3vw, 3.5rem);
+
+  /* Semantic color aliases — resolved from CSS custom properties */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-hover: var(--accent-hover);
+}
+
+/* State class convention:
+   - Component state uses BEM modifiers (e.g. --active, --open, --copied).
+   - Bare classes are reserved for global utilities. */
+
+/* ============================================
+   Z-INDEX SCALE (CSS Custom Properties)
+   ============================================ */
+:root {
+  --z-grain: 50;
+  --z-nav: 100;
+  --z-overlay: 300;
+  --z-sheet: 310;
+  --z-skip: 1000;
+}
+
+/* ============================================
+   LIGHT MODE TOKENS — :root
+   Color philosophy: warm stone palette — the colors
+   of leather, aged paper, coffee. "Knowledge artifact"
+   rather than "software dashboard."
+   ============================================ */
+:root {
+  /* Surfaces */
+  /* Keep this aligned with THEME_COLOR_LIGHT in src/lib/theme-contract.ts. */
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-raised: #f5f3ef;
+  --surface-hover: #edebe5;
+  --border: #e3e0d8;
+  --border-subtle: #eceae3;
+
+  /* Text — warm stone, not cold gray */
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --text-tertiary: #736c67;
+
+  /* Accent — deep amber */
+  --accent: #b45309;
+  --accent-light: #fff7ed;
+  --accent-hover: #92400e;
+  --accent-glow: rgba(180, 83, 9, 0.12);
+  --nav-backdrop: rgba(250, 249, 246, 0.82);
+  --nav-shadow-scrolled: 0 1px 8px rgba(28, 25, 23, 0.06);
+  --logo-nav-secondary: #9a4a08;
+  --search-input-bg: var(--surface);
+
+  /* Semantic colors — warm-shifted */
+  --green: #15803d;
+  --green-light: #f0fdf4;
+  --blue: #2451b3;
+  --blue-light: #eef4fc;
+  --purple: #7b2fa8;
+  --purple-light: #f9f5ff;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --yellow: #ca8a04;
+  --yellow-light: #fefce8;
+  --highlight-bg: rgba(202, 138, 4, 0.18);
+  --teal: #0f766e;
+  --teal-light: #f0fdfa;
+
+  /* Category color (default) */
+  --category-color: var(--purple);
+  --category-light: var(--purple-light);
+
+  /* Shadows — warm-tinted */
+  --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-md: 0 4px 14px rgba(28, 25, 23, 0.06);
+  --shadow-lg: 0 8px 30px rgba(28, 25, 23, 0.08);
+  --shadow-glow: 0 0 0 3px var(--accent-glow);
+
+  /* Layout */
+  --nav-height: 64px;
+  --sidebar-width: 272px;
+}
+
+/* ============================================
+   DARK MODE TOKENS — "reading by firelight"
+   Rich chocolate/espresso tones, not blue-black.
+   ============================================ */
+[data-theme='dark'] {
+  /* Keep this aligned with THEME_COLOR_DARK in src/lib/theme-contract.ts. */
+  --bg: #171412;
+  --surface: #211d19;
+  --surface-raised: #2b2520;
+  --surface-hover: #352f28;
+  --border: #3d362e;
+  --border-subtle: #302a23;
+
+  --text-primary: #f5ede4;
+  --text-secondary: #bfb3a4;
+  --text-tertiary: #958b84;
+
+  --accent: #d97706;
+  --accent-light: #2c2112;
+  --accent-hover: #e8a030;
+  --accent-glow: rgba(217, 119, 6, 0.15);
+  --nav-backdrop: rgba(23, 20, 18, 0.85);
+  --nav-shadow-scrolled: 0 1px 8px rgba(0, 0, 0, 0.25);
+  --logo-nav-secondary: var(--accent);
+  --search-input-bg: var(--surface-raised);
+
+  --green: #7dbf8b;
+  --green-light: #1a261c;
+  --blue: #8daee0;
+  --blue-light: #1c2133;
+  --purple: #a78bdb;
+  --purple-light: #221c32;
+  --category-light: #221c32;
+  --red: #e87c7c;
+  --red-light: #2b1919;
+  --yellow: #e8b560;
+  --yellow-light: #2b2214;
+  --highlight-bg: rgba(232, 181, 96, 0.2);
+  --teal: #5ab8b0;
+  --teal-light: #1a2625;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.38);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.48);
+  color-scheme: dark;
+}
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color-scheme: light;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  hanging-punctuation: first last;
+  overflow-x: hidden;
+}
+
+/* Keep first paint static while CSS finishes applying. */
+html[data-initial-transitions='locked'],
+html[data-initial-transitions='locked'] *,
+html[data-initial-transitions='locked'] *::before,
+html[data-initial-transitions='locked'] *::after {
+  transition: none !important;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.65;
+  font-size: var(--text-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'ss01', 'cv01';
+}
+
+/* Only animate theme paints after an explicit user toggle. */
+[data-theme-transitions='enabled'] html {
+  transition: background-color var(--duration-slow) var(--ease-smooth);
+}
+
+[data-theme-transitions='enabled'] body {
+  transition:
+    background-color var(--duration-slow) var(--ease-smooth),
+    color var(--duration-normal) var(--ease-smooth);
+}
+
+/* ============================================
+   TYPOGRAPHY DEFAULTS
+   ============================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+h2 {
+  font-size: var(--text-2xl);
+}
+h3 {
+  font-size: var(--text-xl);
+}
+h4 {
+  font-size: var(--text-lg);
+}
+
+p {
+  margin-block: 0.75em;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+a:hover {
+  color: var(--accent-hover);
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+pre {
+  background: var(--surface-raised);
+  padding: 1em;
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+/* Brand-matched selection */
+::selection {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+[data-theme='dark'] ::selection {
+  background: rgba(217, 119, 6, 0.3);
+  color: #f5ede4;
+}
+
+/* ============================================
+   PAPER GRAIN TEXTURE
+   Analog warmth — feels printed rather than rendered.
+   Uses SVG-based fractal noise for a subtle grain effect.
+   ============================================ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: var(--z-grain);
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+[data-theme='dark'] body::after {
+  mix-blend-mode: soft-light;
+  opacity: 0.25;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ============================================
+   FOCUS-VISIBLE — warm amber glow for keyboard users
+   ============================================ */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  box-shadow: var(--shadow-glow);
+}
+
+.smell-card:has(.smell-card__link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  box-shadow: var(--shadow-glow);
+}
+
+/* ============================================
+   SKIP-NAV — visually hidden until focused
+   ============================================ */
+.skip-nav {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-skip);
+  background: var(--accent);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--duration-fast) var(--ease-out);
+}
+
+.skip-nav:focus {
+  top: 0;
+  color: white;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/* cardReveal — filter reveals a hidden card */
+@keyframes cardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-entering {
+  animation: cardReveal 0.3s var(--ease-out) both;
+  animation-delay: calc(var(--card-index, 0) * 30ms);
+}
+
+/* toggleSpin — theme toggle click */
+@keyframes toggleSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.85);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* heroBlurIn — page entrance */
+@keyframes heroBlurIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* diceShake — shared random-button hover animation */
+@keyframes diceShake {
+  0% {
+    transform: translateX(0) rotate(0);
+  }
+  15% {
+    transform: translateX(-2.5px) rotate(-6deg);
+  }
+  30% {
+    transform: translateX(2.5px) rotate(5deg);
+  }
+  45% {
+    transform: translateX(-1.5px) rotate(-3deg);
+  }
+  65% {
+    transform: translateX(1px) rotate(2deg);
+  }
+  80% {
+    transform: translateX(-0.5px) rotate(-1deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+}
+
+/* View Transition animations */
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vt-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-out 0.2s var(--ease-smooth);
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 0.2s var(--ease-smooth);
+}
+
+/* Search highlight marks inside catalog cards */
+mark.search-hl {
+  background: var(--highlight-bg);
+  color: var(--text-primary);
+  border-radius: 2px;
+  padding: 0 2px;
+  animation: hlReveal 0.2s var(--ease-out);
+}
+
+@keyframes hlReveal {
+  from {
+    background: transparent;
+  }
+}
+
+/* ============================================
+   CONT-01: Callout cards (Causation, Exceptions)
+   Built by remark-callout-sections plugin at build
+   time. Wraps content in .callout with accessible
+   sr-only heading + visual label.
+   ============================================ */
+
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--callout-color, var(--category-color));
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 20px 24px;
+  margin: 24px 0 32px;
+}
+
+.callout-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--callout-color, var(--category-color));
+  margin-bottom: 8px;
+}
+
+.callout p {
+  margin-bottom: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  max-width: none;
+}
+
+.callout p + p {
+  margin-top: 12px;
+}
+
+/* ============================================
+   SR-ONLY — screen-reader-only utility
+   ============================================ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   SHIKI — dual-theme dark-mode activation
+   Shiki multi-theme outputs --shiki-dark / --shiki-dark-bg
+   CSS vars; swap them in when dark mode is active.
+   ============================================ */
+[data-theme='dark'] .shiki,
+[data-theme='dark'] .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+/* ============================================
+   HIDDEN UTILITY
+   ============================================ */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================
+   CTA BUTTON UTILITY
+   Shared by 404 and About page primary actions.
+   ============================================ */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.cta-button:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  color: #fff;
+}
+
+[data-theme='dark'] .cta-button,
+[data-theme='dark'] .cta-button:hover {
+  color: var(--bg);
+}
+
+/* ============================================
+   GHOST BUTTON UTILITY
+   Shared by About page secondary actions.
+   ============================================ */
+.ghost-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.2s var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .ghost-button:hover {
+    background: var(--surface-raised);
+    border-color: var(--text-tertiary);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    transition-duration: 0.001s !important;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  body::after {
+    display: none;
+  }
+
+  .nav,
+  .skip-nav,
+  .theme-toggle,
+  .catalog-layout__sidebar,
+  .filter-sidebar__mobile-fab,
+  .filter-sidebar__sheet,
+  .filter-sidebar__sheet-overlay {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+    font-size: 12pt;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.8em;
+    color: #666;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    border: 1px solid #ccc;
+  }
+}

@@ -1,13 +1,13 @@
 ---
-slug: "side-effects"
+slug: 'side-effects'
 meta:
   last_update_date: 2022-04-19
-  title: "Side Effects"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Side Effects'
+  description: 'set_gold(amount) sounds simple enough. Except it also triggers a dancing animation and resets the payday timer. Methods that do more than their name promises hide behavior callers never asked for and debuggers never suspect.'
   known_as:
     - Impure Functions
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Functional Abusers
   occurrence:
@@ -46,21 +46,21 @@ refactors:
   - Extract Method
   - Extract Field
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Side Effects
       - Impure Functions
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
 ---
 
 ## Side Effects
@@ -70,7 +70,6 @@ The first or second most essential functional programming principle (interchange
 In a perfect scenario, when looking at a higher abstraction set of method calls, even an inexperienced bystander could tell what is happening more or less. The [code example](#example) appears to receive a player object identified by _Marcel Jerzyk_, sets its gold to zero, and manageable health status. That is great because one can make reasonable assumptions about the code... unless one cannot due to the side effects, which make these methods impure. By taking a closer look at the `set_gold(amount)` function, it turns out that, for some reason, this method triggers a dancing animation and resets the payday timer... of course, if one did not lose his trust yet, that the method names are representative of what they do.
 
 The method and function names should tell what they do and do only what is anticipated to maximize code comprehension. I want to note that developers should fix this by removing the side effects to separate methods and triggering them individually, not violating the Single Responsibility Principle. Changing the name to `set_gold_and_reset_payday(amount)`, would create [Binary Operator In Name](./binary-operator-in-name.md) Code Smell and another possible bad solution, `set_gold(amount: int, is_payday: bool)`, would cause [Flag Arguments](./flag-argument.md) Code Smell.
-
 
 ### Causation
 

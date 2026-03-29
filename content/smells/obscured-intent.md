@@ -1,13 +1,13 @@
 ---
-slug: "obscured-intent"
+slug: 'obscured-intent'
 meta:
   last_update_date: 2022-04-19
-  title: "Obscured Intent"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Obscured Intent'
+  description: 'You stare at the function for five minutes before realizing it calculates overtime pay. Between the single-letter variables, the magic numbers, and the missing whitespace, the intent is buried under layers of accidental obfuscation.'
   known_as:
     - ---
 categories:
-  expanse: "Between"
+  expanse: 'Between'
   obstruction:
     - Obfuscators
   occurrence:
@@ -30,10 +30,6 @@ relations:
       slug: magic-number
       type:
         - caused
-    - name: Region
-      slug: region
-      type:
-        - caused
     - name: Loops
       slug: imperative-loops
       type:
@@ -51,7 +47,7 @@ relations:
       type:
         - caused
     - name: '"What" Comments'
-      slug: what-comments
+      slug: what-comment
       type:
         - causes
 problems:
@@ -65,8 +61,8 @@ problems:
 refactors:
   - Remove the Code Smells
 history:
-  - author: "Robert C. Martin"
-    type: "origin"
+  - author: 'Robert C. Martin'
+    type: 'origin'
     named_as:
       - Obscured Intent
     regarded_as:
@@ -75,18 +71,18 @@ history:
       year: 2008
       authors:
         - Robert C. Martin
-      name: "Clean Code: A Handbook of Agile Software Craftsmanship"
-      type: "book"
+      name: 'Clean Code: A Handbook of Agile Software Craftsmanship'
+      type: 'book'
       href:
-        isbn_13: "978-0132350884"
-        isbn_10: "9780132350884"
+        isbn_13: '978-0132350884'
+        isbn_10: '0132350882'
 ---
 
 ## Obscured Intent
 
-The [Obscured Intent](./obscured-intent.md) Code Smell, initially proposed by Robert Martin in _"Clean Code"_ [[37](#sources)]), is cross-smelly with other smells in the **Obfuscators** category. When [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) are placed within a [Vertically Separated Space](./vertical-separation.md) hiding an [Imperative Loop](./imperative-loops.md) with a ["What" Comment](./what-comment.md) explanation on top of that, then the [Obscured Intent](./obscured-intent.md) is going to be caught quite easily by intuition or by metrics of other smells.
+The [Obscured Intent](./obscured-intent.md) Code Smell, initially proposed by Robert Martin in _"Clean Code"_ [[1](#sources)], is cross-smelly with other smells in the **Obfuscators** category. When [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) are placed within a [Vertically Separated Space](./vertical-separation.md) hiding an [Imperative Loop](./imperative-loops.md) with a ["What" Comment](./what-comment.md) explanation on top of that, then the [Obscured Intent](./obscured-intent.md) is going to be caught quite easily by intuition or by metrics of other smells.
 
-The code should be as expressive as possible [[1](#sources)]). Robert Martin gives an example of an utterly unreadable [overtime function](#Obscured-Intent) noting that even if the code is small and compact, it may still be tragic. In this case, correcting the [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) would probably do the trick to make that snippet of code much more fragrant.
+The code should be as expressive as possible [[1](#sources)]. Robert Martin gives an example of an utterly unreadable [overtime function](#Obscured-Intent) noting that even if the code is small and compact, it may still be tragic. In this case, correcting the [Uncommunicative Names](./uncommunicative-name.md)/[Numbers](./magic-number.md) would probably do the trick to make that snippet of code much more fragrant.
 
 There is a famous real-world example of an Obscured Intent. In the _Quake 3: Arena_ [fast inverse square root](#example-1), the problem is with the [Uncommunicative Naming](./uncommunicative-name.md), ["What" Comments](./what-comment.md), [Dead Code](./dead-code.md), and [Magic Numbers](./magic-number.md). I will also point out that games have a slightly different specificity for their industry. Usually, the code out there is very confusing, and priorities are not put on things such as reusability, so there is a lot to explore.
 
@@ -123,7 +119,7 @@ def m_ot_calc() -> int:
 
 Quake 3 Arena Fast Inverse Square Root
 
-```c++
+```cpp
 float Q_rsqrt( float number )
 {
         long i;

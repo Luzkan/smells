@@ -1,0 +1,184 @@
+---
+/**
+ * AnalyticsConsent — Calm, non-modal GA4 preference card.
+ *
+ * - Hidden by default; revealed when html[data-analytics-consent="pending"]
+ * - Controlled by head-level analytics-consent manager
+ * - transition:persist keeps the card stable across View Transitions
+ */
+---
+
+<aside
+  class="analytics-consent"
+  id="analytics-consent"
+  aria-labelledby="analytics-consent-title"
+  aria-describedby="analytics-consent-copy analytics-consent-note"
+  aria-hidden="true"
+  inert
+  transition:persist
+>
+  <div class="analytics-consent__eyebrow">Google Analytics</div>
+  <h2 class="analytics-consent__title" id="analytics-consent-title">Analytics preference</h2>
+  <p class="analytics-consent__copy" id="analytics-consent-copy">
+    Google Analytics is off by default. If you opt in, it helps measure which pages and features are
+    useful.
+  </p>
+  <p class="analytics-consent__note" id="analytics-consent-note">You can change this later.</p>
+
+  <div class="analytics-consent__actions">
+    <button
+      class="analytics-consent__button analytics-consent__button--allow"
+      id="analytics-consent-allow"
+      type="button"
+    >
+      Allow analytics
+    </button>
+    <button class="analytics-consent__button" id="analytics-consent-decline" type="button">
+      No thanks
+    </button>
+  </div>
+</aside>
+
+<style>
+  .analytics-consent {
+    position: fixed;
+    right: 18px;
+    bottom: max(18px, env(safe-area-inset-bottom));
+    z-index: 250;
+    width: min(360px, calc(100vw - 24px));
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--surface) 94%, white 6%), var(--surface)),
+      var(--surface);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(14px);
+    pointer-events: none;
+    transition:
+      opacity var(--duration-normal) var(--ease-smooth),
+      transform var(--duration-normal) var(--ease-out);
+  }
+
+  .analytics-consent::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    background: color-mix(in srgb, var(--accent) 72%, transparent);
+  }
+
+  :global(html[data-analytics-consent='pending']) .analytics-consent {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .analytics-consent__eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .analytics-consent__title {
+    font-size: var(--text-lg);
+    margin: 0 0 6px;
+  }
+
+  .analytics-consent__copy {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .analytics-consent__note {
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    margin: 8px 0 0;
+  }
+
+  .analytics-consent__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .analytics-consent__button {
+    min-height: 42px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-smooth),
+      background var(--duration-fast) var(--ease-smooth),
+      color var(--duration-fast) var(--ease-smooth),
+      transform var(--duration-fast) var(--ease-smooth);
+  }
+
+  .analytics-consent__button:hover {
+    border-color: var(--text-tertiary);
+    background: var(--surface-raised);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+  }
+
+  .analytics-consent__button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .analytics-consent__button--allow {
+    border-color: color-mix(in srgb, var(--accent) 20%, var(--border));
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  .analytics-consent__button--allow:hover {
+    border-color: color-mix(in srgb, var(--accent) 34%, var(--border));
+    background: color-mix(in srgb, var(--accent-light) 85%, var(--surface) 15%);
+    color: var(--accent-hover);
+  }
+
+  @media (max-width: 600px) {
+    .analytics-consent {
+      left: 12px;
+      right: 12px;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      width: auto;
+      padding: 14px;
+    }
+
+    .analytics-consent__actions {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .analytics-consent {
+      transition: none;
+    }
+
+    .analytics-consent__button {
+      transition:
+        border-color var(--duration-fast) var(--ease-smooth),
+        background var(--duration-fast) var(--ease-smooth),
+        color var(--duration-fast) var(--ease-smooth);
+    }
+
+    .analytics-consent__button:hover {
+      transform: none;
+    }
+  }
+</style>

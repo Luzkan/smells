@@ -1,13 +1,13 @@
 ---
-slug: "afraid-to-fail"
+slug: 'afraid-to-fail'
 meta:
   last_update_date: 2022-04-19
-  title: "Afraid To Fail"
-  cover: "/logos/logo-text-2560x1280.png"
+  title: 'Afraid To Fail'
+  description: 'Every caller has to check whether things actually worked, because this code returns status codes instead of throwing exceptions. The defensive ifs cascade up the entire call chain.'
   known_as:
     - ---
 categories:
-  expanse: "Within"
+  expanse: 'Within'
   obstruction:
     - Couplers
   occurrence:
@@ -39,20 +39,20 @@ problems:
 refactors:
   - Move Method
 history:
-  - author: "Marcel Jerzyk"
-    type: "origin"
+  - author: 'Marcel Jerzyk'
+    type: 'origin'
     named_as:
       - Afraid To Fail
     regarded_as:
       - Code Smell
     source:
-      year: 2022
+      year: 2023
       authors:
         - Marcel Jerzyk
-      name: "Code Smells: A Comprehensive Online Catalog and Taxonomy"
-      type: "thesis"
+      name: 'Code Smells: A Comprehensive Online Catalog and Taxonomy'
+      type: 'paper'
       href:
-        direct_url: "Marcel Jerzyk Source TBA"
+        direct_url: 'https://doi.org/10.1007/978-3-031-25695-0_24'
 ---
 
 ## Afraid To Fail

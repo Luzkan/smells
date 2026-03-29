@@ -1,0 +1,218 @@
+---
+/**
+ * ThemeToggle — Astro component (NOT a Preact island).
+ *
+ * Toggles data-theme on html element and persists to localStorage.
+ * Uses inline script for immediate interactivity without hydration.
+ * Sun/Moon SVG icons swap via CSS based on data-theme.
+ * Includes toggleSpin animation on click.
+ */
+---
+
+<button class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">
+  {/* Sun icon — visible in dark mode */}
+  <svg
+    class="theme-toggle__icon theme-toggle__icon--sun"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+
+  {/* Moon icon — visible in light mode */}
+  <svg
+    class="theme-toggle__icon theme-toggle__icon--moon"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s var(--ease-spring);
+    color: var(--text-secondary);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover {
+    background: var(--surface-raised);
+    border-color: var(--text-tertiary);
+    transform: scale(1.08);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.95);
+  }
+
+  /* Icon visibility — default (light mode): show moon, hide sun */
+  .theme-toggle__icon--sun {
+    display: none;
+  }
+  .theme-toggle__icon--moon {
+    display: block;
+  }
+
+  /* Dark mode: show sun, hide moon */
+  :global([data-theme='dark']) .theme-toggle__icon--sun {
+    display: block;
+  }
+  :global([data-theme='dark']) .theme-toggle__icon--moon {
+    display: none;
+  }
+
+  /* Spin animation class applied on click */
+  .theme-toggle--spinning {
+    animation: toggleSpin 0.4s var(--ease-spring);
+  }
+</style>
+
+<script>
+  import { initAll } from '../../lib/lifecycle';
+  import {
+    DARK_THEME,
+    getThemeColor,
+    LIGHT_THEME,
+    THEME_ATTRIBUTE,
+    THEME_STORAGE_KEY,
+  } from '../../lib/theme-contract';
+
+  const THEME_TRANSITIONS_ATTRIBUTE = 'data-theme-transitions';
+  const THEME_TRANSITIONS_ENABLED = 'enabled';
+
+  function labelForTheme(theme: string): string {
+    return theme === DARK_THEME ? 'Switch to light mode' : 'Switch to dark mode';
+  }
+
+  function syncLabels(theme: string): void {
+    const label = labelForTheme(theme);
+    document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((btn) => {
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+    });
+  }
+
+  function ensureManagedThemeColorMeta(): HTMLMetaElement {
+    const existing = document.head.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"][data-theme-color="managed"]',
+    );
+    const firstThemeColorMeta = document.head.querySelector('meta[name="theme-color"]');
+
+    if (existing) {
+      if (
+        firstThemeColorMeta &&
+        firstThemeColorMeta !== existing &&
+        firstThemeColorMeta.parentNode
+      ) {
+        firstThemeColorMeta.parentNode.insertBefore(existing, firstThemeColorMeta);
+      }
+      return existing;
+    }
+
+    const meta = document.createElement('meta');
+    meta.setAttribute('name', 'theme-color');
+    meta.setAttribute('data-theme-color', 'managed');
+
+    if (firstThemeColorMeta?.parentNode) {
+      firstThemeColorMeta.parentNode.insertBefore(meta, firstThemeColorMeta);
+      return meta;
+    }
+
+    document.head.append(meta);
+    return meta;
+  }
+
+  function syncThemeColor(theme: string): void {
+    ensureManagedThemeColorMeta().setAttribute('content', getThemeColor(theme));
+  }
+
+  function syncRootThemePresentation(theme: string): void {
+    const htmlStyle = document.documentElement.style;
+    htmlStyle.backgroundColor = getThemeColor(theme);
+    htmlStyle.colorScheme = theme;
+  }
+
+  function persistTheme(theme: string): void {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // Ignore storage failures and keep the in-memory theme in sync.
+    }
+  }
+
+  initAll('.theme-toggle', (btn) => {
+    const onClick = () => {
+      const html = document.documentElement;
+      const current = html.getAttribute(THEME_ATTRIBUTE) === DARK_THEME ? DARK_THEME : LIGHT_THEME;
+      const next = current === DARK_THEME ? LIGHT_THEME : DARK_THEME;
+
+      html.setAttribute(THEME_TRANSITIONS_ATTRIBUTE, THEME_TRANSITIONS_ENABLED);
+      html.setAttribute(THEME_ATTRIBUTE, next);
+      persistTheme(next);
+      syncRootThemePresentation(next);
+      syncThemeColor(next);
+      syncLabels(next);
+
+      document.dispatchEvent(
+        new CustomEvent('analytics', {
+          detail: { name: 'theme_toggle', params: { theme: next } },
+        }),
+      );
+
+      document.querySelectorAll<HTMLButtonElement>('.theme-toggle').forEach((toggle) => {
+        toggle.classList.remove('theme-toggle--spinning');
+        void toggle.offsetWidth;
+        toggle.classList.add('theme-toggle--spinning');
+      });
+    };
+
+    const onAnimationEnd = () => {
+      btn.classList.remove('theme-toggle--spinning');
+    };
+
+    const currentTheme =
+      document.documentElement.getAttribute(THEME_ATTRIBUTE) === DARK_THEME
+        ? DARK_THEME
+        : LIGHT_THEME;
+    syncRootThemePresentation(currentTheme);
+    syncThemeColor(currentTheme);
+    syncLabels(currentTheme);
+
+    btn.addEventListener('click', onClick);
+    btn.addEventListener('animationend', onAnimationEnd);
+  });
+</script>
