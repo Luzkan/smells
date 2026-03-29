@@ -627,15 +627,13 @@ function chipHref(card: FilterableDimensionCard, chip: ChipItem): string {
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .dim-card {
-      opacity: 1;
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .dim-card {
+    opacity: 1;
+    transform: none;
+  }
 
-    .taxonomy-aside {
-      opacity: 1;
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .taxonomy-aside {
+    opacity: 1;
+    transform: none;
   }
 </style>

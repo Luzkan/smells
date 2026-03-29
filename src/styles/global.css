@@ -647,6 +647,19 @@ mark.search-hl {
   }
 }
 
+/* JS-enhanced: attribute-driven via MotionToggle (overrides OS when user toggles) */
+html[data-motion='reduced'] *,
+html[data-motion='reduced'] *::before,
+html[data-motion='reduced'] *::after {
+  animation-duration: 0.001s !important;
+  transition-duration: 0.001s !important;
+}
+
+html[data-motion='reduced']::view-transition-old(*),
+html[data-motion='reduced']::view-transition-new(*) {
+  animation-duration: 0s !important;
+}
+
 /* ============================================
    PRINT STYLES
    ============================================ */
@@ -658,6 +671,7 @@ mark.search-hl {
   .nav,
   .skip-nav,
   .theme-toggle,
+  .motion-toggle,
   .catalog-layout__sidebar,
   .filter-sidebar__mobile-fab,
   .filter-sidebar__sheet,

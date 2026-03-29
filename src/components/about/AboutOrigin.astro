@@ -179,9 +179,7 @@ import { SPRINGER_PAPER_URL, THESIS_URL } from '../../lib/constants';
     line-height: 1.7;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .origin-struck__text::after {
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .origin-struck__text::after {
+    transform: none;
   }
 </style>

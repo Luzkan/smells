@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [`2.0.1`] - 2026-03-29
+
+**Users can now quiet animations without touching their OS settings.** A sparkles toggle in the nav gives per-site control, persisted across sessions.
+
+### Added
+
+- **Animation toggle** — sparkles button in the nav lets users reduce motion on this site alone. Bounces when sparkles come back to life; goes instantly quiet when they don't.
+- **Tooltip system** for nav icon buttons — CSS-only `data-tooltip` with arrow, hover delay, and keyboard focus support, replacing native `title` attributes
+- **Motion contract** (`motion-contract.ts`) — shared constants and types mirroring the theme system architecture
+- **Motion preference blocking script** — resolves `html[data-motion]` before first paint (localStorage first, OS `prefers-reduced-motion` as fallback), stamps new documents on view transitions
+
+### Changed
+
+- Motion system rewired from fifteen independent `@media (prefers-reduced-motion)` blocks to one `html[data-motion]` attribute driving a global CSS kill switch — near-zero durations on all transitions, animations, and view transitions when reduced
+- Mobile nav hardened against view-transition DOM replacement: lazy element lookups, re-bound listeners on `astro:page-load`, duplicate-event guards via data attributes
+- E2E test helpers extracted for consent flow, catalog filter scoping, and stable click-with-scroll patterns; clipboard tests skip non-Chromium; force-click fallbacks for mobile viewports
+
+### Fixed
+
+- Horizontal overflow from `left: -100vw; right: -100vw` on full-bleed decorative backgrounds in CatalogHero and ArticleLayout — replaced with `translateX(-50%)` centering
+- ThemeToggle spin animation clipping tooltip pseudo-elements — now targets inner icons instead of the button, `overflow: hidden` dropped
+
+---
+
 ## [`2.0.0`] - 2026-03-23
 
 **Complete rewrite — Gatsby → Astro 5.** New architecture, new design, same 56 smells.
@@ -327,5 +351,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [`1.0.20`]: https://github.com/Luzkan/smells/releases/tag/1.0.20
 [`1.0.21`]: https://github.com/Luzkan/smells/releases/tag/1.0.21
 [`1.0.22`]: https://github.com/Luzkan/smells/releases/tag/1.0.22
+[`2.0.1`]: https://github.com/Luzkan/smells/releases/tag/2.0.1
 [`2.0.0`]: https://github.com/Luzkan/smells/releases/tag/2.0.0
 [`1.0.23-alpha.1`]: https://github.com/Luzkan/smells/releases/tag/1.0.23-alpha.1

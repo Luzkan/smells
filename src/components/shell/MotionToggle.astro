@@ -1,0 +1,204 @@
+---
+/**
+ * MotionToggle — Astro component (NOT a Preact island).
+ *
+ * Toggles data-motion on html element and persists to localStorage.
+ * Uses inline script for immediate interactivity without hydration.
+ * Sparkles/Sparkles-off SVG icons swap via CSS based on data-motion.
+ * Asymmetric click animation: celebratory bounce when enabling, instant swap when reducing.
+ */
+---
+
+<button
+  class="motion-toggle"
+  type="button"
+  aria-pressed="true"
+  aria-label="Animations"
+  data-tooltip="Turn off animations"
+>
+  {/* Sparkles icon — visible when motion is full */}
+  <svg
+    class="motion-toggle__icon motion-toggle__icon--on"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3l1.05 3.15L16.2 7.2l-3.15 1.05L12 11.4l-1.05-3.15L7.8 7.2l3.15-1.05L12 3z"></path>
+    <path d="M18 12l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7L18 12z"></path>
+    <path d="M7 15l.525 1.575L9.1 17.1l-1.575.525L7 19.2l-.525-1.575L4.9 17.1l1.575-.525L7 15z"
+    ></path>
+  </svg>
+
+  {/* Sparkles-off icon — visible when motion is reduced */}
+  <svg
+    class="motion-toggle__icon motion-toggle__icon--off"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path
+      d="M12 3l1.05 3.15L16.2 7.2l-3.15 1.05L12 11.4l-1.05-3.15L7.8 7.2l3.15-1.05L12 3z"
+      opacity=".45"></path>
+    <path d="M18 12l.7 2.1 2.1.7-2.1.7-.7 2.1-.7-2.1-2.1-.7 2.1-.7L18 12z" opacity=".45"></path>
+    <path
+      d="M7 15l.525 1.575L9.1 17.1l-1.575.525L7 19.2l-.525-1.575L4.9 17.1l1.575-.525L7 15z"
+      opacity=".45"></path>
+    <line x1="3" y1="3" x2="21" y2="21"></line>
+  </svg>
+</button>
+
+<style>
+  .motion-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s var(--ease-spring);
+    color: var(--text-secondary);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  :global(html[data-motion='full']) .motion-toggle:hover {
+    background: var(--surface-raised);
+    border-color: var(--text-tertiary);
+    transform: scale(1.08);
+  }
+
+  :global(html[data-motion='reduced']) .motion-toggle:hover {
+    background: var(--surface-raised);
+    border-color: var(--text-tertiary);
+  }
+
+  .motion-toggle:active {
+    transform: scale(0.95);
+  }
+
+  /* Icon visibility — default (full): show sparkles, hide sparkles-off */
+  .motion-toggle__icon--on {
+    display: block;
+  }
+  .motion-toggle__icon--off {
+    display: none;
+  }
+
+  /* Reduced: show sparkles-off, hide sparkles */
+  :global([data-motion='reduced']) .motion-toggle__icon--on {
+    display: none;
+  }
+  :global([data-motion='reduced']) .motion-toggle__icon--off {
+    display: block;
+  }
+
+  /* Asymmetric animation — targets icons, not the button, so ::before/::after tooltips stay stable */
+  .motion-toggle--awaken .motion-toggle__icon--on,
+  .motion-toggle--awaken .motion-toggle__icon--off {
+    animation: motionAwaken 0.45s var(--ease-spring);
+  }
+
+  @keyframes motionAwaken {
+    0% {
+      transform: scale(0.85);
+      opacity: 0.6;
+    }
+    50% {
+      transform: scale(1.15);
+      opacity: 1;
+    }
+    75% {
+      transform: scale(0.97);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import { initAll } from '../../lib/lifecycle';
+  import {
+    MOTION_ATTRIBUTE,
+    MOTION_FULL,
+    MOTION_REDUCED,
+    MOTION_STORAGE_KEY,
+  } from '../../lib/motion-contract';
+
+  function titleForState(motion: string): string {
+    return motion === MOTION_FULL ? 'Turn off animations' : 'Turn on animations';
+  }
+
+  function syncAll(motion: string): void {
+    const pressed = String(motion === MOTION_FULL);
+    const title = titleForState(motion);
+    document.querySelectorAll<HTMLButtonElement>('.motion-toggle').forEach((btn) => {
+      btn.setAttribute('aria-pressed', pressed);
+      btn.setAttribute('data-tooltip', title);
+    });
+  }
+
+  function persistMotion(motion: string): void {
+    try {
+      localStorage.setItem(MOTION_STORAGE_KEY, motion);
+    } catch {
+      // Ignore storage failures.
+    }
+  }
+
+  initAll('.motion-toggle', (btn) => {
+    const onClick = () => {
+      const html = document.documentElement;
+      const current =
+        html.getAttribute(MOTION_ATTRIBUTE) === MOTION_REDUCED ? MOTION_REDUCED : MOTION_FULL;
+      const next = current === MOTION_FULL ? MOTION_REDUCED : MOTION_FULL;
+
+      html.setAttribute(MOTION_ATTRIBUTE, next);
+      persistMotion(next);
+      syncAll(next);
+
+      document.dispatchEvent(
+        new CustomEvent('analytics', {
+          detail: { name: 'animation_toggle', params: { motion: next } },
+        }),
+      );
+
+      if (next === MOTION_FULL) {
+        document.querySelectorAll<HTMLButtonElement>('.motion-toggle').forEach((toggle) => {
+          toggle.classList.remove('motion-toggle--awaken');
+          void toggle.offsetWidth;
+          toggle.classList.add('motion-toggle--awaken');
+        });
+      }
+    };
+
+    const onAnimationEnd = () => {
+      btn.classList.remove('motion-toggle--awaken');
+    };
+
+    const currentMotion =
+      document.documentElement.getAttribute(MOTION_ATTRIBUTE) === MOTION_REDUCED
+        ? MOTION_REDUCED
+        : MOTION_FULL;
+    syncAll(currentMotion);
+
+    btn.addEventListener('click', onClick);
+    btn.addEventListener('animationend', onAnimationEnd);
+  });
+</script>

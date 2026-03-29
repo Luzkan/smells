@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page, type Locator } from '@playwright/test';
 import { THEME_COLOR_DARK } from '../../src/lib/theme-contract';
 
 const DARK_THEME_RGB = 'rgb(23, 20, 18)';
@@ -41,6 +41,16 @@ async function readThemePresentation(page: Page) {
 
 async function clickThemeToggle(page: Page) {
   await page.locator('.nav .theme-toggle').click({ force: true });
+}
+
+async function clickStable(locator: Locator): Promise<void> {
+  await locator.evaluate((el) => el.scrollIntoView({ block: 'center', inline: 'nearest' }));
+  await expect(locator).toBeVisible();
+  try {
+    await locator.click({ timeout: 3000 });
+  } catch {
+    await locator.click({ force: true });
+  }
 }
 
 test.describe('Theme Toggle', () => {
@@ -172,8 +182,10 @@ test.describe('Theme Toggle', () => {
     await clickThemeToggle(page);
     await expect.poll(() => readTheme(page)).toBe('dark');
 
-    await page.locator('.smell-card__link').first().click();
-    await expect(page).toHaveURL(/\/smells\//);
+    const cardLink = page.locator('.smell-card__link').first();
+    const startUrl = page.url();
+    await clickStable(cardLink);
+    await page.waitForURL((url) => url.pathname.startsWith('/smells/') && url.toString() !== startUrl);
     await expect.poll(() => readTheme(page)).toBe('dark');
 
     const themeColor = await readActiveThemeColor(page);

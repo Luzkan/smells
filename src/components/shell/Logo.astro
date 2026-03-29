@@ -199,51 +199,49 @@ const { href = '/', ariaLabel = 'Code Smells Catalog — Home', class: className
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .logo::after {
-      transition: none;
-    }
+  :global(html[data-motion='reduced']) .logo::after {
+    transition: none;
+  }
 
-    .logo__primary,
-    .logo__secondary,
-    .logo__braces {
-      transition: none;
-    }
+  :global(html[data-motion='reduced']) .logo__primary,
+  :global(html[data-motion='reduced']) .logo__secondary,
+  :global(html[data-motion='reduced']) .logo__braces {
+    transition: none;
+  }
 
-    .logo__waft {
-      transition: none;
-    }
+  :global(html[data-motion='reduced']) .logo__waft {
+    transition: none;
+  }
 
-    .logo__waft-group path {
-      animation: none;
-      opacity: 0.6;
-    }
+  :global(html[data-motion='reduced']) .logo__waft-group path {
+    animation: none;
+    opacity: 0.6;
+  }
 
-    .logo:hover .logo__primary {
-      color: var(--text-primary);
-    }
+  :global(html[data-motion='reduced']) .logo:hover .logo__primary {
+    color: var(--text-primary);
+  }
 
-    .logo:hover .logo__secondary {
-      transform: none;
-      font-variation-settings:
-        'opsz' 28,
-        'WONK' 1,
-        'SOFT' 0;
-    }
+  :global(html[data-motion='reduced']) .logo:hover .logo__secondary {
+    transform: none;
+    font-variation-settings:
+      'opsz' 28,
+      'WONK' 1,
+      'SOFT' 0;
+  }
 
-    .logo:hover .logo__braces {
-      color: var(--text-primary);
-    }
+  :global(html[data-motion='reduced']) .logo:hover .logo__braces {
+    color: var(--text-primary);
+  }
 
-    .logo:hover .logo__waft {
-      transform: none;
-      filter: none;
-    }
+  :global(html[data-motion='reduced']) .logo:hover .logo__waft {
+    transform: none;
+    filter: none;
+  }
 
-    .logo:hover .logo__waft-group path {
-      animation: none;
-      opacity: 0.8;
-    }
+  :global(html[data-motion='reduced']) .logo:hover .logo__waft-group path {
+    animation: none;
+    opacity: 0.8;
   }
 
   @media (max-width: 479px) {

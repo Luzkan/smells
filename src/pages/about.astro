@@ -182,11 +182,9 @@ const aboutSeo: SeoMeta = {
   }
 
   /* Reduced motion — show sections immediately */
-  @media (prefers-reduced-motion: reduce) {
-    .about-section {
-      opacity: 1;
-      transform: none;
-    }
+  :global(html[data-motion='reduced']) .about-section {
+    opacity: 1;
+    transform: none;
   }
 
   /* Mobile */

@@ -62,9 +62,11 @@ const { totalCount, categoryCount, hierarchyCount } = Astro.props;
   .catalog-hero::before {
     content: '';
     position: absolute;
-    inset: 0;
-    left: -100vw;
-    right: -100vw;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
     background: radial-gradient(
       ellipse 60% 80% at 50% 30%,
       rgba(180, 83, 9, 0.04) 0%,
