@@ -1,32 +1,11 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { setTheme, trackConsoleErrors } from './helpers';
 
 async function gotoAbout(page: import('@playwright/test').Page) {
   const response = await page.goto('/about');
   await page.waitForSelector('h1');
   return response;
-}
-
-function trackConsoleErrors(page: import('@playwright/test').Page): string[] {
-  const errors: string[] = [];
-  page.on('console', (msg) => {
-    if (msg.type() === 'error') {
-      errors.push(msg.text());
-    }
-  });
-  return errors;
-}
-
-async function setTheme(page: import('@playwright/test').Page, theme: 'light' | 'dark') {
-  await page.evaluate((value) => {
-    document.documentElement.dataset.theme = value;
-  }, theme);
-
-  const expectedBackground = theme === 'dark' ? 'rgb(23, 20, 18)' : 'rgb(250, 249, 246)';
-  await page.waitForFunction(
-    (value) => getComputedStyle(document.body).backgroundColor === value,
-    expectedBackground,
-  );
 }
 
 test.describe('About page', () => {

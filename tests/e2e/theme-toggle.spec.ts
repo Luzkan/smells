@@ -185,7 +185,9 @@ test.describe('Theme Toggle', () => {
     const cardLink = page.locator('.smell-card__link').first();
     const startUrl = page.url();
     await clickStable(cardLink);
-    await page.waitForURL((url) => url.pathname.startsWith('/smells/') && url.toString() !== startUrl);
+    await page.waitForURL(
+      (url) => url.pathname.startsWith('/smells/') && url.toString() !== startUrl,
+    );
     await expect.poll(() => readTheme(page)).toBe('dark');
 
     const themeColor = await readActiveThemeColor(page);

@@ -89,6 +89,8 @@ export const CITATION = {
     '@incollection{jerzyk2023codesmells,\n  author    = {Jerzyk, Marcel and Madeyski, Lech},\n  title     = {Code Smells: A Comprehensive Online Catalog and Taxonomy},\n  booktitle = {Developments in Information and Knowledge Management Systems for Business Applications},\n  series    = {Studies in Systems, Decision and Control},\n  volume    = {462},\n  publisher = {Springer, Cham},\n  year      = {2023},\n  doi       = {10.1007/978-3-031-25695-0_24}\n}',
 } as const;
 
+export const OPEN_MOBILE_SEARCH_EVENT = 'open-mobile-search';
+
 export const GITHUB_REPO = 'luzkan/smells';
 export const GITHUB_REPO_URL = `https://github.com/${GITHUB_REPO}`;
 export const GITHUB_ISSUES_URL = `${GITHUB_REPO_URL}/issues`;

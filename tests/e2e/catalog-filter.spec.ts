@@ -1,9 +1,6 @@
 import { test, expect } from '@playwright/test';
 import type { Locator, Page, TestInfo } from '@playwright/test';
-
-function isMobileProject(testInfo: TestInfo): boolean {
-  return testInfo.project.name.includes('mobile');
-}
+import { isMobileProject } from './helpers';
 
 async function dismissAnalyticsConsentIfVisible(page: Page, testInfo: TestInfo): Promise<void> {
   const consentHeading = page.getByRole('heading', { name: 'Analytics preference' });

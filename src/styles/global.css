@@ -661,6 +661,43 @@ html[data-motion='reduced']::view-transition-new(*) {
 }
 
 /* ============================================
+   BIBTEX CITATION HIGHLIGHTS
+   Shared across CitePanel and Footer citation blocks.
+   ============================================ */
+.cite-bib-type {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cite-bib-key {
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.cite-bib-delim {
+  color: var(--text-tertiary);
+  opacity: 0.5;
+}
+
+.cite-bib-block {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cite-bib-block code {
+  font-family: var(--font-mono);
+  font-size: calc(var(--text-xs) - 1px);
+  font-style: normal;
+  letter-spacing: -0.02em;
+  line-height: 1.7;
+}
+
+/* ============================================
    PRINT STYLES
    ============================================ */
 @media print {

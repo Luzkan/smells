@@ -7,10 +7,13 @@ interface Props {
 import Icon from '../icons/Icon.astro';
 import { ICON_COPY } from '../../lib/icon-paths';
 import { SITE_URL } from '../../lib/constants';
+import { buildArticleBibtex, formatBibtexHtml } from '../../lib/citation';
 
 const { citation } = Astro.props;
 const { slug, title, author, year } = citation;
 const url = `${SITE_URL}/smells/${slug}`;
+const bibtexRaw = buildArticleBibtex(slug, title, author, year, url);
+const bibtexHtml = formatBibtexHtml(bibtexRaw);
 ---
 
 <div class="cite-panel" id="cite-panel" data-slug={slug} aria-hidden="true" inert>
@@ -25,11 +28,11 @@ const url = `${SITE_URL}/smells/${slug}`;
     </div>
     <div class="cite-block">
       <pre
-        class="cite-block__code"
-        data-bibtex={`@misc{jerzyk${year}${slug.replace(/-/g, '')},\n  title  = {${title} — Code Smells Catalog},\n  author = {${author}},\n  year   = {${year}},\n  url    = {${url}}\n}`}
+        class="cite-bib-block"
+        data-bibtex={bibtexRaw}
+        data-bibtex-html={bibtexHtml}
         data-apa={`${author} (${year}). ${title} — Code Smells Catalog. ${url}`}
-        data-markdown={`[${title}](${url}) — *Code Smells Catalog* by ${author} (${year})`}>
-      </pre>
+        data-markdown={`[${title}](${url}) — *Code Smells Catalog* by ${author} (${year})`}><code class="cite-block__code" /></pre>
       <button class="cite-copy-btn" title="Copy citation" aria-label="Copy citation">
         <Icon icon={ICON_COPY} size={12} />
       </button>
@@ -39,7 +42,7 @@ const url = `${SITE_URL}/smells/${slug}`;
 
 <script>
   import { trackEvent } from '../../lib/analytics/tracker';
-  import { copyToClipboardWithFeedback } from '../../lib/copy-code';
+  import { copyToClipboardWithFeedback, COPY_FEEDBACK_MS } from '../../lib/copy-code';
   import { initOnce } from '../../lib/lifecycle';
 
   function toCiteFormat(value: string | null): 'bibtex' | 'apa' | 'markdown' {
@@ -49,10 +52,24 @@ const url = `${SITE_URL}/smells/${slug}`;
 
   initOnce('.cite-panel', (citePanel) => {
     const slug = citePanel.getAttribute('data-slug') || '';
-    const citeBlock = citePanel.querySelector('.cite-block__code');
-    if (!(citeBlock instanceof HTMLElement)) return;
+    const citePre = citePanel.querySelector('.cite-bib-block');
+    const citeCodeEl = citePanel.querySelector('.cite-block__code');
+    if (!(citePre instanceof HTMLElement) || !(citeCodeEl instanceof HTMLElement)) return;
 
-    citeBlock.textContent = citeBlock.getAttribute('data-bibtex') || '';
+    const pre = citePre;
+    const code = citeCodeEl;
+    let fadeRaf: number | null = null;
+    function crossfade(updateFn: () => void): void {
+      if (fadeRaf !== null) cancelAnimationFrame(fadeRaf);
+      code.classList.add('cite-block__code--fading');
+      fadeRaf = requestAnimationFrame(() => {
+        updateFn();
+        code.classList.remove('cite-block__code--fading');
+        fadeRaf = null;
+      });
+    }
+
+    code.innerHTML = pre.getAttribute('data-bibtex-html') || '';
 
     const tabs = citePanel.querySelectorAll('.cite-tab');
     tabs.forEach((tab) => {
@@ -61,7 +78,13 @@ const url = `${SITE_URL}/smells/${slug}`;
         tabs.forEach((candidate) => candidate.classList.remove('cite-tab--active'));
         tab.classList.add('cite-tab--active');
         const format = toCiteFormat(tab.getAttribute('data-format'));
-        citeBlock.textContent = citeBlock.getAttribute(`data-${format}`) || '';
+        crossfade(() => {
+          if (format === 'bibtex') {
+            code.innerHTML = pre.getAttribute('data-bibtex-html') || '';
+          } else {
+            code.textContent = pre.getAttribute(`data-${format}`) || '';
+          }
+        });
       });
     });
 
@@ -69,7 +92,7 @@ const url = `${SITE_URL}/smells/${slug}`;
     if (!(copyButton instanceof HTMLButtonElement)) return;
 
     copyButton.addEventListener('click', async () => {
-      const copied = await copyToClipboardWithFeedback(citeBlock.textContent || '', copyButton, {
+      const copied = await copyToClipboardWithFeedback(code.textContent || '', copyButton, {
         feedbackClass: 'cite-copy-btn--copied',
       });
       if (!copied) return;
@@ -78,6 +101,12 @@ const url = `${SITE_URL}/smells/${slug}`;
       const format = toCiteFormat(
         activeTab instanceof HTMLElement ? activeTab.getAttribute('data-format') : null,
       );
+      const formatLabel = format === 'bibtex' ? 'BibTeX' : format === 'apa' ? 'APA' : 'Markdown';
+      copyButton.title = `${formatLabel} copied`;
+      setTimeout(() => {
+        copyButton.title = 'Copy citation';
+      }, COPY_FEEDBACK_MS);
+
       trackEvent({ name: 'cite_copy', params: { format, smell: slug } });
     });
   });
@@ -156,19 +185,25 @@ const url = `${SITE_URL}/smells/${slug}`;
     padding: 14px 44px 14px 14px;
   }
 
-  .cite-block__code {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 1.55;
-    color: var(--text-secondary);
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin: 0;
-    /* Override global <pre> styles: keep citation text on the white cite-block surface. */
+  .cite-bib-block {
     background: transparent;
     padding: 0;
     border-radius: 0;
     overflow: visible;
+    margin: 0;
+  }
+
+  .cite-block__code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    transition: opacity 0.15s ease;
+  }
+
+  .cite-block__code--fading {
+    opacity: 0;
+    transition: none;
   }
 
   .cite-copy-btn {

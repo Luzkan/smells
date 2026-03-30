@@ -15,9 +15,11 @@ const { citation } = Astro.props;
 <div class="engagement-bar">
   <FeedbackButton slug={citation.slug} />
   <span class="engage-sep"></span>
-  <ShareButton slug={citation.slug} />
-  <span class="engage-sep"></span>
-  <CiteToggle />
+  <div class="engage-actions">
+    <ShareButton slug={citation.slug} />
+    <span class="engage-sep"></span>
+    <CiteToggle />
+  </div>
 </div>
 <CitePanel citation={citation} />
 
@@ -32,6 +34,10 @@ const { citation } = Astro.props;
     justify-content: space-between;
     gap: 20px;
     margin-bottom: 0;
+  }
+
+  .engage-actions {
+    display: contents;
   }
 
   .engage-sep {
@@ -71,13 +77,21 @@ const { citation } = Astro.props;
   @media (max-width: 640px) {
     .engagement-bar {
       flex-direction: column;
+      align-items: center;
       padding: 16px 20px;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .engage-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       gap: 12px;
     }
 
     .engage-sep {
-      width: 100%;
-      height: 1px;
+      display: none;
     }
   }
 </style>

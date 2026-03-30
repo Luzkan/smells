@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
+import { OPEN_MOBILE_SEARCH_EVENT } from '../../../lib/constants';
 import { cx } from '../../../lib/cx';
 
 const FOCUSABLE_SELECTOR =
@@ -17,8 +18,12 @@ export function MobileBottomSheet({
   showApplyButton = true,
 }: MobileBottomSheetProps) {
   const [open, setOpen] = useState(false);
+  const [hideTrigger, setHideTrigger] = useState(false);
+  const [shouldFocusSearch, setShouldFocusSearch] = useState(false);
   const sheetRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const openRef = useRef(open);
+  openRef.current = open;
   const activeLabelSuffix = activeCount > 0 ? ` (${activeCount} active)` : '';
 
   const handleOpen = useCallback(() => {
@@ -36,24 +41,67 @@ export function MobileBottomSheet({
     sheet.toggleAttribute('inert', !open);
   }, [open]);
 
+  // Hide the floating trigger when the footer comes into view on mobile.
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return;
+
+    const footer = document.querySelector<HTMLElement>('.site-footer');
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setHideTrigger(entry.isIntersecting);
+      },
+      {
+        rootMargin: '0px 0px 80px 0px',
+      },
+    );
+
+    observer.observe(footer);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   // Body scroll lock + focus management
   useEffect(() => {
     if (!open) return;
 
     document.body.style.overflow = 'hidden';
 
-    // Focus the close button (first focusable element in sheet)
     const sheet = sheetRef.current;
     if (sheet) {
-      const firstFocusable = sheet.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
-      firstFocusable?.focus();
+      if (shouldFocusSearch) {
+        const input = sheet.querySelector<HTMLElement>('.filter-sidebar__search-input');
+        input?.focus();
+        setShouldFocusSearch(false);
+      } else {
+        const firstFocusable = sheet.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+        firstFocusable?.focus();
+      }
     }
 
     return () => {
       document.body.style.overflow = '';
       triggerRef.current?.focus();
     };
-  }, [open]);
+  }, [open, shouldFocusSearch]);
+
+  // Listen for external search trigger (Nav search button, /#search hash)
+  useEffect(() => {
+    const handleOpenSearch = () => {
+      if (openRef.current) {
+        const input = sheetRef.current?.querySelector<HTMLElement>('.filter-sidebar__search-input');
+        input?.focus();
+      } else {
+        setOpen(true);
+        setShouldFocusSearch(true);
+      }
+    };
+    document.addEventListener(OPEN_MOBILE_SEARCH_EVENT, handleOpenSearch);
+    return () => document.removeEventListener(OPEN_MOBILE_SEARCH_EVENT, handleOpenSearch);
+  }, []);
 
   // Focus trap + Escape key
   useEffect(() => {
@@ -96,7 +144,10 @@ export function MobileBottomSheet({
       <button
         ref={triggerRef}
         type="button"
-        class="filter-sidebar__mobile-fab"
+        class={cx(
+          'filter-sidebar__mobile-fab',
+          hideTrigger && 'filter-sidebar__mobile-fab--hidden',
+        )}
         onClick={handleOpen}
         aria-label={`Open filters${activeLabelSuffix}`}
       >

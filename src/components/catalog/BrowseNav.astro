@@ -156,5 +156,19 @@ const { totalSmells, allSlugs, currentSlug } = Astro.props;
     }
   }
 
+  @media (max-width: 640px) {
+    .browse-nav {
+      flex-wrap: wrap;
+    }
+
+    .browse-nav__all {
+      padding: 8px 18px;
+    }
+
+    .browse-nav__dot {
+      display: none;
+    }
+  }
+
   /* diceShake keyframes defined globally in global.css */
 </style>

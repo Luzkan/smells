@@ -20,8 +20,10 @@ import {
   GITHUB_ISSUES_URL,
   GITHUB_REPO_URL,
 } from '../../lib/constants';
+import { formatBibtexHtml } from '../../lib/citation';
 
 const allSmells = await getCollection('smells');
+const bibtexHtml = formatBibtexHtml(CITATION.bibtex);
 const randomIndex = Math.floor(Math.random() * allSmells.length);
 const randomSmellSlug = allSmells[randomIndex].data.slug;
 const currentYear = new Date().getFullYear();
@@ -325,7 +327,10 @@ const mobileAccordions = [
     {/* Bottom bar */}
     <div class="footer-bottom">
       <span class="footer-copyright">
-        &copy; 2022&ndash;{currentYear} Marcel Jerzyk
+        &copy; 2022&ndash;{currentYear}
+        <a href={AUTHOR_PROFILE_URL} class="footer-author" target="_blank" rel="noopener"
+          >Marcel Jerzyk</a
+        >
         <span class="footer-dot"></span>
         <span class="footer-built"
           >Built with <em class="footer-heart">&hearts;</em> and questionable code</span
@@ -582,13 +587,6 @@ const mobileAccordions = [
     font-weight: 600;
     color: var(--text-primary);
   }
-  .footer-cite-text :global(code) {
-    font-family: var(--font-mono);
-    font-size: calc(var(--text-xs) - 1px);
-    font-style: normal;
-    letter-spacing: -0.02em;
-  }
-
   .footer-cite-actions {
     display: flex;
     align-items: center;
@@ -646,6 +644,14 @@ const mobileAccordions = [
     font-size: var(--text-xs);
     color: var(--text-tertiary);
     white-space: nowrap;
+  }
+  .footer-author {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-fast);
+  }
+  .footer-author:hover {
+    color: var(--text-secondary);
   }
   .footer-dot {
     width: 3px;
@@ -1158,6 +1164,7 @@ const mobileAccordions = [
     CITATION_APA: CITATION.apaText,
     CITATION_APA_HTML: CITATION.apaHtml,
     CITATION_BIBTEX: CITATION.bibtex,
+    CITATION_BIBTEX_HTML: bibtexHtml,
   }}
 >
   (function initFooter() {
@@ -1203,6 +1210,7 @@ const mobileAccordions = [
     var apa = CITATION_APA;
     var bibtex = CITATION_BIBTEX;
     var apaHtml = CITATION_APA_HTML;
+    var bibtexHtml = CITATION_BIBTEX_HTML;
     var isBibtex = false;
 
     var citeText = document.getElementById('citeTextEl');
@@ -1238,7 +1246,9 @@ const mobileAccordions = [
     }
 
     function getCitationHtml() {
-      return isBibtex ? '<code>' + bibtex.replace(/\n/g, '<br>') + '</code>' : apaHtml;
+      return isBibtex
+        ? '<pre class="cite-bib-block"><code>' + bibtexHtml + '</code></pre>'
+        : apaHtml;
     }
 
     /* Desktop citation copy */

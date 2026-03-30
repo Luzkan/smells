@@ -1,9 +1,6 @@
 import { expect, test } from '@playwright/test';
 import type { Page, TestInfo } from '@playwright/test';
-
-function isMobileProject(testInfo: TestInfo): boolean {
-  return testInfo.project.name.includes('mobile');
-}
+import { isMobileProject, waitForNextAstroPageLoad } from './helpers';
 
 async function clickConsentAction(
   page: Page,
@@ -26,6 +23,8 @@ async function clickConsentAction(
 }
 
 async function navigateToAbout(page: Page, testInfo: TestInfo): Promise<void> {
+  const nextAstroPageLoad = waitForNextAstroPageLoad(page);
+
   if (isMobileProject(testInfo)) {
     const filterOverlay = page.locator('.filter-sidebar__sheet-overlay--open');
     if ((await filterOverlay.count()) > 0) {
@@ -44,6 +43,9 @@ async function navigateToAbout(page: Page, testInfo: TestInfo): Promise<void> {
   }
 
   await page.waitForURL('**/about');
+  await nextAstroPageLoad;
+  await expect(page).toHaveTitle('About — Code Smells Catalog');
+  await expect(page.locator('#sec-hero h1')).toBeVisible();
 }
 
 const GOOGLE_TAG_SHIM = `
@@ -165,7 +167,7 @@ test.describe('Analytics consent', () => {
 
     await navigateToAbout(page, testInfo);
 
-    await expect.poll(() => analytics.pageViewCount()).toBe(2);
+    await expect.poll(() => analytics.pageViewCount(), { timeout: 10000 }).toBe(2);
   });
 
   test('keeps GA disabled after decline, including after Astro navigation', async ({

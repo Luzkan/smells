@@ -562,6 +562,12 @@
   transition: all 0.25s var(--ease-spring);
 }
 
+.filter-sidebar__mobile-fab--hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(12px);
+}
+
 .filter-sidebar__mobile-fab:hover {
   transform: translateX(-50%) scale(1.04);
   box-shadow: var(--shadow-lg);
