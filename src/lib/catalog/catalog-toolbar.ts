@@ -4,6 +4,7 @@
  */
 
 import { trackEvent } from '../analytics/tracker';
+import { OPEN_MOBILE_SEARCH_EVENT } from '../constants';
 import { CARD_SELECTOR } from './card-selectors';
 import {
   parseCategoryGroups,
@@ -76,6 +77,10 @@ function setupToolbar(doc: Document, grid: HTMLElement): () => void {
   }
 
   function focusSidebarSearchInput(retriesRemaining: number): void {
+    if (globalThis.matchMedia?.('(max-width: 899px)').matches) {
+      doc.dispatchEvent(new CustomEvent(OPEN_MOBILE_SEARCH_EVENT));
+      return;
+    }
     const sidebarInput = doc.querySelector<HTMLElement>(SEARCH_INPUT_SELECTOR);
     if (sidebarInput) {
       sidebarInput.scrollIntoView({ behavior: 'smooth', block: 'center' });

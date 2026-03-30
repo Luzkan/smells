@@ -240,8 +240,12 @@ const shareDropdownId = `share-dropdown-${slug}`;
 
   @media (max-width: 640px) {
     .share-dropdown {
-      bottom: auto;
-      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px) scale(0.96);
+    }
+
+    .share-dropdown--open {
+      transform: translateX(-50%) translateY(0) scale(1);
     }
   }
 </style>

@@ -138,6 +138,7 @@ const { slug } = Astro.props;
     gap: 10px;
     flex: 1;
     min-width: 0;
+    position: relative;
   }
 
   .engage-feedback__label {
@@ -184,10 +185,14 @@ const { slug } = Astro.props;
   }
 
   .engage-feedback__followup {
-    display: none;
+    display: inline-flex;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
     font-size: var(--text-sm);
     font-weight: 500;
     color: var(--text-secondary);
+    transition: opacity 0.2s ease;
   }
 
   .engage-feedback__followup a {
@@ -210,7 +215,9 @@ const { slug } = Astro.props;
   }
 
   .engage-feedback.submitted .engage-feedback__followup.active {
-    display: inline-flex;
+    visibility: visible;
+    opacity: 1;
+    position: static;
   }
 
   @media (max-width: 640px) {

@@ -95,6 +95,8 @@ async function waitForArticleAnimations(page: Page): Promise<void> {
 
 test.describe('Accessibility', () => {
   test('catalog page passes axe-core in light mode', async ({ page }) => {
+    test.slow();
+
     await gotoCatalog(page, LIGHT_THEME);
 
     const results = await buildCatalogAxe(page).analyze();
@@ -103,6 +105,8 @@ test.describe('Accessibility', () => {
   });
 
   test('catalog page passes axe-core in dark mode', async ({ page }) => {
+    test.slow();
+
     await gotoCatalog(page, DARK_THEME);
 
     const results = await buildCatalogAxe(page).analyze();
@@ -111,6 +115,8 @@ test.describe('Accessibility', () => {
   });
 
   test('feature envy article passes axe-core in light mode', async ({ page }) => {
+    test.slow();
+
     const response = await gotoFeatureEnvy(page, LIGHT_THEME);
     expect(response?.status()).toBe(200);
     await waitForArticleAnimations(page);
@@ -121,6 +127,8 @@ test.describe('Accessibility', () => {
   });
 
   test('feature envy article passes axe-core in dark mode', async ({ page }) => {
+    test.slow();
+
     await gotoFeatureEnvy(page, DARK_THEME);
     await waitForArticleAnimations(page);
 

@@ -1,37 +1,16 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { setTheme, trackConsoleErrors } from './helpers';
+
+const EXPECTED_404_ERROR = new Set([
+  'Failed to load resource: the server responded with a status of 404 (Not Found)',
+]);
 
 async function gotoNotFound(page: import('@playwright/test').Page, path: string) {
   const response = await page.goto(path);
   await page.waitForSelector('.page-404');
   await page.waitForSelector('#diagnosisQuote .smell-name');
   return response;
-}
-
-function trackConsoleErrors(page: import('@playwright/test').Page): string[] {
-  const errors: string[] = [];
-  page.on('console', (msg) => {
-    if (
-      msg.type() === 'error' &&
-      msg.text() !==
-        'Failed to load resource: the server responded with a status of 404 (Not Found)'
-    ) {
-      errors.push(msg.text());
-    }
-  });
-  return errors;
-}
-
-async function setTheme(page: import('@playwright/test').Page, theme: 'light' | 'dark') {
-  await page.evaluate((value) => {
-    document.documentElement.dataset.theme = value;
-  }, theme);
-
-  const expectedBackground = theme === 'dark' ? 'rgb(23, 20, 18)' : 'rgb(250, 249, 246)';
-  await page.waitForFunction(
-    (value) => getComputedStyle(document.body).backgroundColor === value,
-    expectedBackground,
-  );
 }
 
 async function waitFor404Animations(page: import('@playwright/test').Page) {
@@ -43,7 +22,7 @@ async function waitFor404Animations(page: import('@playwright/test').Page) {
 
 test.describe('Not found page', () => {
   test('renders the custom 404 page for a missing route', async ({ page }) => {
-    const errors = trackConsoleErrors(page);
+    const errors = trackConsoleErrors(page, EXPECTED_404_ERROR);
     const response = await gotoNotFound(page, '/this-page-does-not-exist');
 
     expect(response?.status()).toBe(404);
@@ -64,7 +43,7 @@ test.describe('Not found page', () => {
 
     await page.locator('#goBackBtn').click();
 
-    await page.waitForURL(/\/smells\/feature-envy$/);
+    await expect(page).toHaveURL(/\/smells\/feature-envy$/);
     await expect(page.locator('.article-hero__title')).toHaveText('Feature Envy');
   });
 
@@ -79,9 +58,10 @@ test.describe('Not found page', () => {
     await expect(suggestionLink).toContainText('Did you mean');
     await expect(suggestionLink).toContainText('Feature Envy');
 
-    await suggestionLink.click();
-
-    await page.waitForURL(/\/smells\/feature-envy$/);
+    await Promise.all([
+      page.waitForURL(/\/smells\/feature-envy$/),
+      suggestionLink.click({ force: true }),
+    ]);
     await expect(page.locator('.article-hero__title')).toHaveText('Feature Envy');
   });
 

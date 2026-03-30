@@ -11,7 +11,7 @@ import ExternalLinkIcon from '../icons/ExternalLinkIcon.astro';
 import GridIcon from '../icons/GridIcon.astro';
 import Icon from '../icons/Icon.astro';
 import { ICON_SEARCH } from '../../lib/icon-paths';
-import { SPRINGER_PAPER_URL } from '../../lib/constants';
+import { OPEN_MOBILE_SEARCH_EVENT, SPRINGER_PAPER_URL } from '../../lib/constants';
 
 const currentPath = Astro.url.pathname;
 const isCatalog = currentPath === '/' || currentPath === '/index.html';
@@ -42,7 +42,7 @@ const isAbout = currentPath.startsWith('/about');
         data-tooltip="Search smells"
         aria-label="Search smells"
       >
-        <Icon icon={ICON_SEARCH} size={16} />
+        <Icon icon={ICON_SEARCH} size={18} />
       </button>
 
       <MotionToggle />
@@ -468,8 +468,13 @@ const isAbout = currentPath.startsWith('/about');
     }
 
     .nav__search-trigger {
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .nav__search-trigger :global(svg) {
+      width: 16px;
+      height: 16px;
     }
 
     .nav__links :global([data-tooltip])::before,
@@ -479,7 +484,7 @@ const isAbout = currentPath.startsWith('/about');
   }
 </style>
 
-<script is:inline>
+<script is:inline define:vars={{ OPEN_MOBILE_SEARCH_EVENT }}>
   (function () {
     // --- Scroll shadow ---
     const nav = document.querySelector('.nav');
@@ -507,16 +512,26 @@ const isAbout = currentPath.startsWith('/about');
     const searchBtn = document.getElementById('nav-search-trigger');
     if (searchBtn) {
       searchBtn.addEventListener('click', function () {
-        // If on the catalog page, scroll to and focus the sidebar search input
-        const sidebarInput = document.querySelector('.filter-sidebar__search-input');
-        if (sidebarInput) {
-          sidebarInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          setTimeout(function () {
-            sidebarInput.focus();
-          }, 400);
+        var isMobile = window.matchMedia('(max-width: 899px)').matches;
+        if (isMobile) {
+          var navSheet = document.getElementById('mobile-nav-sheet');
+          if (navSheet && navSheet.classList.contains('mobile-nav__sheet--open')) {
+            closeMobileNav({ restoreFocus: false });
+          }
+          var filterSheet = document.querySelector('.filter-sidebar__sheet');
+          if (filterSheet) {
+            document.dispatchEvent(new CustomEvent(OPEN_MOBILE_SEARCH_EVENT));
+          } else {
+            window.location.href = '/#search';
+          }
         } else {
-          // On non-catalog pages, navigate to catalog with search hash
-          window.location.href = '/#search';
+          var sidebarInput = document.querySelector('.filter-sidebar__search-input');
+          if (sidebarInput) {
+            sidebarInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            sidebarInput.focus();
+          } else {
+            window.location.href = '/#search';
+          }
         }
       });
     }

@@ -45,7 +45,8 @@ const { totalCount, categoryCount, hierarchyCount } = Astro.props;
   {/* HERO-05: Springer Nature trust badge */}
   <a class="catalog-hero__trust" href={SPRINGER_PAPER_URL} target="_blank" rel="noopener">
     <BookIcon class="catalog-hero__trust-icon" size={14} strokeWidth={2} />
-    Companion to peer-reviewed research published by <strong>Springer Nature</strong>
+    {/* Wrapper <span> prevents the icon from reflowing into wrapped text on small screens */}
+    <span>Companion to peer-reviewed research published by <strong>Springer Nature</strong></span>
   </a>
 </section>
 
@@ -190,6 +191,7 @@ const { totalCount, categoryCount, hierarchyCount } = Astro.props;
     background: var(--surface);
     transition: all 0.25s var(--ease-smooth);
     text-decoration: none;
+    text-wrap: balance;
   }
 
   .catalog-hero__trust:hover {
