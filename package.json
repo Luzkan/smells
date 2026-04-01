@@ -19,9 +19,9 @@
     "redirects:generate": "node scripts/generate-gh-pages-redirects.mjs"
   },
   "dependencies": {
-    "@astrojs/preact": "^4.1.3",
-    "@astrojs/rss": "^4.0.15",
-    "@astrojs/sitemap": "^3.7.0",
+    "@astrojs/preact": "^5.1.0",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
     "@fontsource-variable/fraunces": "^5.2.9",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
@@ -29,7 +29,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "@types/mdast": "^4.0.4",
     "@vercel/analytics": "^2.0.1",
-    "astro": "^5.18.0",
+    "astro": "^6.1.2",
     "nanostores": "^1.1.1",
     "preact": "^10.28.4",
     "shiki": "^4.0.1",
@@ -44,7 +44,7 @@
     ]
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.7",
+    "@astrojs/check": "^0.9.8",
     "@axe-core/playwright": "^4.11.1",
     "@playwright/test": "^1.58.2",
     "@resvg/resvg-js": "^2.6.2",
