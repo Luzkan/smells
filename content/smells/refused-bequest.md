@@ -61,7 +61,7 @@ history:
 
 Whenever a subclass inherits from a parent but only uses a subset of the implemented parent methods, that is called _Refused Bequest_. This behavior can happen both implicitly and explicitly:
 
-- Implicitly, when the inherited routine doesn not work
+- Implicitly, when the inherited routine does not work
 - Explicitly, if an error is thrown instead of supporting the method
 
 Whenever a child class is created, it should fully support all the data and methods that it inherits [[1](#sources)]. Fowler says that this smell is not that strong, though, and admits that he sometimes reuses only a bit of behavior, but it can cause confusion and problems [[2](#sources)].
