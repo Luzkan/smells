@@ -49,16 +49,16 @@
     "@playwright/test": "^1.58.2",
     "@resvg/resvg-js": "^2.6.2",
     "@size-limit/file": "^12.0.1",
-    "eslint": "^10.0.3",
-    "eslint-plugin-astro": "^1.6.0",
+    "eslint": "^10.2.1",
+    "eslint-plugin-astro": "^1.7.0",
     "gray-matter": "^4.0.3",
     "linkedom": "^0.18.12",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
     "satori": "^0.25.0",
     "size-limit": "^12.0.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1",
+    "typescript-eslint": "^8.59.1",
     "vitest": "^4.0.18"
   }
 }
